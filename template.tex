@@ -489,19 +489,6 @@ Look at the phase
 }
 
 
-Let us consider a quadratic phase term $\exp(i A x^2)$. The condition for ``good sampling'' is:
-
-\begin{equation}\label{eq: xxx1}
-\frac{1}{2 \pi} \frac{\partial}{\partial x}(A x^2) = \frac{1}{2 \delta_x}
-\end{equation}
-expressenig the spatial coordinate $x_j=X_J \delta_x$ with $X_j = [-N/2,-N/2 -1, ..., 0,..., N/2[$:
-\begin{equation}\label{eq: xxx2}
-\frac{1}{2 \pi} \frac{1}{\delta_x} \frac{\partial}{\partial X}(A (X \delta_x)^2) = \frac{1}{2 \delta_x}
-\end{equation}
-\begin{equation}\label{eq:xxx3}
-A \leq \frac{\pi}{N \delta_x^2}
-\end{equation}
-
 
 \subsection{Validity conditions}
 
@@ -509,6 +496,19 @@ It has been shown that undesampling the source cause replicas in the image (see 
 
 \todo{Obtain the validity conditions for good sampling of the phase. Follow the ideas and results, for example, in \cite{schmidt}, \cite{pirro} and PYNX code }  
 
+
+Let us consider a quadratic phase term $\exp(i A x^2)$. The condition for ``good sampling'' is:
+
+\begin{equation}\label{eq: xxx1}
+\frac{1}{2 \pi} \frac{\partial}{\partial x}(A x^2) = \frac{1}{2 \delta_x}
+\end{equation}
+expressing the spatial coordinate $x_j=X_J \delta_x$ with $X_j = [-N/2,-N/2 -1, ..., 0,..., N/2[$:
+\begin{equation}\label{eq: xxx2}
+\frac{1}{2 \pi} \frac{1}{\delta_x} \frac{\partial}{\partial X}(A (X \delta_x)^2) = \frac{1}{2 \delta_x}
+\end{equation}
+\begin{equation}\label{eq:xxx3}
+A \leq \frac{\pi}{N \delta_x^2}
+\end{equation}
 
 
 \subsection{The phase sampling problem}
@@ -583,8 +583,8 @@ Note that setting one magnification $m_x=m_y=1$ one obtains the standatd Fresnel
 Define examples to be treated by the different codes. Compare results. Vary some sampling parameters. Benchmark timing. Some ideas [to be developed]: 
 
 \begin{enumerate}
- \item Young-type experiment (plane wave, two slits, like in Fig.~\ref{fig: srw two slits}). Verify numerically the Fresnel scaling theorem. COmpare with analytical results? 
- \item Plane wave clipped by a slit, focused by an ideal lens. and propagate to close to the focal position. Discuss the 
+ \item Young-type experiment (plane wave, two slits, like in Fig.~\ref{fig: srw two slits}). Verify numerically the Fresnel scaling theorem.
+ \item Plane wave clipped by a slit, focused by an ideal lens. and propagate to close to the focal position. Like in Fig.~\ref{fig: slit 2D converging}. Discuss the 
  wavefront evolution. May be discuss the Gouy phase?
  \item Propagate a first approximation to an undulator beam, consisting in a spherical wavefront clipped by a sort of slit with Gaussian profile.  
 \end{enumerate}
@@ -592,11 +592,17 @@ Define examples to be treated by the different codes. Compare results. Vary some
 
 \begin{figure}
 \label{fig: srw two slits}
-\caption{Propagation of a plane wavefront of photon energy 10 keV at a distance $\Delta z = 10^{-1}m$) clipped by a two corcular slits. The window size $w$=10$\mu$m, diameter of apertures is $w=0.25\mu m$ centered at $x=y=\pm 1 \mu m$, number of pixels: 2048$\times$2048. The results shown have been calculated with SRW. \todo{make a better graphic}
+\caption{Propagation of a plane wavefront of photon energy 10 keV at a distance $\Delta z = 10^{-1}m$) clipped by a two circular slits. The window size $w$=10$\mu$m, diameter of apertures is $w=0.25\mu m$ centered at $x=y=\pm 1 \mu m$, number of pixels: 2048$\times$2048. The results shown have been calculated with SRW. \todo{make a better graphic}
 }
 \includegraphics[width=0.95\textwidth]{srw_two_slits.png}
 \end{figure}
 
+\begin{figure}
+\label{fig: slit 2D converging}
+\caption{Propagation of a spherical converging wavefront ($R=-10$ cm) of photon energy 10 keV to the focal position at a distance $\Delta z = 10$ cm. The window size $w=100 \times 100 \mu m^2$, number of pixels: 2048$\times$2048. The results shown have been calculated with SRW (semianalytical propagator) and WOFRY (zoom propagator). \ingreen{aperture\_2D\_converging.py} 
+}
+\includegraphics[width=0.95\textwidth]{aperture_2D_converging.png}
+\end{figure}
 
 \section{Summary and conclusions}
 
