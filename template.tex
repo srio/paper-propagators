@@ -245,7 +245,7 @@ We are interested to study the propagation of synchrotron radiation, a coherent 
 \end{equation}
 The propagated paraxial field is then described by a approximate form of the free-space propagator, called the \textbf{Fresnel propagator}:
 \begin{equation}\label{eq: Fresnel approx of angular spectrum}
-U(x, y, \Delta z) = \frac {1}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y) e^{i k \Delta z} e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}} e^{i(k_x x + k_y y)}dk_x dk_y
+U(x, y, \Delta z) = \frac {e^{i k \Delta z}}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y)  e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}} e^{i(k_x x + k_y y)}dk_x dk_y
 \end{equation}
 It is also interesting to write the propagated field $U(x,y,\Delta z)$ as a function of the incident field $U$ instead of its Fourier transform $\widetilde{U}$ as done in Eq.~\ref{eq: Fresnel approx of angular spectrum}. We will show in the next section but we anticipate here that this equation is equivalent to: 
 \begin{equation}\label{eq: usualfresnel}
@@ -254,7 +254,7 @@ U(x,y, \Delta z) = \frac {e^{i k\Delta z }}{ i \lambda \Delta z} \int  \int U(x^
 }.
 \end{equation}
 
-It is possible to demonstrate that the angular spectrum formalism developed here and the Rayleigh-Sommerfeld diffraction integral of the first kind yield identical predictions of diffracted fields. This was done elegantly by Sherman \cite{Sherman:67} and Lalor \cite{Lalor:68}. The text books of \cite{goldmanfourier}, \cite{nieto} and \cite{paganin_book} are examples where it is described the theoretical approach solving integral theorem of Helmholz and Kirchhoff to obtain the Fresnel-Kirchhoff and the Rayleigh-Sommerfeld diffraction formulas, depending on the choice of boundary conditions and Green functions. \todo{discuss a bit more the connection with the angular spectrum and agreement between all theoretical formulations}
+It is possible to demonstrate that the angular spectrum formalism developed here and the Rayleigh-Sommerfeld diffraction integral of the first kind yield identical predictions of diffracted fields. This was done elegantly by Sherman \cite{Sherman:67} and Lalor \cite{Lalor:68}. The text books of \cite{goodmanfourier}, \cite{nieto} and \cite{paganin_book} are examples where it is described the theoretical approach solving integral theorem of Helmholz and Kirchhoff to obtain the Fresnel-Kirchhoff and the Rayleigh-Sommerfeld diffraction formulas, depending on the choice of boundary conditions and Green functions. \todo{discuss a bit more the connection with the angular spectrum and agreement between all theoretical formulations}
 
 Synchrotron radiation is always well collimated along the propagation direction, therefore the use of the approximation \ref{eq: binomial approx} is justified. In the following we will assume this is true. For non-synchrotron applications, the calculation of the propagation of non-paraxial fields is sometime needed. For that the use of higher orders of Taylor expansion may be needed, or other non-Taylor of expansions may be considered \cite{Mansuripur,Avoort}
 
@@ -448,28 +448,75 @@ This is the standard implementation of the Fresnel propagator using two FFT impl
 
 \subsection{Example of 2D rectangular and circular apertures. Comparison with analytical results.}
 
-\todo{ Discuss Control parameters: 
+The near field calculation presented in Fig.~\ref{fig: aperture_1D_analytical} is calculated now in 2D for both square and circular apertures, applying the Fresnel propagator that uses FFT (Eq.~\ref{eq: Fresnel propagation in convolution form}. The calculation results using ``SRW standard propagator'' is presented in Fig.~\ref{fig: SRW aperture}. 
+\begin{figure}
+\label{fig: SRW aperture}
+\caption{Propagation of a plane wavefront of photon energy 10 keV in the near field (propagation distance 75$\mu$m) clipped by a rectangular slit (left) and circular slit (right). Window size $w$=5$\mu$m, aperture height and width or diameter is $w$/4, number of pixels: 2048$\times$2048. The results shown have been calculated with SRW. \todo{make a better graphic}
+}
+\includegraphics[width=0.45\textwidth]{srw_rectangular_aperture.png}
+\includegraphics[width=0.45\textwidth]{srw_circular_aperture.png}
+\end{figure}
+Following the same scenario as done for 1D calculations, we want now to compare in detail the results of the different packages presented here with the analytical results. As mentioned, for the rectangular aperture the propagated field can be written as a function of the Fresnel integrals
+\begin{equation}\label{eq: fresnel integrals}
+C(x) = \int_0^x \cos(\pi t^2 / 2) dt;  ~~~~ S(x) = \int_0^x \sin(\pi t^2 / 2) dt;
+\end{equation}
+in the following form \cite{goodmanfourier}:
+\begin{equation}\label{eq: analytical rectangular slit}
+U(x, y, \Delta z)= \frac{e^{i k \Delta z}}{i} \mathcal{I}_x(x) \mathcal{I}_y(y) = \left[ \right] 
+\end{equation}
+where the function $\mathcal{I}(z)$ is: 
+\begin{align}\label{eq: analytical rectangular slit}
+\mathcal{I}(t) = & \frac{1}{\sqrt 2}[ C(2 \sqrt{2 N_{F,t}} (1 - 2 t /t_{max}) + C(2 \sqrt{2 N_{F,t}} (1 + 2 t /t_{max})] +\\
+		 & \frac{i}{\sqrt 2}[ S(2 \sqrt{2 N_{F,t}} (1 - 2 t /t_{max}) + S(2 \sqrt{2 N_{F,t}} (1 + 2 z /t_{max})]
+\end{align}
+and $N_F$ is the Fresnel number calculated for the $t$ direction: $N_{F,t} = t_{max}^2 / (\lambda \Delta z)$ ($t_{max}$ is the half-aperture in the $t$ direction, $t=(x,y)$).
+For the circular aperture, the propagated field is proportional to the integral:
+\begin{equation}\label{eq: analytical rectangular slit}
+R(z'; \Delta z) = \int_0^{N_F} \eta e^{i \pi \eta^2} J_0(2 \pi \eta r') d\eta 
+\end{equation}
+where $r'$ is a normalized radial coordinate $r' = \sqrt{(x^2 + y^2)/(\lambda \Delta z)}$.
+
+
+\todo{ Calculate zoomed part of Fig.~\ref{fig: SRW aperture} with different libraries. 
+Discuss Control parameters: 
 \begin{enumerate}
 \item Window size
 \item Pixel size
 \item Number of points (power of 2?)
 \item odd or even number of points
 \end{enumerate}
-%Some examples. Discussion of the sampling points. Phase sampling requirements. Windows. Problems (aliasing, artifacts.) 
+Look at the phase 
 }
+
+
+Let us consider a quadratic phase term $\exp(i A x^2)$. The condition for ``good sampling'' is:
+
+\begin{equation}\label{eq: xxx1}
+\frac{1}{2 \pi} \frac{\partial}{\partial x}(A x^2) = \frac{1}{2 \delta_x}
+\end{equation}
+expressenig the spatial coordinate $x_j=X_J \delta_x$ with $X_j = [-N/2,-N/2 -1, ..., 0,..., N/2[$:
+\begin{equation}\label{eq: xxx2}
+\frac{1}{2 \pi} \frac{1}{\delta_x} \frac{\partial}{\partial X}(A (X \delta_x)^2) = \frac{1}{2 \delta_x}
+\end{equation}
+\begin{equation}\label{eq:xxx3}
+A \leq \frac{\pi}{N \delta_x^2}
+\end{equation}
 
 
 \subsection{Validity conditions}
 
+It has been shown that undesampling the source cause replicas in the image (see Fig.~\ref{fig: aperture_1D}). When using FFT the situation becomes even more dangerous and also aliasing may appear. In the previous sections we descussed how a correct sample of the wavefront is essential to avoid unwanted results. The question if what is the correct sampling of the wavefront is not easy to answer on a-priori basis. Therefore, in many cases one uses iterative simulations until obtaining some ``realistic'' results (some cleam image, without replicas and with a good resolution of the physical features in the image. This practical approach may lead to errors, as sometimes it is not easy to distinguish betwen features that are physical or are numerical artifacts. In many cases, using the standard propagators, one arrives to the limit of the possibilities of the computer memory that makes impossible to increase resolution (increment the grid size) more and more.
+
 \todo{Obtain the validity conditions for good sampling of the phase. Follow the ideas and results, for example, in \cite{schmidt}, \cite{pirro} and PYNX code }  
+
 
 
 \subsection{The phase sampling problem}
 
 
-It has been shown that undesampling the source cause replicas in the image (see Fig.~\ref{fig: aperture_1D}). When using FFT the situation becomes even more dangerous and also aliasing may appear. 
 
-In the previous sections we descussed how a correct sample of the wavefront is essential to avoid unwanted results. The question if what is the correct sampling of the wavefront is not easy to answer on a-priori basis. Therefore, in many cases one uses iterative simulations until obtaining some ``realistic'' results (some cleam image, without replicas and with a good resolution of the physical features in the image. This practical approach may lead to errors, as sometimes it is not easy to distinguish betwen features that are physical or are numerical artifacts. In many cases, using the standard propagators, one arrives to the limit of the possibilities of the computer memory that makes impossible to increase resolution (increment the grid size) more and more. This is the case for very converging or divergent beams where wavefront curvature is high so the phase oscillates very rapidily. This case is often found in synchrotron beamlines which usually contain focusing elements. In these cases, the number of points required to sample correctly the phase over the whole window impractical. Moreover, the size of the source and image windows, which are equal when applying the ``standard'' propagator, appear to be very different in real life when the image is close to the focal position or waist. To deal with these cases, some tricks must be found. There are discussed in the next chapter.
+
+ This is the case for very converging or divergent beams where wavefront curvature is high so the phase oscillates very rapidily. This case is often found in synchrotron beamlines which usually contain focusing elements. In these cases, the number of points required to sample correctly the phase over the whole window impractical. Moreover, the size of the source and image windows, which are equal when applying the ``standard'' propagator, appear to be very different in real life when the image is close to the focal position or waist. To deal with these cases, some tricks must be found. There are discussed in the next chapter.
 
 
 \section{Solutions to the problem of the phase sampling. Implementation of different propagators.}
@@ -528,6 +575,7 @@ P = e^{i \frac{k}{2 \Delta z} [(1-m_x)x_1^2 + (1-m_y)y_1^2]} \\
 K = e^{-i \pi \lambda \Delta z (\frac{f_x^2}{m_x} +\frac{f_y^2}{m_y})}
 \end{equation}
 
+Note that setting one magnification $m_x=m_y=1$ one obtains the standatd Fresnel propagator (Eq.~\ref{eq: numerical convolution form of angular spectrum}), with  $P=1$, \inred{$P^G=\exp(i k \Delta z)$ where is the $(2 \pi)$??} and $K= e^{-i \pi \lambda \Delta z (f_x^2 +f_y^2)}$.
 
 \section{Discussion and examples}
 
@@ -535,12 +583,19 @@ K = e^{-i \pi \lambda \Delta z (\frac{f_x^2}{m_x} +\frac{f_y^2}{m_y})}
 Define examples to be treated by the different codes. Compare results. Vary some sampling parameters. Benchmark timing. Some ideas [to be developed]: 
 
 \begin{enumerate}
- \item Young-type experiment (plane wave, two slits). Verify numerically the Fresnel scaling theorem. COmpare with analytical results? 
+ \item Young-type experiment (plane wave, two slits, like in Fig.~\ref{fig: srw two slits}). Verify numerically the Fresnel scaling theorem. COmpare with analytical results? 
  \item Plane wave clipped by a slit, focused by an ideal lens. and propagate to close to the focal position. Discuss the 
  wavefront evolution. May be discuss the Gouy phase?
  \item Propagate a first approximation to an undulator beam, consisting in a spherical wavefront clipped by a sort of slit with Gaussian profile.  
 \end{enumerate}
 }
+
+\begin{figure}
+\label{fig: srw two slits}
+\caption{Propagation of a plane wavefront of photon energy 10 keV at a distance $\Delta z = 10^{-1}m$) clipped by a two corcular slits. The window size $w$=10$\mu$m, diameter of apertures is $w=0.25\mu m$ centered at $x=y=\pm 1 \mu m$, number of pixels: 2048$\times$2048. The results shown have been calculated with SRW. \todo{make a better graphic}
+}
+\includegraphics[width=0.95\textwidth]{srw_two_slits.png}
+\end{figure}
 
 
 \section{Summary and conclusions}
@@ -793,7 +848,7 @@ U(x_2, y_2) = \frac { e^{ik\Delta z }}{\sqrt{m_x m_y} }e^{i \frac{k}{2 \Delta z}
 e^{-i \pi \lambda \Delta z (\frac{f_x^2}{m_x} +\frac{f_y^2}{m_y})}\Big]
 \end{multline}
 
-Equation \ref{eq: final form of Fresnel zoom in convolution form} represent the propagation of a wavefront $U(x,y)$ written in a form that is suitable to be computed again with $FFT$ numerically by simply substituting the $\mathcal{F}$ operation with the discrete one ($FFT$). Moreover, the introduction of an $m$ factor gives the possibility to act on the final spatial grid in order to zoom in and out. In the next chapter a physical interpretation will be given to this result obtained with a simple mathematical manipulation.
+Equation \ref{eq: final form of Fresnel zoom in convolution form} represent the propagation of a wavefront $U(x,y)$ written in a form that is suitable to be computed again with $FFT$ numerically by simply substituting the $\mathcal{F}$ operation with the discrete one ($FFT$). Moreover, the introduction of an $m$ factor gives the possibility to act on the final spatial grid in order to zoom in and out.
 
 
 
