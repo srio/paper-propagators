@@ -429,7 +429,6 @@ The system simulated in Fig.~\ref{fig: aperture_1D} refers to  the Fresnel diffr
 \begin{figure}
 \label{fig: aperture_1D_analytical}
 \caption{Comparison of the central part of the pattern in Fig.~\ref{fig: aperture_1D} calculated with XWP and WOFRY and compared to the analytical results.
-\todo{check shift in WOFRY!}
 }
 \includegraphics[width=1\textwidth]{aperture_1D_analytical.png}
 \end{figure}
@@ -451,10 +450,12 @@ This is the standard implementation of the Fresnel propagator using two FFT impl
 The near field calculation presented in Fig.~\ref{fig: aperture_1D_analytical} is calculated now in 2D for both square and circular apertures, applying the Fresnel propagator that uses FFT (Eq.~\ref{eq: Fresnel propagation in convolution form}. The calculation results using ``SRW standard propagator'' is presented in Fig.~\ref{fig: SRW aperture}. 
 \begin{figure}
 \label{fig: SRW aperture}
-\caption{Propagation of a plane wavefront of photon energy 10 keV in the near field (propagation distance 75$\mu$m) clipped by a rectangular slit (left) and circular slit (right). Window size $w$=5$\mu$m, aperture height and width or diameter is $w$/4, number of pixels: 2048$\times$2048. The results shown have been calculated with SRW. \todo{make a better graphic}
+\caption{Propagation of a plane wavefront of photon energy 10 keV in the near field (propagation distance 75$\mu$m) clipped by a rectangular slit (left) and circular slit (right). Window size is $w$=5$\mu$m, the aperture height and width or diameter is $w$/4, number of pixels: 2048$\times$2048. Teh bottom row show the profiles at $y=0$. These calculations have been done with SRW.
 }
-\includegraphics[width=0.45\textwidth]{srw_rectangular_aperture.png}
-\includegraphics[width=0.45\textwidth]{srw_circular_aperture.png}
+\includegraphics[width=0.45\textwidth]{aperture_2D_rectangular_srw.png}
+\includegraphics[width=0.45\textwidth]{aperture_2D_circular_srw.png}
+\includegraphics[width=0.45\textwidth]{aperture_2D_rectangular_profile_srw.png}
+\includegraphics[width=0.45\textwidth]{aperture_2D_circular_profile_srw.png}
 \end{figure}
 Following the same scenario as done for 1D calculations, we want now to compare in detail the results of the different packages presented here with the analytical results. As mentioned, for the rectangular aperture the propagated field can be written as a function of the Fresnel integrals
 \begin{equation}\label{eq: fresnel integrals}
@@ -469,23 +470,31 @@ where the function $\mathcal{I}(z)$ is:
 \mathcal{I}(t) = & \frac{1}{\sqrt 2}[ C(2 \sqrt{2 N_{F,t}} (1 - 2 t /t_{max}) + C(2 \sqrt{2 N_{F,t}} (1 + 2 t /t_{max})] +\\
 		 & \frac{i}{\sqrt 2}[ S(2 \sqrt{2 N_{F,t}} (1 - 2 t /t_{max}) + S(2 \sqrt{2 N_{F,t}} (1 + 2 z /t_{max})]
 \end{align}
-and $N_F$ is the Fresnel number calculated for the $t$ direction: $N_{F,t} = t_{max}^2 / (\lambda \Delta z)$ ($t_{max}$ is the half-aperture in the $t$ direction, $t=(x,y)$).
+and $N_F$ is the Fresnel number calculated for the $t$ direction: $N_{F,t} = t_{max}^2 / (\lambda \Delta z)$, $t_{max}$ is the half-aperture in the $t$ direction, $t=(x,y)$.
 For the circular aperture, the propagated field is proportional to the integral:
 \begin{equation}\label{eq: analytical rectangular slit}
 R(z'; \Delta z) = \int_0^{N_F} \eta e^{i \pi \eta^2} J_0(2 \pi \eta r') d\eta 
 \end{equation}
-where $r'$ is a normalized radial coordinate $r' = \sqrt{(x^2 + y^2)/(\lambda \Delta z)}$.
+where $r'$ is a normalized radial coordinate $r' = \sqrt{(x^2 + y^2)/(\lambda \Delta z)}$, and $J_0$ the first-kind Bessel function of zeroth order. This integral has no analytical form but can be easily integrated numerically. Fig.~\ref{fig: 2D aperture comparison} shows a zoom of the central part of the profile at $y=0$ in Fig.~\ref{fig: SRW aperture}a calculated with different libraries. Note that the abscissas grid is not dense enough to follow in detail the oscillations. If one wants to increase the spatial resolution by a factor of 2, one has to extend the window ar the source by a factor of 2 in both directions. To keep the same pixel size at the source, one must consequently increase also by a factor of 2 the number of points. The result is in Fig.~\ref{fig: SRW aperture}b. 
+\begin{figure}
+\label{fig: SRW aperture}
+\caption{The central part of the diffraction pattern profiles at $y=0$ for a rectangular aperture (a) and circular aperture (b) in Fig.~\ref{fig: SRW aperture} with 4096$\times$4096 pixels. Results of different software packages are compared with the analytical results.\todo{calculate with pyNX and XWP}
+}
+a)
+\includegraphics[width=0.45\textwidth]{aperture_2D_rectangular_profile_comparison.png}
+b)
+\includegraphics[width=0.45\textwidth]{aperture_2D_circular_profile_comparison.png}
+\end{figure}
 
 
-\todo{ Calculate zoomed part of Fig.~\ref{fig: SRW aperture} with different libraries. 
-Discuss Control parameters: 
+\todo{ Look at the phase. Discuss Control parameters: 
 \begin{enumerate}
 \item Window size
 \item Pixel size
 \item Number of points (power of 2?)
 \item odd or even number of points
 \end{enumerate}
-Look at the phase 
+ 
 }
 
 
@@ -499,16 +508,56 @@ It has been shown that undesampling the source cause replicas in the image (see 
 
 Let us consider a quadratic phase term $\exp(i A x^2)$. The condition for ``good sampling'' is:
 
-\begin{equation}\label{eq: xxx1}
+\begin{equation}
 \frac{1}{2 \pi} \frac{\partial}{\partial x}(A x^2) = \frac{1}{2 \delta_x}
 \end{equation}
 expressing the spatial coordinate $x_j=X_J \delta_x$ with $X_j = [-N/2,-N/2 -1, ..., 0,..., N/2[$:
-\begin{equation}\label{eq: xxx2}
+\begin{equation}
 \frac{1}{2 \pi} \frac{1}{\delta_x} \frac{\partial}{\partial X}(A (X \delta_x)^2) = \frac{1}{2 \delta_x}
 \end{equation}
-\begin{equation}\label{eq:xxx3}
+\begin{equation}\label{eq: good sampling condition}
 A \leq \frac{\pi}{N \delta_x^2}
 \end{equation}
+
+\begin{figure}
+\label{fig: phase sampling}
+\caption{Illustration of a good sampling (a) and bad sampling (b) of the real part of the function $f(x)=exp(i A x^2)$ with (a) $A$=20$< \pi / (N \delta_x^2)$ and (b) $A$=30$ > \pi / (N \delta_x^2)$ with $N=10$ and $\pi / (N \delta_x^2)$=25.4. 
+}
+a)
+\includegraphics[width=0.45\textwidth]{sample_quadratic_phase_A20.png}
+b)
+\includegraphics[width=0.45\textwidth]{sample_quadratic_phase_A30.png}
+\end{figure}
+
+The condition in Eq.~\ref{eq: good sampling condition} should be applied to all quadratic exponential phases in the propagators. For the zoom propagator, these conditions can be expressed as a function of the propagation distance $\Delta z$ \inred{Reference pyNX documentation}:
+\begin{equation}\label{eq: good sampling zoom pynx}
+max\left\{ \frac{|m-1| N \delta_x^2}{\lambda}; \left| \frac{m-1}{m} \right|\frac{N \delta_x^2}{\lambda} \right\} < \Delta z < \frac{m N \delta_x^2}{\lambda}
+\end{equation}
+For the Fresnel propagators we can use these expressions and set $m=1$ to they reduce to the unique condition: 
+\begin{equation}\label{eq: good sampling fresnel}
+\Delta z < \frac{N \delta_x^2}{\lambda}
+\end{equation}
+
+The condition in Eq.~\ref{eq: good sampling condition} can also be expressed for the zoom propagator as a function of the source pixel size $\delta_x$ and the image pixel size $\delta_{x'}=m \delta_x$ which gives the following conditions (see Ref.~\cite{pirro}):
+\begin{equation}\label{eq: good sampling pirro condition one}
+\delta_{x'} > \frac{\lambda \Delta z}{N \delta_x}
+\end{equation}
+\begin{equation}\label{eq: good sampling pirro condition two}
+\left(1+\frac{\Delta z}{R}\right) \delta_x - \left( 1 + \frac{\Delta z}{R}\right) \delta_x + \frac{\lambda \Delta z}{\delta_x N}
+\end{equation}
+where $R$ is the dominant curvature of the source wavefront (positive for a divergent beam). To illustrate this condition we have explored the parameter space, in this case ($\delta_x,\delta_{x'}$ and simulate the propagation of a divergent beam. \todo{comment results}
+
+\begin{figure}
+\label{fig: comparison validity conditions R=28.3}
+\caption{
+Parameters map comparing the theoretical condition of propagation (lines) that define the validity region and a figure of merit obtained comparing a simulation with the theoretical result (false colour map). Equation \ref{eq: good sampling pirro condition one} refers to
+"condition $1$" of the label (hyperbola), equation \ref{eq: good sampling pirro condition two} to "condition $2$" (straight lines). Spherical wavefronts of $\lambda=0.73 \AA$ with radius of curvature $R = 28.3$ $m$ with a Gaussian intensity profile are propagate for a distance of $23.4$ $m$. The abscissas and ordinates refer to the source ($w_1=N \delta_x$) and image window size $w_2 = N \delta_{x'}$. Left plot is for 1024$\times$1024 pixels and right plot 2048$\times$2048. 
+%Figure \ref{1024 R=28.3} refers to the test done by sampling with $1024$ point while figure \ref{2048 R=28.3} to one done sampling with $2048$ points. Colors represents logarithmic values: blue for 'good' results, yellow for 'bad'.
+%The three red letters in fig \ref{1024 R=28.3} are used in the following figures to show the results of the propagations corresponding to those zones in the map.
+}
+\includegraphics[width=0.45\textwidth]{npixel1024-prop_dist23-R28-Finf_con_zone.png}
+\includegraphics[width=0.45\textwidth]{npixel2048-prop_dist23-R28-Finf.png}
+\end{figure}
 
 
 \subsection{The phase sampling problem}
