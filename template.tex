@@ -451,7 +451,7 @@ This is the standard implementation of the Fresnel propagator using two FFT impl
 The near field calculation presented in Fig.~\ref{fig: aperture_1D_analytical} is calculated now in 2D for both square and circular apertures, applying the Fresnel propagator that uses FFT (Eq.~\ref{eq: Fresnel propagation in convolution form}. The calculation results using ``SRW standard propagator'' is presented in Fig.~\ref{fig: SRW aperture}. 
 \begin{figure}
 \label{fig: SRW aperture}
-\caption{Propagation of a plane wavefront of photon energy 10 keV in the near field (propagation distance 75$\mu$m) clipped by a rectangular slit (left) and circular slit (right). Window size is $w$=5$\mu$m, the aperture height and width or diameter is $w$/4, number of pixels: 2048$\times$2048. The bottom row show the profiles at $y=0$. These calculations have been done with SRW.
+\caption{Propagation of a plane wavefront of photon energy 10 keV in the near field (propagation distance 75$\mu$m) clipped by a rectangular slit (left) and circular slit (right). Window size is $w$=5$\mu$m, the aperture height and width or diameter is $w$/4, number of pixels: 2048$\times$2048. The bottom row show the profiles at $y=0$. These calculations have been done with SRW. \todo{bigger graphics?}
 }
 \includegraphics[width=0.45\textwidth]{aperture_2D_rectangular_srw.png}
 \includegraphics[width=0.45\textwidth]{aperture_2D_circular_srw.png}
@@ -637,6 +637,7 @@ Define examples to be treated by the different codes. Compare results. Vary some
  \item Plane wave clipped by a slit, focused by an ideal lens. and propagate to close to the focal position. Like in Fig.~\ref{fig: slit 2D converging}. Discuss the 
  wavefront evolution. May be discuss the Gouy phase?
  \item Propagate a first approximation to an undulator beam, consisting in a spherical wavefront clipped by a sort of slit with Gaussian profile.  
+\item compare execution times of different libraries for a given example. Discuss implementations and tools. 
 \end{enumerate}
 }
 
