@@ -150,8 +150,6 @@ In this section the basics of classical electrodynamics theory of diffraction in
 
 Once the time-dependent vacuum wave equation for scalar field is obtained, the field is described as a superposition of monochromatic waves, called spectral decomposition. Each monochromatic component of the decomposition of the electromagnetic field obeys the Helmholtz equation, a time-independent form of the free space wave equation. We will focus our attention on the study of diffraction of waves obeying the Helmholtz equation in free-space, and in particular on the case of Fresnel diffraction. All this arguments will be discussed based on a well-established approach \cite{paganin_book} using an angular spectrum formulation, thus representing the electromagnetic field as a superposition of monochromatic plane waves with different spatial frequency and direction of propagation. 
 
-\subsection{The Helmholz equation}
-
 We start from Maxwell wave equations:
 \begin{equation}
 \label{eq: Maxwell equations}
@@ -164,46 +162,48 @@ We start from Maxwell wave equations:
 \bm{\nabla} \cdot \bm{\mathcal{E}}    &= 0 & \qquad &\text{Coulomb's law}
 \end{aligned}
 \end{equation}
-where $\mathcal{B}$ is the magnetic induction, $\mathcal{E}$ is the electric field, $\mu_0$ and $\epsilon_0$ are the magnetic and the electric permittivity of free-space, respectively, $\nabla \times$ is the curl operator and $\nabla \cdot$ is the divergence operator. The vacuum wave equation that governs the spatial and temporal evolution of the electromagnetic field in free space will be derived. Note that $\mathcal{E}=\mathcal{E}(x,y,z,t)$ and $\mathcal{B}=\mathcal{B}(x,y,z,t)$ are functions of four variables. To proceed further into obtaining the free-space wave equation for the electric field the following relations comes in handy:
-\begin{equation}\label{eq: vectorial identity}
-	\nabla \times [\nabla \times \bm{f}] = \nabla[\nabla \cdot \bm{f}]-\nabla^2\bm{f}
-\end{equation}
-with $\bm{f}=\bm{f(x,y,z)}$ a vector field. Applying $\nabla \times$ to the second of equations \ref{eq: Maxwell equations} and the relation just mentioned above:
+where $\mathcal{B}$ is the magnetic induction, $\mathcal{E}$ is the electric field, $\mu_0$ and $\epsilon_0$ are the magnetic and the electric permittivity of free-space, respectively, $\nabla \times$ is the curl operator and $\nabla \cdot$ is the divergence operator. The vacuum wave equation that governs the spatial and temporal evolution of the electromagnetic field in free space will be derived. Note that $\mathcal{E}=\mathcal{E}(x,y,z,t)$ and $\mathcal{B}=\mathcal{B}(x,y,z,t)$ are functions of four variables. 
+% 
+% To proceed further into obtaining the free-space wave equation for the electric field the following relations comes in handy:
+% \begin{equation}\label{eq: vectorial identity}
+% 	\nabla \times [\nabla \times \bm{f}] = \nabla[\nabla \cdot \bm{f}]-\nabla^2\bm{f}
+% \end{equation}
+% with $\bm{f}=\bm{f(x,y,z)}$ a vector field. Applying $\nabla \times$ to the second of equations \ref{eq: Maxwell equations} and the relation just mentioned above:
+% 
+% \begin{equation}\label{eq: modified Ampere law}
+% 	\nabla[\nabla\cdot\bm{\mathcal{E}}]=\nabla^2\bm{\mathcal{E}}+\frac{\partial}{\partial t}\bm{B}
+% \end{equation} 
+% Because the space we consider is free of charge, the first term of equation \ref{eq: modified Ampere law} vanishes. By rearranging terms and using Amp\`{e}re's law (cf. equation \ref{eq: Maxwell equations}), we obtain
 
-\begin{equation}\label{eq: modified Ampere law}
-	\nabla[\nabla\cdot\bm{\mathcal{E}}]=\nabla^2\bm{\mathcal{E}}+\frac{\partial}{\partial t}\bm{B}
-\end{equation} 
-Because the space we consider is free of charge, the first term of equation \ref{eq: modified Ampere law} vanishes. By rearranging terms and using Amp\`{e}re's law (cf. equation \ref{eq: Maxwell equations}), we obtain
+With some manipulations one can arrive to the Wave equation
 \begin{equation}\label{eq: d'Alembert electric field}
-	\Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \bm{\mathcal{E}} = \bm{0}
+	\Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \vec{\mathcal{E}} = \bm{0}
 \end{equation}
-which is the d'Alembert wave equation for electric field. Applying the same approach yields the vacuum field equation for the magnetic induction:
-\begin{equation}\label{eq: d'Alembert magnetic field}
-\Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \bm{\mathcal{B}} = \bm{0}
-\end{equation}
-Note that since the vector Laplacian acts on the individual field components in the same way and keeping them uncoupled, the above vector equations, when projected onto $x$, $y$, or $z$ direction, split into 6 identical uncoupled equations, one for each field component:
-\begin{align}
-\Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \mathcal{E}_x(x,y,z,t) = 0\nonumber\\
-\Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \mathcal{E}_y(x,y,z,t) = 0\nonumber \\ 
-\Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \mathcal{E}_z(x,y,z,t) = 0
-\end{align}
+which is the d'Alembert wave equation for electric field. 
+The same equation holds for the magnetic induction (replacing $\mathcal{E} \longleftrightarrow \mathcal{B}$). 
+% Applying the same approach yields the vacuum field equation for the magnetic induction:
+% \begin{equation}\label{eq: d'Alembert magnetic field}
+% \Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \bm{\mathcal{B}} = \bm{0}
+% \end{equation}
+Note that since the vector Laplacian acts on the individual field components in the same way and keeping them uncoupled, the above vector equations, when projected onto $x$, $y$, or $z$ direction, split into 6 identical uncoupled equations, one for each field component.
+% \begin{align}
+% \Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \mathcal{E}_x(x,y,z,t) = 0\nonumber\\
+% \Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \mathcal{E}_y(x,y,z,t) = 0\nonumber \\ 
+% \Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \mathcal{E}_z(x,y,z,t) = 0
+% \end{align}
 This is known as the scalar wave equation of
 \begin{equation}\label{eq: d'Alembert scalar field}
 \Big(\frac{1}{c^2} \frac{\partial^2}{\partial t^2}-\nabla^2\Big) U(x,y,z,t) = 0
 \end{equation}
-where the scalar $U(x,y,z,t)$ stands for any of the three component of the vector fields $\bm{\mathcal{E}}$ and $\bm{\mathcal{B}}$ and $c= \frac{1}{\sqrt{\mu_0 \epsilon_0}}$ is the speed of light in vacuum. This equations show that the electric and magnetic field that compose light are traveling wave fields. If we consider one propagation direction $z$, the electric field reduces to two components in direction perpendicular to $z$: $\mathcal{E}_\sigma(x,y,z=z_0,t)$ $\mathcal{E}_\pi(x,y,z=z_0,t)$. $\mathcal{E}_\sigma$ and $\mathcal{E}_\pi$ describe the two components of polarized light. If we ignore polarization, we can drop the vectorial description and consider $\mathcal{E}(x,y,z=z_0,t)$ as a scalar so the description of the electromagnetic field is now done with a scalar theory, which means that the electromagnetic disturbance is not described by two vectors, the electric field and the magnetic field, but by a single scalar field which is a function of position and time. Because the field functions are linear, solutions with different frequencies can be added to form wave-packet solutions. For this reason, fields with harmonic time dependence $e^{-i\omega t}$ are those studied in the following chapters. When substituting such field into equation \ref{eq: d'Alembert scalar field}, the result is
-\begin{equation}\label{eq: d'Alembert for harmonic field}
-\Big[\nabla^2 + \Big(\frac{\omega}{c}\Big)^2\Big] U(x,y,z,t) = 0.
-\end{equation}
-Letting $k= \frac{2\pi}{\lambda}$ be the wavenumber corresponding to a wavelength $\lambda$, $\omega = 2\pi f$ the angular frequency of the radiation corresponding to frequency $f$, and $c=\lambda f$ the speed of light in vacuum, the previous equation becomes
+where the scalar $U(x,y,z,t)$ stands for any of the three component of the vector fields $\vec{\mathcal{E}}$ and $\vec{\mathcal{B}}$ and $c= 1/\sqrt{\mu_0 \epsilon_0}$ is the speed of light in vacuum. This equations show that the electric and magnetic field that compose light are traveling wave fields. If we consider one propagation direction $z$, the electric field reduces to two components in direction perpendicular to $z$: $\mathcal{E}_\sigma(x,y,z=z_0,t)$ $\mathcal{E}_\pi(x,y,z=z_0,t)$. $\mathcal{E}_\sigma$ and $\mathcal{E}_\pi$ describe the two components of polarized light. If we ignore polarization, we can drop the vectorial description and consider $\mathcal{E}(x,y,z=z_0,t)$ as a scalar so the description of the electromagnetic field is now done with a scalar theory, which means that the electromagnetic disturbance is not described by two vectors, the electric field and the magnetic field, but by a single scalar field which is a function of position and time. Because the field functions are linear, solutions with different frequencies can be added to form wave-packet solutions. For this reason, fields with harmonic time dependence $e^{-i\omega t}$ are those studied in the following chapters. When substituting such field into equation \ref{eq: d'Alembert scalar field}, the result is
 \begin{equation}\label{eq: Helmholtz equation}
 	\big[\nabla^2 + k^2\big]U(x,y,z)=0.
 \end{equation}
-This is the Helmholtz equation, and by the reasons described before, only considering time harmonic fields, the time dependence can be factorized eliminated from the equation. In fact, the time solution for such equation is always the same while the spatial solution depends on the initial and boundary conditions. From here on, the time dependency of the field $U(x,y,z)$ is not written. We then work with a complex scalar function that obeys the Helmholtz equation.
+where $k= (2\pi)/\lambda$ is wavenumber corresponding to a wavelength $\lambda$, $\omega$ is the angular frequency of the radiation and $c=\lambda f$ the velocity of light in vacuum. This is the Helmholtz equation. The time dependence in $U$ can be factorized. In fact, the time solution for such equation is always the same while the spatial solution depends on the initial and boundary conditions. From here on, the time dependency of the field $U$ is not written. We then work with a complex scalar function that obeys the Helmholtz equation.
 
 \subsection{Angular spectrum method}
 
-When the optical source is not a simple wave (\emph{e.g.}, plane or spherical), solving the scalar Helmholtz equation is not trivial so we need to use more sophisticated mathematical tools, like the Green's theorem, with clever use of the boundary conditions. However, we follow here another more intuitive approach called the angular spectrum method.  Exact and approximate methods for solving diffraction problems based on the Helmholtz equation will be shown. It has the advantage of being more intuitive and free from some of the subtle difficulties of boundary conditions encountered when solving the Helmholtz equation exploiting the Green's theorem while (cf. Goodman \cite{goodmanfourier}).
+Solving the scalar Helmholtz equation for general boundary conditions is not trivial and need sophisticated mathematical tools, like the Green's theorem, with clever use of the boundary conditions. However, we follow here another more intuitive approach called the angular spectrum method.  Exact and approximate methods for solving diffraction problems based on the Helmholtz equation will be shown. It has the advantage of being more intuitive and free from some of the subtle difficulties of boundary conditions encountered when solving the Helmholtz equation exploiting the Green's theorem while (cf. Goodman \cite{goodmanfourier}).
 
 Consider the case of a source that emits only in the half-space with a positive spatial coordinate $z$ that describes its position in a Cartesian system.
 %The space is supposed to be free of electric charges and a monochromatic wave only is considered to propagate forward with respect to the z coordinate. 
@@ -257,6 +257,29 @@ U(x,y, \Delta z) = \frac {e^{i k\Delta z }}{ i \lambda \Delta z} \int  \int U(x^
 It is possible to demonstrate that the angular spectrum formalism developed here and the Rayleigh-Sommerfeld diffraction integral of the first kind yield identical predictions of diffracted fields. This was done elegantly by Sherman \cite{Sherman:67} and Lalor \cite{Lalor:68}. The text books of \cite{goodmanfourier}, \cite{nieto} and \cite{paganin_book} are examples where it is described the theoretical approach solving integral theorem of Helmholz and Kirchhoff to obtain the Fresnel-Kirchhoff and the Rayleigh-Sommerfeld diffraction formulas, depending on the choice of boundary conditions and Green functions. \todo{discuss a bit more the connection with the angular spectrum and agreement between all theoretical formulations}
 
 Synchrotron radiation is always well collimated along the propagation direction, therefore the use of the approximation \ref{eq: binomial approx} is justified. In the following we will assume this is true. For non-synchrotron applications, the calculation of the propagation of non-paraxial fields is sometime needed. For that the use of higher orders of Taylor expansion may be needed, or other non-Taylor of expansions may be considered \cite{Mansuripur,Avoort}
+
+\subsection{Example: Fresnel propagation of a plane wave trough an aperture}
+The propagated field given by the Fresnel diffraction equation \ref{eq: Fresnel approx of angular spectrum} can be solved analytically in some particular cases only. We summarize here following \cite{goodmanfourier} the results of diffraction of a plane wave by a 2D slit (square and circular), as they are used in the following sections. 
+
+For the rectangular aperture the propagated field can be written as a function of the Fresnel integrals
+\begin{equation}\label{eq: fresnel integrals}
+C(x) = \int_0^x \cos(\pi t^2 / 2) dt;  ~~~~ S(x) = \int_0^x \sin(\pi t^2 / 2) dt;
+\end{equation}
+in the following form \cite{goodmanfourier}:
+\begin{equation}\label{eq: analytical rectangular slit}
+U(x, y, \Delta z)= \frac{e^{i k \Delta z}}{i} \mathcal{I}_x(x) \mathcal{I}_y(y) = \left[ \right] 
+\end{equation}
+where the function $\mathcal{I}(t)$ is: 
+\begin{align}\label{eq: analytical rectangular slit}
+\mathcal{I}(t) = & \frac{1}{\sqrt 2}[ C(2 \sqrt{2 N_{F,t}} (1 - 2 t /t_{max}) + C(2 \sqrt{2 N_{F,t}} (1 + 2 t /t_{max})] +\\
+		 & \frac{i}{\sqrt 2}[ S(2 \sqrt{2 N_{F,t}} (1 - 2 t /t_{max}) + S(2 \sqrt{2 N_{F,t}} (1 + 2 z /t_{max})]
+\end{align}
+and $N_F$ is the Fresnel number calculated for the $t$ direction: $N_{F,t} = t_{max}^2 / (\lambda \Delta z)$, $t_{max}$ is the half-aperture in the $t$ direction, $t=(x,y)$.
+For the circular aperture, the propagated field is proportional to the integral:
+\begin{equation}\label{eq: analytical rectangular slit}
+R(z'; \Delta z) = \int_0^{N_F} \eta e^{i \pi \eta^2} J_0(2 \pi \eta r') d\eta 
+\end{equation}
+where $r'$ is a normalized radial coordinate $r' = \sqrt{(x^2 + y^2)/(\lambda \Delta z)}$, and $J_0$ the first-kind Bessel function of zeroth order. This integral has no analytical form but can be easily integrated numerically. 
 
 
 %
@@ -332,13 +355,7 @@ In summary, to perform the calculation of propagation one can use the general pr
 \label{eq: Fresnel propagation in convolution form}
 U(x, y, \Delta) = P^G \mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}.
 \end{equation}
-There are three necessary steps: 
-\begin{enumerate}
-	\item Fourier transform the unpropagated field: $\mathcal{F}\big\{U(x,y,0)\big\}$
-	\item Multiply it for the free-space Fresnel propagator $ K=e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}}$
-	\item Inverse-Fourier transform with respect to $k_x$ and $k_y$ the result of step $(2)$: $\mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}$
-	\item apply a global phase $P^G = {e^{ik\Delta z}}/(2 \pi)$ to the result \todo{check $2 \pi$}
-\end{enumerate}
+There are three necessary steps: 1) Fourier transform the unpropagated field: $\mathcal{F}\big\{U(x,y,0)\big\}$, 2) Multiply it for the free-space Fresnel propagator $ K=\exp(-i \Delta z (k_x^2 + k_y^2) / (2k))$, 3) Inverse-Fourier transform this result with respect to $k_x$ and $k_y$:  $\mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}$, and 4) apply a global phase $P^G = {e^{ik\Delta z}}/(2 \pi)$ to the result \todo{check $2 \pi$}.
 
 %The result is:
 %\begin{equation}\label{eq: schematic form of angular spectrum Fresnel}
@@ -347,10 +364,10 @@ There are three necessary steps:
 
 
 
-\subsection{Fractional Fourier Transform and its application to Optics}
+\subsection{Linear Canonical Transforms, Fractional Fourier Transform and its application to Optics}
 
-\todo{SAJID: Write a small introduction of the Fractional Fourier Transform. Explain why it is important for Optics.}
-\todo{VINCENT: Review it!}
+\todo{SAJID: Write a SMALL introduction of the Fractional Fourier Transform. Explain why it is important for Optics.}
+\todo{VINCENT/DAVID: Review it!}
 
 
 \section{Software packages}
@@ -370,7 +387,7 @@ WOFRY \todo{complete and check: LUCA} \cite{Wofrygit} (Wave Optics FRamework in 
 This paper concerns only the methods, algorithms and implementation of free-space propagators in these codes. Certainly the functionality of each code goes beyond of the simple propagation in vacuum and we refer to the references and documentation of each code for further details. Moreover, similar methodologies can be found in several other software tools (e.g., WISE \cite{wise}, RAY \inred{REF}, McXtrace \cite{mcxtrace}, ...) and also in the calculations presented in several publications \inred{Osterhoff, ...}.
 
 
-\section{Non-Fourier propagator implementations.}
+\section{Non-Fourier Fresnel propagator implementation}
 \label{ch: non-fourier-propagators}
 
 In the previous section an exact solution to the boundary-value problem of propagation of a wavefront between two parallel planes in free space in the paraxial approximation was found. At this point, it is necessary to recast the expression in a way that let us solve it numerically. In Subsection~\ref{subch: discretization} we discuss the discrete sampling of the wavefronts and the expressions of the Fresnel propagator as finite sums in order to be implemented in a computer. We illustrate the implementation of a simple Fresnel propagator in 1D and apply it to compute the scholar case of an apertire illuminated by a plane wave. We use this example to illustrate the artifacts that one may obtain depending on how the wavefronts are discretized.
@@ -434,7 +451,7 @@ The system simulated in Fig.~\ref{fig: aperture_1D} refers to  the Fresnel diffr
 \end{figure}
 
 
-\section{Fourier propagator implementations.}
+\section{Fourier Fresnel propagator implementation}
 \label{ch: fourier-propagators}
 
 The Fast Fourier Transform (FFT) algorithm (see, e.g., Ref.~\cite{10.2307/2003354}) is a clever implementation of the discrete Fourier transform in which the number of operations is greately reduced, from $\propto N^2$ that one obtain from the simple integral discretization to $\propto N \log_2 N$, where $N$ is the number of points of the array to be Fourier transform. The availability of performing libraries to compute FFT has revolutionized the numerical methods since its discovery in mid 60's. The importance is such that it helped to develop the ``Fourier Optics''. This has immediate application for calculating the propagator integral transforms. 
@@ -458,25 +475,7 @@ The near field calculation presented in Fig.~\ref{fig: aperture_1D_analytical} i
 \includegraphics[width=0.45\textwidth]{aperture_2D_rectangular_profile_srw.png}
 \includegraphics[width=0.45\textwidth]{aperture_2D_circular_profile_srw.png}
 \end{figure}
-Following the same scenario as done for 1D calculations, we want now to compare in detail the results of the different packages presented here with the analytical results. As mentioned, for the rectangular aperture the propagated field can be written as a function of the Fresnel integrals
-\begin{equation}\label{eq: fresnel integrals}
-C(x) = \int_0^x \cos(\pi t^2 / 2) dt;  ~~~~ S(x) = \int_0^x \sin(\pi t^2 / 2) dt;
-\end{equation}
-in the following form \cite{goodmanfourier}:
-\begin{equation}\label{eq: analytical rectangular slit}
-U(x, y, \Delta z)= \frac{e^{i k \Delta z}}{i} \mathcal{I}_x(x) \mathcal{I}_y(y) = \left[ \right] 
-\end{equation}
-where the function $\mathcal{I}(t)$ is: 
-\begin{align}\label{eq: analytical rectangular slit}
-\mathcal{I}(t) = & \frac{1}{\sqrt 2}[ C(2 \sqrt{2 N_{F,t}} (1 - 2 t /t_{max}) + C(2 \sqrt{2 N_{F,t}} (1 + 2 t /t_{max})] +\\
-		 & \frac{i}{\sqrt 2}[ S(2 \sqrt{2 N_{F,t}} (1 - 2 t /t_{max}) + S(2 \sqrt{2 N_{F,t}} (1 + 2 z /t_{max})]
-\end{align}
-and $N_F$ is the Fresnel number calculated for the $t$ direction: $N_{F,t} = t_{max}^2 / (\lambda \Delta z)$, $t_{max}$ is the half-aperture in the $t$ direction, $t=(x,y)$.
-For the circular aperture, the propagated field is proportional to the integral:
-\begin{equation}\label{eq: analytical rectangular slit}
-R(z'; \Delta z) = \int_0^{N_F} \eta e^{i \pi \eta^2} J_0(2 \pi \eta r') d\eta 
-\end{equation}
-where $r'$ is a normalized radial coordinate $r' = \sqrt{(x^2 + y^2)/(\lambda \Delta z)}$, and $J_0$ the first-kind Bessel function of zeroth order. This integral has no analytical form but can be easily integrated numerically. Fig.~\ref{fig: 2D aperture comparison} shows a zoom of the central part of the profile at $y=0$ in Fig.~\ref{fig: SRW aperture} calculated with different libraries. 
+Following the same scenario as done for 1D calculations, we want now to compare in detail the results of the different packages presented here with the analytical results. Fig.~\ref{fig: 2D aperture comparison} shows a zoom of the central part of the profile at $y=0$ in Fig.~\ref{fig: SRW aperture} calculated with different libraries. 
 \begin{figure}
 \label{fig: SRW aperture comparison}
 \caption{The central part of the diffraction pattern profiles at $y=0$ for a rectangular aperture (a) and circular aperture (b) in Fig.~\ref{fig: SRW aperture} with 4096$\times$4096 pixels. Results of different software packages are compared with the analytical results.\todo{calculate with pyNX and XWP}
@@ -498,79 +497,12 @@ b)
  
 }
 
+\todo{discuss one FFT Fresnel propagator implementation and Fraunhofer implementation???}
 
-
-\subsection{Validity conditions}
-
-It has been shown that undesampling the source cause replicas in the image (see Fig.~\ref{fig: aperture_1D}). When using FFT the situation becomes even more dangerous and also aliasing may appear. In the previous sections we descussed how a correct sample of the wavefront is essential to avoid unwanted results. The question if what is the correct sampling of the wavefront is not easy to answer on a-priori basis. Therefore, in many cases one uses iterative simulations until obtaining some ``realistic'' results (some cleam image, without replicas and with a good resolution of the physical features in the image. This practical approach may lead to errors, as sometimes it is not easy to distinguish betwen features that are physical or are numerical artifacts. In many cases, using the standard propagators, one arrives to the limit of the possibilities of the computer memory that makes impossible to increase resolution (increment the grid size) more and more.
-
-\todo{Obtain the validity conditions for good sampling of the phase. Follow the ideas and results, for example, in \cite{schmidt}, \cite{pirro} and PYNX code }  
-
-
-Let us consider a quadratic phase term $\exp(i A x^2)$. The condition for ``good sampling'' is:
-
-\begin{equation}
-\frac{1}{2 \pi} \frac{\partial}{\partial x}(A x^2) = \frac{1}{2 \delta_x}
-\end{equation}
-expressing the spatial coordinate $x_j=X_J \delta_x$ with $X_j = [-N/2,-N/2 -1, ..., 0,..., N/2[$:
-\begin{equation}
-\frac{1}{2 \pi} \frac{1}{\delta_x} \frac{\partial}{\partial X}(A (X \delta_x)^2) = \frac{1}{2 \delta_x}
-\end{equation}
-\begin{equation}\label{eq: good sampling condition}
-A \leq \frac{\pi}{N \delta_x^2}
-\end{equation}
-
-\begin{figure}
-\label{fig: phase sampling}
-\caption{Illustration of a good sampling (a) and bad sampling (b) of the real part of the function $f(x)=exp(i A x^2)$ with (a) $A$=20$< \pi / (N \delta_x^2)$ and (b) $A$=30$ > \pi / (N \delta_x^2)$ with $N=10$ and $\pi / (N \delta_x^2)$=25.4. 
-}
-a)
-\includegraphics[width=0.45\textwidth]{sample_quadratic_phase_A20.png}
-b)
-\includegraphics[width=0.45\textwidth]{sample_quadratic_phase_A30.png}
-\end{figure}
-
-The condition in Eq.~\ref{eq: good sampling condition} should be applied to all quadratic exponential phases in the propagators. For the zoom propagator, these conditions can be expressed as a function of the propagation distance $\Delta z$ \inred{Reference pyNX documentation}:
-\begin{equation}\label{eq: good sampling zoom pynx}
-max\left\{ \frac{|m-1| N \delta_x^2}{\lambda}; \left| \frac{m-1}{m} \right|\frac{N \delta_x^2}{\lambda} \right\} < \Delta z < \frac{m N \delta_x^2}{\lambda}
-\end{equation}
-For the Fresnel propagators we can use these expressions and set $m=1$ to they reduce to the unique condition: 
-\begin{equation}\label{eq: good sampling fresnel}
-\Delta z < \frac{N \delta_x^2}{\lambda}
-\end{equation}
-
-The condition in Eq.~\ref{eq: good sampling condition} can also be expressed for the zoom propagator as a function of the source pixel size $\delta_x$ and the image pixel size $\delta_{x'}=m \delta_x$ which gives the following conditions (see Ref.~\cite{pirro}):
-\begin{equation}\label{eq: good sampling pirro condition one}
-\delta_{x'} > \frac{\lambda \Delta z}{N \delta_x}
-\end{equation}
-\begin{equation}\label{eq: good sampling pirro condition two}
-\left(1+\frac{\Delta z}{R}\right) \delta_x - \left( 1 + \frac{\Delta z}{R}\right) \delta_x + \frac{\lambda \Delta z}{\delta_x N}
-\end{equation}
-where $R$ is the dominant curvature of the source wavefront (positive for a divergent beam). To illustrate this condition we have explored the parameter space, in this case ($\delta_x,\delta_{x'}$ and simulate the propagation of a divergent beam. \todo{comment results}
-
-\begin{figure}
-\label{fig: comparison validity conditions R=28.3}
-\caption{
-Parameters map comparing the theoretical condition of propagation (lines) that define the validity region and a figure of merit obtained comparing a simulation with the theoretical result (false colour map). Equation \ref{eq: good sampling pirro condition one} refers to
-"condition $1$" of the label (hyperbola), equation \ref{eq: good sampling pirro condition two} to "condition $2$" (straight lines). Spherical wavefronts of $\lambda=0.73 \AA$ with radius of curvature $R = 28.3$ $m$ with a Gaussian intensity profile are propagate for a distance of $23.4$ $m$. The abscissas and ordinates refer to the source ($w_1=N \delta_x$) and image window size $w_2 = N \delta_{x'}$. Left plot is for 1024$\times$1024 pixels and right plot 2048$\times$2048. 
-%Figure \ref{1024 R=28.3} refers to the test done by sampling with $1024$ point while figure \ref{2048 R=28.3} to one done sampling with $2048$ points. Colors represents logarithmic values: blue for 'good' results, yellow for 'bad'.
-%The three red letters in fig \ref{1024 R=28.3} are used in the following figures to show the results of the propagations corresponding to those zones in the map.
-}
-\includegraphics[width=0.45\textwidth]{npixel1024-prop_dist23-R28-Finf_con_zone.png}
-\includegraphics[width=0.45\textwidth]{npixel2048-prop_dist23-R28-Finf.png}
-\end{figure}
-
-
-\subsection{The phase sampling problem}
-
-
-
-
- This is the case for very converging or divergent beams where wavefront curvature is high so the phase oscillates very rapidily. This case is often found in synchrotron beamlines which usually contain focusing elements. In these cases, the number of points required to sample correctly the phase over the whole window impractical. Moreover, the size of the source and image windows, which are equal when applying the ``standard'' propagator, appear to be very different in real life when the image is close to the focal position or waist. To deal with these cases, some tricks must be found. There are discussed in the next chapter.
-
-
-\section{Solutions to the problem of the phase sampling. Implementation of different propagators.}
+\section{Other propagators for diffraction by convergent and divergent wavefronts}
 \label{ch: spherical fronts}
+
+This is the case for very converging or divergent beams where wavefront curvature is high so the phase oscillates very rapidily. This case is often found in synchrotron beamlines which usually contain focusing elements. In these cases, the number of points required to sample correctly the phase over the whole window impractical. Moreover, the size of the source and image windows, which are equal when applying the ``standard'' propagator, appear to be very different in real life when the image is close to the focal position or waist. To deal with these cases, some tricks must be found. There are discussed in the next chapter.
 
 \subsection{The Fresnel scaling theorem.}
 \todo{DAVID: please review and complete}
@@ -627,6 +559,92 @@ K = e^{-i \pi \lambda \Delta z (\frac{f_x^2}{m_x} +\frac{f_y^2}{m_y})}
 
 Note that setting one magnification $m_x=m_y=1$ one obtains the standatd Fresnel propagator (Eq.~\ref{eq: numerical convolution form of angular spectrum}), with  $P=1$, \inred{$P^G=\exp(i k \Delta z)$ where is the $(2 \pi)$??} and $K= e^{-i \pi \lambda \Delta z (f_x^2 +f_y^2)}$.
 
+
+\subsection{Example propagate to the focal position of a highly converging wavefront}
+
+\todo{EXAMPLE: Plane wave clipped by a slit, focused by an ideal lens. and propagate to close to the focal position. Like in Fig.~\ref{fig: slit 2D converging}. Discuss the wavefront evolution. FIND AND COMPARE WITH THE ANALYTICAL SOLUTION WITH SPHERICAL WAVE? May be discuss the Gouy phase?}
+
+\begin{figure}
+\label{fig: slit 2D converging}
+\caption{Propagation of a spherical converging wavefront ($R=-10$ cm) of photon energy 10 keV to the focal position at a distance $\Delta z = 10$ cm. The window size $w=100 \times 100 \mu m^2$, number of pixels: 2048$\times$2048. The results shown have been calculated with SRW (semianalytical propagator) and WOFRY (zoom propagator). \ingreen{aperture\_2D\_converging.py} 
+}
+\includegraphics[width=0.95\textwidth]{aperture_2D_converging.png}
+\end{figure}
+
+
+
+\section{Validity conditions}
+
+It has been shown that undesampling the source cause replicas in the image (see Fig.~\ref{fig: aperture_1D}). When using FFT the situation becomes even more dangerous and also aliasing may appear. In the previous sections we discussed how a correct sample of the wavefront is essential to avoid unwanted results. The question if what is the correct sampling of the wavefront is not easy to answer on a-priori basis. Therefore, in many cases one uses iterative simulations until obtaining some ``realistic'' results (some cleam image, without replicas and with a good resolution of the physical features in the image. This practical approach may lead to errors, as sometimes it is not easy to distinguish betwen features that are physical or are numerical artifacts. In many cases, using the standard propagators, one arrives to the limit of the possibilities of the computer memory that makes impossible to increase resolution (increment the grid size) more and more.
+
+In this section we formalize the conditions for good sampling of the phase in the implementation of the numerical propagators. We follow the ideas of \cite{goodmanfourier} and results in \cite{schmidt}, \cite{pirro} and PYNX code.  
+
+Let us consider a quadratic phase term $\exp(i A x^2)$. The condition for ``good sampling'' is:
+
+\begin{equation}
+\frac{1}{2 \pi} \frac{\partial}{\partial x}(A x^2) = \frac{1}{2 \delta_x}
+\end{equation}
+expressing the spatial coordinate $x_j=X_J \delta_x$ with $X_j = [-N/2,-N/2 -1, ..., 0,..., N/2[$:
+\begin{equation}
+\frac{1}{2 \pi} \frac{1}{\delta_x} \frac{\partial}{\partial X}(A (X \delta_x)^2) = \frac{1}{2 \delta_x}
+\end{equation}
+\begin{equation}\label{eq: good sampling condition}
+A \leq \frac{\pi}{N \delta_x^2}
+\end{equation}
+
+\begin{figure}
+\label{fig: phase sampling}
+\caption{Illustration of a good sampling (a) and bad sampling (b) of the real part of the function $f(x)=exp(i A x^2)$ with (a) $A$=20$< \pi / (N \delta_x^2)$ and (b) $A$=30$ > \pi / (N \delta_x^2)$ with $N=10$ and $\pi / (N \delta_x^2)$=25.4. 
+}
+a)
+\includegraphics[width=0.45\textwidth]{sample_quadratic_phase_A20.png}
+b)
+\includegraphics[width=0.45\textwidth]{sample_quadratic_phase_A30.png}
+\end{figure}
+
+\todo{discuss the case of a wavefront curved with a radius, like $A=B/R$ }
+
+The condition in Eq.~\ref{eq: good sampling condition} should be applied to all quadratic exponential phases in all propagators. 
+
+For the zoom propagator, these conditions can be expressed as a function of the propagation distance $\Delta z$ \inred{Reference pyNX documentation}:
+\begin{equation}\label{eq: good sampling zoom pynx}
+max\left\{ \frac{|m-1| N \delta_x^2}{\lambda}; \left| \frac{m-1}{m} \right|\frac{N \delta_x^2}{\lambda} \right\} < \Delta z < \frac{m N \delta_x^2}{\lambda}
+\end{equation}
+For the Fresnel propagators we can use these expressions and set $m=1$ so they reduce to the unique condition
+\begin{equation}\label{eq: good sampling fresnel}
+\Delta z < \frac{N \delta_x^2}{\lambda}
+\end{equation}
+\todo{For example, under the conditions of Fig.~\ref{fig: aperture_1D} the condition in Eq.~\ref{eq: good sampling fresnel} is represented in Fig.~\ref{}.}
+\begin{figure}
+\label{fig: fresnel propagator validity}
+\caption{xxx
+}
+\includegraphics[width=0.95\textwidth]{fresnel_propagator_validity.png}
+\end{figure}
+
+
+The condition in Eq.~\ref{eq: good sampling condition} can also be expressed for the zoom propagator as a function of the source pixel size $\delta_x$ and the image pixel size $\delta_{x'}=m \delta_x$ which gives the following conditions (see Ref.~\cite{pirro}):
+\begin{equation}\label{eq: good sampling pirro condition one}
+\delta_{x'} > \frac{\lambda \Delta z}{N \delta_x}
+\end{equation}
+\begin{equation}\label{eq: good sampling pirro condition two}
+\left(1+\frac{\Delta z}{R}\right) \delta_x - \left( 1 + \frac{\Delta z}{R}\right) \delta_x + \frac{\lambda \Delta z}{\delta_x N}
+\end{equation}
+where $R$ is the dominant curvature of the source wavefront (positive for a divergent beam). To illustrate this condition we have explored the parameter space, in this case ($\delta_x,\delta_{x'}$ and simulate the propagation of a divergent beam. \todo{comment results}
+
+\begin{figure}
+\label{fig: comparison validity conditions R=28.3}
+\caption{
+Parameters map comparing the theoretical condition of propagation (lines) that define the validity region and a figure of merit obtained comparing a simulation with the theoretical result (false colour map). Equation \ref{eq: good sampling pirro condition one} refers to
+"condition $1$" of the label (hyperbola), equation \ref{eq: good sampling pirro condition two} to "condition $2$" (straight lines). Spherical wavefronts of $\lambda=0.73 \AA$ with radius of curvature $R = 28.3$ $m$ with a Gaussian intensity profile are propagate for a distance of $23.4$ $m$. The abscissas and ordinates refer to the source ($w_1=N \delta_x$) and image window size $w_2 = N \delta_{x'}$. Left plot is for 1024$\times$1024 pixels and right plot 2048$\times$2048. 
+%Figure \ref{1024 R=28.3} refers to the test done by sampling with $1024$ point while figure \ref{2048 R=28.3} to one done sampling with $2048$ points. Colors represents logarithmic values: blue for 'good' results, yellow for 'bad'.
+%The three red letters in fig \ref{1024 R=28.3} are used in the following figures to show the results of the propagations corresponding to those zones in the map.
+}
+\includegraphics[width=0.45\textwidth]{npixel1024-prop_dist23-R28-Finf_con_zone.png}
+\includegraphics[width=0.45\textwidth]{npixel2048-prop_dist23-R28-Finf.png}
+\end{figure}
+
+
 \section{Discussion and examples}
 
 \todo{
@@ -634,8 +652,6 @@ Define examples to be treated by the different codes. Compare results. Vary some
 
 \begin{enumerate}
  \item Young-type experiment (plane wave, two slits, like in Fig.~\ref{fig: srw two slits}). Verify numerically the Fresnel scaling theorem.
- \item Plane wave clipped by a slit, focused by an ideal lens. and propagate to close to the focal position. Like in Fig.~\ref{fig: slit 2D converging}. Discuss the 
- wavefront evolution. May be discuss the Gouy phase?
  \item Propagate a first approximation to an undulator beam, consisting in a spherical wavefront clipped by a sort of slit with Gaussian profile.  
 \item compare execution times of different libraries for a given example. Discuss implementations and tools. 
 \end{enumerate}
@@ -648,12 +664,6 @@ Define examples to be treated by the different codes. Compare results. Vary some
 \includegraphics[width=0.95\textwidth]{srw_two_slits.png}
 \end{figure}
 
-\begin{figure}
-\label{fig: slit 2D converging}
-\caption{Propagation of a spherical converging wavefront ($R=-10$ cm) of photon energy 10 keV to the focal position at a distance $\Delta z = 10$ cm. The window size $w=100 \times 100 \mu m^2$, number of pixels: 2048$\times$2048. The results shown have been calculated with SRW (semianalytical propagator) and WOFRY (zoom propagator). \ingreen{aperture\_2D\_converging.py} 
-}
-\includegraphics[width=0.95\textwidth]{aperture_2D_converging.png}
-\end{figure}
 
 \section{Summary and conclusions}
 
