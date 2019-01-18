@@ -445,9 +445,9 @@ The system simulated in Fig.~\ref{fig: aperture_1D} refers to  the Fresnel diffr
 
 If we consider a wavefront sampled in $N \times N$ pixels (being $N > 10^3$), when calculating the 2D integrals to propagate the wavefront to another plane with the same resolution, we need approximately $N^2\cdot N^2 \approx 10^{12}$ operations. This implicate the necessity of a great amount of storage and calculations not feasible for normal computers. When performing the same calculations taking advantage of the theory of Fourier optics, one $FFT$ requires $\approx N^2 \log_2 N \approx 10^7$ operations \cite{Marshall:1992:CVM:129191}. This is the reason why we seek for a form that let us exploit such powerful tool. 
 
-The expression of the Fresnel propagator in Eq.~\ref{eq: Fresnel propagation in convolution form} is suitable to be calculated numerically with the use of Fast Fourier Transform algorithm ($FFT$) simply swapping the Fourier transform operator $\mathcal{F}\big\{\big\}$ with the discrete Fourier transform one $FFT$, taking into account the sampling conditions that are discussed later. That is, one arrives at
-\begin{equation}\label{eq: numerical convolution form of angular spectrum}
-U(x, y, \Delta z)= \frac{e^{ik\Delta z}}{2\pi} FFT^{-1}\Big\{ FTT\big\{U(x, y, 0)\big\} \times e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}} \Big\} 
+The expression of the Fresnel propagator in Eq.~\ref{eq: Fresnel propagation in convolution form} is suitable to be calculated numerically with the use of Fast Fourier Transform algorithm ($FFT$) simply swapping the Fourier transform operator $\mathcal{F}\big\{\big\}$ with the discrete Fourier transform one $FFT$, taking into account the sampling conditions that are discussed later. That is, one arrives at \todo{explain the kernel is changed to account for different definition of the fourier transform}
+\begin{equation}\label{eq: standard propagator}
+U(x, y, \Delta z)= \frac{e^{ik\Delta z}}{2\pi} FFT^{-1}\Big\{ FTT\big\{U(x, y, 0)\big\} \times e^{-i \pi \lambda \Delta z (f_x^2 + f_y^2) \Big\}
 \end{equation} 
 This is the standard implementation of the Fresnel propagator using two FFT implemented in most computer codes for synchrotron radiation. The use of FFT is not restricted to this propagator. Indeed, Eq.~\ref{eq: before fraunhoffer} represents the Fresnel propagator as Fourier transform of the distrurbance $U$ multiplied by a quadratic term. This allows to compute the Fresnel propagator using a single FFT \todo{explain why this is not so popular and is not used in synchrotron radiation (as far as I know...)}. The in the Fraunhofer regime, this quadratic phase is approximated by one so the propagated disturbance is just the Fourier transform of the unpropagated one, a phenomenon that is very well known in many fields of Physics. 
 
@@ -550,13 +550,22 @@ P = e^{i \frac{k}{2 \Delta z} [(1-m_x)x_1^2 + (1-m_y)y_1^2]} \\
 K = e^{-i \pi \lambda \Delta z (\frac{f_x^2}{m_x} +\frac{f_y^2}{m_y})}
 \end{equation}
 
-Note that setting one magnification $m_x=m_y=1$ one obtains the standatd Fresnel propagator (Eq.~\ref{eq: numerical convolution form of angular spectrum}), with  $P=1$, \inred{$P^G=\exp(i k \Delta z)$ where is the $(2 \pi)$??} and $K= e^{-i \pi \lambda \Delta z (f_x^2 +f_y^2)}$.
+Note that setting one magnification $m_x=m_y=1$ one obtains the standatd Fresnel propagator (Eq.~\ref{eq: numerical convolution form of angular spectrum}), with  $P=1$, $P^G=\exp(i k \Delta z)$  and $K= e^{-i \pi \lambda \Delta z (f_x^2 +f_y^2)}$.
 
 
-\subsection{Example propagate to the focal position of a highly converging wavefront}
+\subsection{Example: propagate a collapsing spherical wavefront to its focal plane}
 \label{subch: aperture converging}
 
-\todo{EXAMPLE: Plane wave clipped by a slit, focused by an ideal lens. and propagate to close to the focal position. Like in Fig.~\ref{fig: slit 2D converging}. Discuss the wavefront evolution. FIND AND COMPARE WITH THE ANALYTICAL SOLUTION WITH SPHERICAL WAVE? May be discuss the Gouy phase?}
+We study here the focal pattern produced by a highly converging wavefront clipped by a rectangular aperture. For that, a spherical wave of radius $R=-10$ cm of wave field $U(x,y,0) = \exp(i k (x^2 + y^2) / (2 R)$ clipped by a square slit, thus  zero outside a domain $-D/2\le x\le D/2$, domain $-D/2\le x\le D/2$. The photon energy is $E=10$ keV and $D=100 \mu$m. 
+This field is propagated to the focal position, thus $\Delta z$=10 cm.This situation may represent an over-simplification of the last step of a real nonofocusing beamline \cite{ID16A}, where a highly coherent beam represented by a plane wave enters in a  Kirkpatrick-Baez system that i) clips the wavefront because of its limited numerical aperture, and ii) converts the plane wave into an approximately spherical wave converging to the focal position.
+
+The case of diffraction of a collapsing spherical wave clipped a square slit can be calculated analitically useng the Fresnel propagator thus assuming paraxial approximation. As shown in Appendix~\ref{appendix_collapsing}, the diffracted intensity distribition at the focal plane is
+\begin{equation}
+    |U(x,y,z=\Delta z)|^2 = \left( \frac{2 k D^2}{\pi \Delta z}\right)^2 sinc^2\frac{k x D}{2 \Delta z} sinc^2\frac{k y D}{2 \Delta z}
+\end{equation}
+with $sinx(x)=\sin(x}/x$. Note that this pattern is the same (except for the scaling factor) as the pattern produced by a plane wave at $\Dz=\infty$ (in the far field using the Fraunhofer approximation). Fig.~\ref{fig: slit 2D converging} shows the results of some numerical calculations using WOFRY(zoom), SRW(quadratic), \inred{add more...} compared with the analytical result. The agreement is very good in general, thus the data are presented in log scale to better appreciate small differences.  
+
+\todo{Discuss the phase. May be illustrate the Gouy phase?}
 
 \begin{figure}
 \label{fig: slit 2D converging}
@@ -577,9 +586,9 @@ In this section we formalize the conditions for good sampling of the phase in th
 Let us consider a quadratic phase term $\exp(i A x^2)$. The condition for ``good sampling'' is:
 
 \begin{equation}
-\frac{1}{2 \pi} \frac{\partial}{\partial x}(A x^2) = \frac{1}{2 \delta_x}
+\frac{1}{2 \pi} \frac{\partial}{\partial x}(A x^2) = \frac{1}{2 \delta_x},
 \end{equation}
-expressing the spatial coordinate $x_j=X_J \delta_x$ with $X_j = [-N/2,-N/2 -1, ..., 0,..., N/2[$:
+expressing the spatial coordinate $x_j=X_J \delta_x$ with $X_j = [-N/2,-N/2 -1, ..., N/2[$ (N even) or $X_j = [-(N-1)/2,...(N-1)/2[$ (N odd)
 \begin{equation}
 \frac{1}{2 \pi} \frac{1}{\delta_x} \frac{\partial}{\partial X}(A (X \delta_x)^2) = \frac{1}{2 \delta_x}
 \end{equation}
@@ -597,33 +606,55 @@ b)
 \includegraphics[width=0.45\textwidth]{sample_quadratic_phase_A30.png}
 \end{figure}
 
-\todo{discuss the case of a wavefront curved with a radius, like $A=B/R$ }
+The condition in Eq.~\ref{eq: good sampling condition} should be applied to all quadratic exponential phases in all propagators. Before applying it to the different propagators, we can conside the case when the incident wavefront has a strong curvature. Let us think in a 1D
+field that can be factorised into some remaining field multiplied by a phase $\exp(i k x^2 /  (2 R_x))$. Applying the validity condition in Eq.~\ref{eq: good sampling condition}, one obtains the minimum affordable radius for correct sampling as a function of the wavelength and sampling conditions parameters $\delta_x$ and $N_x$
+\begin{equation}
+    R_x > \frac{N_x \delta_x^2}{\lambda}
+\end{equation}
 
-The condition in Eq.~\ref{eq: good sampling condition} should be applied to all quadratic exponential phases in all propagators. 
+\todo{This condition is not satisfied by Fig.~\ref{fig: slit 2D converging}, It would need 4 times more pixels in H and also in V (16x) what is difficult...}
+
+\subsection{The standard propagator}
+The standard propagator is implemented using Eq.~\ref{eq: standard propagator}. The kernel has a form $\exp(A x^2)$ where (using $f_{x,j}=X_j \delta_f$, $\delta_f = 1/(N_x \delta_x)$)
+\begin{equation}
+    -\pi \lambda \Delta z f_x^2 = 
+    -\pi \lambda \Delta z \left(\frac{x}{N_X \delta_x} \right)^2 = A x^2 
+\end{equation}
+therefore the validity condition gives
+\begin{equation}
+    \Delta z < \frac{N_x \delta_x^2}{\lambda}  = \frac{W^2}{N_x \lambda}
+\end{equation}
+being $W$ the window size ($W=N_x \delta_$). Note that an increase of the number of points for a constant window will \inblue{reduce} the maximum allowed propagation distance. For incrementing $\Delta z$ one has to increase the window. 
+
+For example, under the conditions of Fig.~\ref{fig: SRW aperture} ($N$=2048) and Fig.~\ref{fig: SRW aperture comparison} ($N$=4096) the condition \ref{eq: good sampling fresnel} is represented in Fig.~\ref{fig: fresnel propagator validity}. Note also the maximum allowed propagation distance is in general very small, therefore this standard propagator is valid only in the near-field region. 
+
+
+\begin{figure}
+\label{fig: fresnel propagator validity}
+\caption{Validity plot for the propagation distance applied to the cases of Fig.~\ref{fig: SRW aperture} ($N$=2048) and Fig.~\ref{fig: SRW aperture comparison} ($N$=4096).
+}
+\includegraphics[width=0.95\textwidth]{fresnel_propagator_validity.png}
+\end{figure}
+
+
+\subsection{The zoom propagator}
 
 For the zoom propagator, these conditions can be expressed as a function of the propagation distance $\Delta z$ \inred{Reference pyNX documentation}:
 \begin{equation}\label{eq: good sampling zoom pynx}
 max\left\{ \frac{|m-1| N \delta_x^2}{\lambda}; \left| \frac{m-1}{m} \right|\frac{N \delta_x^2}{\lambda} \right\} < \Delta z < \frac{m N \delta_x^2}{\lambda}
 \end{equation}
-For the Fresnel propagators we can use these expressions and set $m=1$ so they reduce to the unique condition
-\begin{equation}\label{eq: good sampling fresnel}
-\Delta z < \frac{N \delta_x^2}{\lambda}
-\end{equation}
-\todo{For example, under the conditions of Fig.~\ref{fig: aperture_1D} the condition in Eq.~\ref{eq: good sampling fresnel} is represented in Fig.~\ref{}.}
-\begin{figure}
-\label{fig: fresnel propagator validity}
-\caption{xxx
-}
-\includegraphics[width=0.95\textwidth]{fresnel_propagator_validity.png}
-\end{figure}
 
+\todo{add on top of Fig.~\ref{fig: fresnel propagator validity} some bands corresponding to the zones accessible for the zoom propagator with different $M$. Show that this propagator gives a high flexibility in accessing new regions.} 
 
 The condition in Eq.~\ref{eq: good sampling condition} can also be expressed for the zoom propagator as a function of the source pixel size $\delta_x$ and the image pixel size $\delta_{x'}=m \delta_x$ which gives the following conditions (see Ref.~\cite{pirro}):
 \begin{equation}\label{eq: good sampling pirro condition one}
 \delta_{x'} > \frac{\lambda \Delta z}{N \delta_x}
 \end{equation}
 \begin{equation}\label{eq: good sampling pirro condition two}
-\left(1+\frac{\Delta z}{R}\right) \delta_x - \left( 1 + \frac{\Delta z}{R}\right) \delta_x + \frac{\lambda \Delta z}{\delta_x N}
+\left(1+\frac{\Delta z}{R}\right) \delta_x -
+\frac{\lambda \Delta z}{\delta_x N}
+< \delta_{x'} < 
+\left( 1 + \frac{\Delta z}{R}\right) \delta_x + \frac{\lambda \Delta z}{\delta_x N}
 \end{equation}
 where $R$ is the dominant curvature of the source wavefront (positive for a divergent beam). To illustrate this condition we have explored the parameter space, in this case ($\delta_x,\delta_{x'}$ and simulate the propagation of a divergent beam. \todo{comment results}
 
@@ -639,6 +670,8 @@ Parameters map comparing the theoretical condition of propagation (lines) that d
 \includegraphics[width=0.45\textwidth]{npixel2048-prop_dist23-R28-Finf.png}
 \end{figure}
 
+\subsection{The zoom propagator}
+\todo{RAFAEL, please...}
 
 \section{Discussion and examples}
 
@@ -701,6 +734,12 @@ Note that different references use slightly different definitions of the Fourier
 \begin{equation}
 \mathcal{F}\left\{ e^{A x^2} \right\} = \sqrt{\frac{\pi}{-A}} e^{\frac{\pi^2}{A} f_x^2}
 \end{equation}
+and also
+\begin{equation}
+\mathcal{F}^{-1}\left\{ e^{A f_x^2} \right\} = \sqrt{\frac{\pi}{-A}} e^{\frac{\pi^2}{A} x^2}
+\end{equation}
+
+\todo{One can discuss also here the particular case of FR with kernel $\exp(ik_x x)$ as used in the Section~\ref{ch: theory} because in this case the FT of a Gaussian has different coefficients as happens in Eq.~\ref{eq: Fresnel approx of angular spectrum} ??}
 
 \section{The Fresnel Scaling Theorem}
 \label{appendix_scaling}
@@ -914,7 +953,7 @@ Equation \ref{eq: final form of Fresnel zoom in convolution form} represent the 
 
 
 
-\section{Fresnel propagation of a plane wave trough an aperture}
+\section{Fresnel propagation of a plane wave through an aperture}
 \todo{this can be removed as it is just a copy of \cite{goodmanfourier}, but results have been used for some figures}
 The propagated field given by the Fresnel diffraction equation \ref{eq: Fresnel approx of angular spectrum} can be solved analytically only in some particular cases. We summarize here following \cite{goodmanfourier} the results of diffraction of a plane wave by a 2D slit (square and circular), as they are used in the following sections. 
 
@@ -938,7 +977,8 @@ R(z'; \Delta z) = \int_0^{N_F} \eta e^{i \pi \eta^2} J_0(2 \pi \eta r') d\eta
 \end{equation}
 where $r'$ is a normalized radial coordinate $r' = \sqrt{(x^2 + y^2)/(\lambda \Delta z)}$, and $J_0$ the first-kind Bessel function of zeroth order. This integral has no analytical form but can be easily integrated numerically. 
 
-
+\section{Fresnel propagation of a spherical collapsing wave to its focal plane}
+\todo{add noted given by David}
 
 
      %-------------------------------------------------------------------------
