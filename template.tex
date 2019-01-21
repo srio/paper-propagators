@@ -614,27 +614,58 @@ field that can be factorised into some remaining field multiplied by a phase $\e
 
 \todo{This condition is not satisfied by Fig.~\ref{fig: slit 2D converging}, It would need 4 times more pixels in H and also in V (16x) what is difficult...}
 
-\subsection{The standard propagator}
+\subsection{The Fresnel propagator with two FFTs}
 The standard propagator is implemented using Eq.~\ref{eq: standard propagator}. The kernel has a form $\exp(A x^2)$ where (using $f_{x,j}=X_j \delta_f$, $\delta_f = 1/(N_x \delta_x)$)
 \begin{equation}
     -\pi \lambda \Delta z f_x^2 = 
     -\pi \lambda \Delta z \left(\frac{x}{N_X \delta_x} \right)^2 = A x^2 
 \end{equation}
 therefore the validity condition gives
-\begin{equation}
+\begin{equation}\label{eq: fresnel validity}
     \Delta z < \frac{N_x \delta_x^2}{\lambda}  = \frac{W^2}{N_x \lambda}
 \end{equation}
 being $W$ the window size ($W=N_x \delta_$). Note that an increase of the number of points for a constant window will \inblue{reduce} the maximum allowed propagation distance. For incrementing $\Delta z$ one has to increase the window. 
 
-For example, under the conditions of Fig.~\ref{fig: SRW aperture} ($N$=2048) and Fig.~\ref{fig: SRW aperture comparison} ($N$=4096) the condition \ref{eq: good sampling fresnel} is represented in Fig.~\ref{fig: fresnel propagator validity}. Note also the maximum allowed propagation distance is in general very small, therefore this standard propagator is valid only in the near-field region. 
+For example, under the conditions of Fig.~\ref{fig: SRW aperture} ($N$=2048) and Fig.~\ref{fig: SRW aperture comparison} ($N$=4096) the condition \ref{eq: good sampling fresnel} is represented in Fig.~\ref{fig: fresnel validity}. Note also the maximum allowed propagation distance is in general very small, therefore this standard propagator is valid only in the near-field region. 
 
 
-\begin{figure}
-\label{fig: fresnel propagator validity}
+\begin{figure}\label{fig: fresnel validity}
 \caption{Validity plot for the propagation distance applied to the cases of Fig.~\ref{fig: SRW aperture} ($N$=2048) and Fig.~\ref{fig: SRW aperture comparison} ($N$=4096).
 }
 \includegraphics[width=0.95\textwidth]{fresnel_propagator_validity.png}
 \end{figure}
+
+\subsection{The Fresnel propagator with one FFTs}
+
+Following Eq.~\ref{eq: fresnel2} the propagated field can be calculated by doing one-FFt of the unpropagated field multiplied by a quadratic phase: 
+
+\begin{equation}
+    U(x,y,\Delta z) = \frac{e^{i k \delta z}}{i \lambda \Delta z} FFT\left\{ U(x,y,0) e^{-i\frac{k}{\Delta z}(x^2+y^2)}\right\}
+\end{equation}
+Applying the validity condition to the exponential in the FFT, one gets: 
+\begin{equation}\label{fig: fresnel2 validity}
+    \Delta z > \frac{N \delta_x^2}{\lambda}.
+\end{equation}
+This equation is the contrary of what is found in Eq.~\ref{eq: fresnel validity}. For that reason the two-FFT Fresnel propagator is applicable in the "near field" whereas the one-FFT propagator is for the "far field". 
+
+As discussed in \cite{Li}, the two analytically equivalent methods of Eqs.~\ref{eq: usualfresnel} and
+\ref{eq: fresnel2} are useful in different regimes. In the one-FFT propagator, the input plane wavefield is multiplied by the real space propagator given in Eq.~XX. In the 2-FFTs propagator (convolution approach), the Fourier-transformed input plane wavefield is multiplied
+by the reciprocal space propagator of Eq. XXX. The validity conditions indicate that the reciprocal space
+propagator (two-FFTs) is slowly varying at shorter propagation distances, while the real space propagator (one-FFT) is slowly varying at longer propagation distances.
+
+Figure~\ref{fig: far_field} shows a 1D calculation of the system presented in Fig.~\ref{fig: aperture_1D} but at a distance $\Delta z$=10 cm with N=5$\times$2048 pixels. The calculation and the analytical results are indistinguishable in the vicinity of the peak, but the tails present a different slope. Left: diffraction pattern close to the main peak. Right: large domain for the diffraction pattern where one can observe the differences in the slope of the tails.
+
+\begin{figure}\label{fig: far_field}
+    \centering
+    \includegraphics[width=0.45\textwidth]{far_field_a.png}
+    \includegraphics[width=0.45\textwidth]{far_field_b.png}
+    \caption{Propagation of a plane wavefront of photon energy 10 keV clipped by a slit in the far field (propagation distance 0.1 m). Window size $w$=5$\mu$m, aperture=1.25$\mu$m, number of pixels: 5$\times$2048. }
+\end{figure}
+
+In the case of an incident wavefront with a curvature $R$, the validity condition becomes (see, e.g., \cite{schmidt})
+\begin{equation}
+\Delta z > \frac{W \delta_x R}{\lambda R - W \delta_x}
+\end{equation}
 
 
 \subsection{The zoom propagator}
@@ -976,6 +1007,13 @@ For the circular aperture, the propagated field is proportional to the integral:
 R(z'; \Delta z) = \int_0^{N_F} \eta e^{i \pi \eta^2} J_0(2 \pi \eta r') d\eta 
 \end{equation}
 where $r'$ is a normalized radial coordinate $r' = \sqrt{(x^2 + y^2)/(\lambda \Delta z)}$, and $J_0$ the first-kind Bessel function of zeroth order. This integral has no analytical form but can be easily integrated numerically. 
+
+In the case of Fraunhofer approximation, the integral $\madcad{I}_x(x)$ of \cite{goodmanfourier} can be integrated analytically and one obtains for the square aperture: 
+\begin{equation}
+\mathcad{I}(x) = \frac{2 x_{max}}{\sqrt{\lambda \Delta z}} e^{i \frac{\pi}{\lambda \Delta z} x^2 } sinc\left( \frac{x_{max}  \pi}{\lambda \Delta z} x \right) 
+\end{equation}
+
+\todo{Airy disk (circular+Fraunhofer)}
 
 \section{Fresnel propagation of a spherical collapsing wave to its focal plane}
 \todo{add notes by David}
