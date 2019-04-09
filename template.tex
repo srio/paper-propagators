@@ -75,7 +75,7 @@
 \author[a]{Vincent}{Favre-Nicolin}
 \author[a]{Jean-Pierre}{Guigay}
 \author[d,b]{Chris}{Jacobsen}
-\author[e]{David}{Paganin}
+\author[e]{David M.}{Paganin}
 \author[a]{Giovanni}{Pirro}
 \author[d]{Luca}{Rebuffi}
 
@@ -132,9 +132,11 @@ Abstract goes here.
 \label{ch:intro}
 
 The transport or propagation of the synchrotron beam in free space is of paramount importance in synchrotron radiation. 
-The main role of a synchrotron beamline is to transport and condition the x-ray beam from the source to the sample. The beamlines are usually long, and many ``empty'' spaces interconnect optical elements (slits, mirrors, lenses, gratings, etc.). In an experiment, the beam travels from sample to detector passing trough analysers. The beam propagation in vacuum may be considered as a first view as trivial and obvious. This may be the case in some applications the beam can be considered incoherent therefore ray-like geometrical considerations on size and divergence are sufficient to describe the transport. 
+The main role of a synchrotron beamline is to transport and condition the x-ray beam from the source to the sample. The beamlines are usually long, and many ``empty'' spaces interconnect optical elements (slits, mirrors, lenses, gratings, etc.). In an experiment, beams propagate through optics and the specimen itself before an intensity is recorded.  Thus the simulation of beam propagation is important for predicting the performance of synchrotron beamlines as well as various imaging experiments.
+
+Beam propagation in vacuum may be considered as a first view as trivial and obvious. This may be the case in some applications the beam can be considered fully incoherent, so that ray-like geometrical size and divergence are sufficient to describe the transport. 
 %X-rays are ``rays'' that travel in a straight line. 
-However, in recent years the number of applications and experiments in using partially coherent beams from synchrotrons is growing exponentially. Here, X-rays reveal wavelike behaviour and the synchrotron beam can be described by a wavefront or a collection of them. The transport of the wavefronts is governed by the wave equation. Because of the ``directional'' status of the synchrotron beam, the interest in many applications consist to calculate the propagated wavefront at a given position $z$ along the beamline, knowing the incident (source) wavefront at $z=0$. Wave ``propagators'' are integral operators that act on the incident wavefront and permit to calculate the resulting transported wavefronts. Different propagators can be used depending on the characteristics of the system under study, in particular wavelength and propagation distance. 
+However, improvements in x-ray sources mean that many beamlines and experiments utilize partially coherent beams. Here, X rays reveal wavelike behaviour and the synchrotron beam can be described by a wavefront or a collection of them. The transport of the wavefronts is governed by the wave equation. Because of the ``directional'' status of the synchrotron beam, it is important to know how to propagate a wavefield from a known value at $z=0$ to a downstream plane at a distance $z$.   Wave ``propagators'' are integral operators that act on the incident wavefront and permit to calculate the resulting transported wavefronts. Different propagators can be used depending on the characteristics of the system under study, in particular wavelength and propagation distance. 
 
 For most applications, both in the domain of synchrotron instrumentation design (beamline optics) and for image reconstruction \cite{maiden_josaa_2012,gilles_optica_2018}, one has to use numeric calculations, thus implementing wave propagation in a computer code. A number of difficulties appear, related to the amount of data to be calculated, complexity of the equations, good sampling for optimizing computational time, and storage. Implementation methods, with their particularities and difficulties are described in different sections along the text. The simplest implementations rely on the discretization of the Fresnel propagator in one dimension and it is discussed in Section~\ref{ch: non-fourier-propagators}. This includes a description of artifacts that may appear in the results, replicas and aliasing. The section~\ref{ch: fourier-propagators} discusses the standard implementation of Fresnel propagators using Fourier transforms and show some basic examples of calculations that are compated with analytical results. This chapter also introduces a practical problem, the difficulty to sample correctly the phase when the wavefront is highly converging or diverging. Solutions are presented in Section~\ref{ch: spherical fronts} with some examples. In section~\ref{ch: discussion} some examples are studied and discussed.
 
@@ -142,6 +144,8 @@ Our goal is to present in a unified way the different methods for free space pro
 
 \section{Theoretical background}
 \label{ch: theory}
+
+\todo{Chris Jacobsen comment: I would skip all of this and start by stating the Helmholtz Equation.  All of this is in standard textbooks. You can state that x-ray interactions are dominated by dielectric effects, leading to an x-ray index of refraction of $n=1-\delta-i\beta$.}
 
 From Maxwell equations we derive in this section the vacuum wave equations that describes the spatial and temporal evolution of electromagnetic fields in free space. We introduce the approximation of scalar theory: the electromagnetic disturbance at a given point in space-time is described by a single complex number rather than by a electric (and/or magnetic) field vector. Once the time-dependent vacuum wave equation for scalar field is obtained, the field is described as a superposition of monochromatic waves, the spectral decomposition. Each monochromatic component of the decomposition of the electromagnetic field obeys the Helmholtz equation, a time-independent form of the free space wave equation. We will focus our attention on the study of diffraction of waves obeying the Helmholtz equation in free-space, and in particular on the case of Fresnel diffraction. All this arguments will be discussed based on a well-established approach \cite{paganin_book} using an angular spectrum formulation, thus representing the electromagnetic field as a superposition of monochromatic plane waves with different spatial frequency and direction of propagation. 
 
@@ -328,8 +332,74 @@ $ K=\exp(-i \Delta z \lambda \pi (f_x^2+f_y^2))$, 3) Inverse-Fourier transform t
 
 
 \subsection{Linear Canonical Transforms, Fractional Fourier Transform and its application to Optics}
+\todo{SAJID: FrFT/LCT section : In progress. Add a better FrFT picture. Add more references?}
+The application of Fourier transform on a signal in real space converts it to a signal in frequency space. This is essentially a change of basis upon which the signal is represented. On the space-frequency plane, the space basis and frequency basis are just two bases among many bases on which the signal can be represented.
 
-\todo{SAJID: Write a SMALL introduction of the Fractional Fourier Transform. Explain why it is important for Optics.}
+\begin{figure}
+\label{fig: FrFT graphic}
+\caption{Graphical representation of FrFT in the space-frequency space, taken from Optica Vol. 4, Issue 8, pp. 907-910 (2017) }
+\includegraphics[width=1\textwidth]{FrFT_optica.jpg}
+\end{figure}
+Fractional Fourier Transform (FrFT) is a parameterized generalization of the FT. The FrFT transforms the signal from one basis to another basis between real and frequency space depending on the parameter a. The Fractional Fourier Transform of order a of a signal f is defined as:
+\begin{equation}
+f_{a}(x) = \int_{-\infty}^{\infty}K_{a}(x,x^{'})f(x^{'})dx^{'}
+\end{equation}
+where the convolution kernel is given by:
+
+\begin{multline*}
+	K_{a}(x,x^{'}) = \sqrt{\frac{1-icot(\alpha)}{2\pi}}*\\exp(i0.5(x^{2}cot(\alpha)-2xx^{'}csc(\alpha)+x^{'}cot(\alpha)))
+\end{multline*}
+where $\alpha = \frac{\pi a}{2}$\\ 
+When a is an odd/even multiple of $\pi$, the convolution kernel reduces to:
+\begin{equation}
+	K_{a}(x,x^{'}) = \delta(x\pm x^{'})
+\end{equation}
+which just means that a rotation by odd multiple of $\pi$ is a parity operation and a rotation by an even multiple of $\pi$ is an identity operation. When $\alpha$ is $\frac{\pi}{2}$, the FrFT reduces to the familiar Fourer Transform. 
+
+While we won't derive it here, Fresnel propagator is an integral transform that can be interpreted as a Fractional Fourier transform followed by a phase factor correction\cite{Hanna2011}. 
+
+The FrFT itself can be seen as a specific case of a class of three parameter integral transforms known as Linear Canonical Transforms\cite{Hennelly05}. The LCT for the parameters $\alpha, \beta, \gamma$ is defined by 
+
+\begin{multline*}
+    	u_{\alpha, \beta, \gamma} = L_{\alpha, \beta, \gamma}{u(x)}(x^{'}) = \\ exp(\frac{-j\pi}{4})\sqrt{\beta}\int_{-\infty}^{\infty}u(x)exp[j\pi(\alpha x^{2} - 2\beta xx^{'} + \gamma x^{'2})]dx 
+\end{multline*}
+The LCT can be described by an abcd matrix which transform the Wigner Distribution as $W(x,k) \rightarrow W(ax+bk,cx+dk)$ with relations between a,b,c,d that limiting them to three degrees of freedom \cite{Hennelly05}. 
+
+Thus, the LCT is a rotation in phase space from unprimed to primed co-ordinates given by \cite{Hennelly05} :
+ \begin{equation}
+	\begin{bmatrix}
+	x^{'}\\
+	k^{'}
+	\end{bmatrix} = 
+	\begin{bmatrix}
+	a & b \\
+	c & d
+	\end{bmatrix}
+	\begin{bmatrix}
+	x\\
+	k
+	\end{bmatrix}
+\end{equation}
+The Fresnel transform is now described by the matrix \cite{Hennelly05} : 
+\begin{equation}
+    	\begin{bmatrix}
+		a & b \\
+		c & d
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+	1 & \lambda z \\
+	0 & 1
+	\end{bmatrix}	
+\end{equation}
+The Discrete Linear Canonical Transform (DLCT) can be implemented by "decomposition" into a set of LCT's as two LCT's can be cascaded together\cite{Healy2016}.  
+
+\begin{figure}
+\label{fig: DLCT_graphic}
+\caption{Phase-Space representation of two algorithms for computation of the DLCT in terms of efficient operations (viz. Fourier Transform and Chirp Transform)\cite{Healy2016}} 
+\includegraphics[width=1\textwidth]{DLCT_implementation.png}
+\end{figure}
+The task of finding efficient numerical algorithms for the evaluation of both the general and specialized cases of (Discrete) FrFT and (Discrete)LCT is an active field \cite{BULTHEEL2004182,Koç2016} and we hope that the X-ray wave propagation community can benefit from the latest research there. \\
 \todo{VINCENT/DAVID: Review it!}
 
 
@@ -569,7 +639,7 @@ with $sinx(x)=\sin(x}/x$. Note that this pattern is the same (except for the sca
 
 \begin{figure}
 \label{fig: slit 2D converging}
-\caption{Propagation of a spherical converging wavefront ($R=-10$ cm) of photon energy 10 keV to the focal position at a distance $\Delta z = 10$ cm. The window size $w=100 \times 100 \mu m^2$, number of pixels: 2048$\times$2048. The results shown have been calculated with SRW (semianalytical propagator) and WOFRY (zoom propagator). \ingreen{aperture\_2D\_converging.py} 
+\caption{Propagation of a spherical converging wavefront ($R=-10$ cm) of photon energy 10 keV to the focal position at a distance $\Delta z = 10$ cm. The window size $w=100 \times 100 \mu m^2$, number of pixels: 2048$\times$2048. The results shown have been calculated with SRW (semianalytical propagator) and WOFRY (zoom propagator). \ingreen{aperture\_2D\_converging.py} \inred{Interestingly this picture changed after upgrading my Mac OS... In particular SRW result. Now the agreement is much better!! Why??}
 }
 \includegraphics[width=0.95\textwidth]{aperture_2D_converging.png}
 \end{figure}
@@ -602,7 +672,7 @@ A \leq \frac{\pi}{N \delta_x^2}
 }
 a)
 \includegraphics[width=0.45\textwidth]{sample_quadratic_phase_A20.png}
-b)
+b)https://www.overleaf.com/18319766dfmqmnvnnpmk
 \includegraphics[width=0.45\textwidth]{sample_quadratic_phase_A30.png}
 \end{figure}
 
@@ -618,13 +688,13 @@ field that can be factorised into some remaining field multiplied by a phase $\e
 The standard propagator is implemented using Eq.~\ref{eq: standard propagator}. The kernel has a form $\exp(A x^2)$ where (using $f_{x,j}=X_j \delta_f$, $\delta_f = 1/(N_x \delta_x)$)
 \begin{equation}
     -\pi \lambda \Delta z f_x^2 = 
-    -\pi \lambda \Delta z \left(\frac{x}{N_X \delta_x} \right)^2 = A x^2 
+    -\pi \lambda \Delta z \left(\frac{x}{N_x \delta_x^2} \right)^2 = A x^2 
 \end{equation}
 therefore the validity condition gives
 \begin{equation}\label{eq: fresnel validity}
     \Delta z < \frac{N_x \delta_x^2}{\lambda}  = \frac{W^2}{N_x \lambda}
 \end{equation}
-being $W$ the window size ($W=N_x \delta_$). Note that an increase of the number of points for a constant window will \inblue{reduce} the maximum allowed propagation distance. For incrementing $\Delta z$ one has to increase the window. 
+being $W$ the window size ($W=N_x \delta_x$). Note that an increase of the number of points for a constant window will \inblue{reduce} the maximum allowed propagation distance. For incrementing $\Delta z$ one has to increase the window. 
 
 For example, under the conditions of Fig.~\ref{fig: SRW aperture} ($N$=2048) and Fig.~\ref{fig: SRW aperture comparison} ($N$=4096) the condition \ref{eq: good sampling fresnel} is represented in Fig.~\ref{fig: fresnel validity}. Note also the maximum allowed propagation distance is in general very small, therefore this standard propagator is valid only in the near-field region. 
 
@@ -709,12 +779,9 @@ Parameters map comparing the theoretical condition of propagation (lines) that d
 \todo{
 Define examples to be treated by the different codes. Compare results. Vary some sampling parameters. Benchmark timing. Some ideas [to be developed]: 
 
-\begin{enumerate}
- \item Young-type experiment (plane wave, two slits, like in Fig.~\ref{fig: srw two slits}). Verify numerically the Fresnel scaling theorem.
- \item Propagate a first approximation to an undulator beam, consisting in a spherical wavefront clipped by a sort of slit with Gaussian profile.  
-\item compare execution times of different libraries for a given example. Discuss implementations and tools. 
-\end{enumerate}
-}
+
+\subsection{Young-type experiment}
+\todo{ plane wave, two slits, like in Fig.~\ref{fig: srw two slits}. Verify numerically the Fresnel scaling theorem}
 
 \begin{figure}
 \label{fig: srw two slits}
@@ -722,6 +789,23 @@ Define examples to be treated by the different codes. Compare results. Vary some
 }
 \includegraphics[width=0.95\textwidth]{srw_two_slits.png}
 \end{figure}
+
+\subsection{Approximating an undulator beam}
+\todo{}
+Propagate a first approximation to an undulator beam, consisting in a spherical wavefront clipped by a sort of slit with Gaussian profile.}
+
+\subsection{Running times.}
+\todo{Compare execution times of different libraries for a given example. Discuss implementations and tools.}
+Figure~\ref{fig: running times 1D} compares the running times of different implementations of 1D propagators. Some conclusions can be extracted. The integral implementation with a double loop in python \{tt xwp-exact\_prop} is very slow and unmanageable, even for small arrays (we used 2048 points). When vectorizing one loop, either directly in python in {\tt wofry-integral} or using some paralelization libraries like NUMBA in {\tt xwp-exact\_prop\_numba} the calculation times are very reasonable (for 1D) and can be used systematically. The propagators using FFT are much faster (\~ 3 orders of magnitude). Their differences come from a heavier interface (in wofry, than becomes slower than xwp when accumulating 10 or more runs). Note also that {\tt fft\_conv} that uses {\tt numpy.conv} for convolution is slower than the direct implementation of two FFTs in {\tt fft}.   
+
+\begin{figure}
+\label{fig: running times 1D}
+\caption{Running times in a linux/ubuntu box (Intel Xeon CPU E5-1620 3.50 GHz x 8. 16 GiB) for running the example shown in Fig.~\ref{fig: aperture_1D} with different propagators available in WOFRY (red) and XPW (blue) libraries. \ingreen{aperture\_1D\_benchmarking.py}
+}
+\includegraphics[width=0.95\textwidth]{aperture_1D_benchmarking.png}
+\end{figure}
+
+
 
 
 \section{Summary and conclusions}
