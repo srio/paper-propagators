@@ -118,7 +118,7 @@ Numerical implementation of the propagation of a wavefront in vacuum is fundamen
 \end{synopsis}
 
 \begin{abstract}
-Abstract goes here.
+For many applications in synchrotron radiation, both for instrumentation and data analysis, the x-rays wavefronts have to be propagated from one spatial point to another. We describe here the integral propagators based on the Kirchhoff-Fresnel diffraction equation that are used to propagate the x-ray wavefront in free space.  We describe the variety of numerical implementationsin used in several simulation packages and libraries, with particular attention in which cases they can be applied and the required sampling conditions. 
 \end{abstract}
 
 
@@ -132,13 +132,12 @@ Abstract goes here.
 \label{ch:intro}
 
 The transport or propagation of the synchrotron beam in free space is of paramount importance in synchrotron radiation. 
-The main role of a synchrotron beamline is to transport and condition the x-ray beam from the source to the sample. The beamlines are usually long, and many ``empty'' spaces interconnect optical elements (slits, mirrors, lenses, gratings, etc.). In an experiment, beams propagate through optics and the specimen itself before an intensity is recorded.  Thus the simulation of beam propagation is important for predicting the performance of synchrotron beamlines as well as various imaging experiments.
+The main role of a synchrotron beamline is to transport and condition the x-ray beam from the source to the sample. The beamlines are usually long, and many ``empty'' spaces interconnect optical elements (slits, mirrors, lenses, gratings, etc.). In any experiment, the x-rays propagate through sample environment and the specimen itself before the intensity is recorded.  In many cases it is needed to understand and simulate the changes affecting the x-ray beams for predicting the performance of synchrotron beamlines as well in most experiments exploiting coherence (coherent imaging, ptychography, etc.)
 
-Beam propagation in vacuum may be considered as a first view as trivial and obvious. This may be the case in some applications the beam can be considered fully incoherent, so that ray-like geometrical size and divergence are sufficient to describe the transport. 
-%X-rays are ``rays'' that travel in a straight line. 
-However, improvements in x-ray sources mean that many beamlines and experiments utilize partially coherent beams. Here, X rays reveal wavelike behaviour and the synchrotron beam can be described by a wavefront or a collection of them. The transport of the wavefronts is governed by the wave equation. Because of the ``directional'' status of the synchrotron beam, it is important to know how to propagate a wavefield from a known value at $z=0$ to a downstream plane at a distance $z$.   Wave ``propagators'' are integral operators that act on the incident wavefront and permit to calculate the resulting transported wavefronts. Different propagators can be used depending on the characteristics of the system under study, in particular wavelength and propagation distance. 
+The propagation of the x-rays in vacuum may be wrongly considered as a trivial and obvious problem. This may be the case in some applications where the beam can be considered fully incoherent, so a geometrical model based on the phase space (geometrical size and divergence) is sufficient to describe the transport.  
+However, the extraordinary improvements in synchrotron radiation brighness and coherence made possible the construction and operation of many beamlines that utilize and exploit the significant x-ray beam coherence. Here, the synchrotron light reveals wavelike behaviour and the beam can be described by a wavefront or a collection of them. The transport of the wavefronts is governed by the wave equation. Because of the ``directional'' status of the synchrotron beam, it is important to know how to propagate a wavefield from a known value at $z=0$ to a downstream plane at a distance $z$. This is not a simple task, as one has to consider wave optics ``propagators'' that are integral operators acting on the incident wavefront and permitting to calculate the transported wavefronts. Different propagators can be used depending on the characteristics of the system under study, in particular wavelength and propagation distance. 
 
-For most applications, both in the domain of synchrotron instrumentation design (beamline optics) and for image reconstruction \cite{maiden_josaa_2012,gilles_optica_2018}, one has to use numeric calculations, thus implementing wave propagation in a computer code. A number of difficulties appear, related to the amount of data to be calculated, complexity of the equations, good sampling for optimizing computational time, and storage. Implementation methods, with their particularities and difficulties are described in different sections along the text. The simplest implementations rely on the discretization of the Fresnel propagator in one dimension and it is discussed in Section~\ref{ch: non-fourier-propagators}. This includes a description of artifacts that may appear in the results, replicas and aliasing. The section~\ref{ch: fourier-propagators} discusses the standard implementation of Fresnel propagators using Fourier transforms and show some basic examples of calculations that are compated with analytical results. This chapter also introduces a practical problem, the difficulty to sample correctly the phase when the wavefront is highly converging or diverging. Solutions are presented in Section~\ref{ch: spherical fronts} with some examples. In section~\ref{ch: discussion} some examples are studied and discussed.
+For most applications, both in the domain of synchrotron instrumentation design (beamline optics) and for image reconstruction \cite{maiden_josaa_2012,gilles_optica_2018}, one has to use numeric calculations, thus implementing wave propagation in a computer code. A number of difficulties appear, related to the amount of data to be calculated, complexity of the equations, good sampling for optimizing computational time and storage. Implementation methods, with their particularities and difficulties are described in different sections along the text. The simplest implementations rely on the discretization of the Fresnel propagator in one dimension and it is discussed in Section~\ref{ch: non-fourier-propagators}. This includes a description of artifacts that may appear in the results, replicas and aliasing. The section~\ref{ch: fourier-propagators} discusses the standard implementation of Fresnel propagators using Fourier transforms and show some basic examples of calculations that are compated with analytical results. This chapter also introduces a practical problem, the difficulty to sample correctly the phase when the wavefront is highly converging or diverging. Solutions are presented in Section~\ref{ch: spherical fronts} with some examples. In section~\ref{ch: discussion} some examples are studied and discussed.
 
 Our goal is to present in a unified way the different methods for free space propagation employed in different software codes used for both beamline simulations and data analysis. We aim to describing rigorously some aspects of the propagation that are usually not detailed in code documentation and references. We will see that the right selection of the propagator and the validity conditions is essential for obtaining correct results, and we will give some recomendations for its use. Moreover, different codes do use different computational implementations, computer languages (C++, Python), hardware (CPUs, GPUs), and tools (parallel computers), each one optimized for different applications and user community. The discussion and examples presented try to give a wide (although incomplete) scenario of what is inside the software we use for simulating the propagation of the synchrotron light.   
 
@@ -147,115 +146,154 @@ Our goal is to present in a unified way the different methods for free space pro
 
 \todo{Chris Jacobsen comment: I would skip all of this and start by stating the Helmholtz Equation.  All of this is in standard textbooks. You can state that x-ray interactions are dominated by dielectric effects, leading to an x-ray index of refraction of $n=1-\delta-i\beta$.}
 
-From Maxwell equations we derive in this section the vacuum wave equations that describes the spatial and temporal evolution of electromagnetic fields in free space. We introduce the approximation of scalar theory: the electromagnetic disturbance at a given point in space-time is described by a single complex number rather than by a electric (and/or magnetic) field vector. Once the time-dependent vacuum wave equation for scalar field is obtained, the field is described as a superposition of monochromatic waves, the spectral decomposition. Each monochromatic component of the decomposition of the electromagnetic field obeys the Helmholtz equation, a time-independent form of the free space wave equation. We will focus our attention on the study of diffraction of waves obeying the Helmholtz equation in free-space, and in particular on the case of Fresnel diffraction. All this arguments will be discussed based on a well-established approach \cite{paganin_book} using an angular spectrum formulation, thus representing the electromagnetic field as a superposition of monochromatic plane waves with different spatial frequency and direction of propagation. 
+The starting point is the Maxwell equations in vacuum from where the wave equation is obtained. The wave equation describes the spatial and temporal evolution of electromagnetic fields in free space. 
 
-We start from Maxwell wave equations
-\begin{equation}
-\label{eq: Maxwell equations}
-\begin{aligned}
-\bm{\nabla} \times \bm{\mathcal{B}} &=\epsilon_0 \mu_0 \frac{\partial \bm{\mathcal{E}}}{\partial t}
-&\qquad &\text{Faraday's law},\\[2\jot]
-\bm{\nabla} \times \bm{\mathcal{E}} &= -\frac{\partial \bm{\mathcal{B}}}{\partial t}
-&\qquad &\text{Amp\`{e}re's law},\\[2\jot]
-\bm{\nabla} \cdot \bm{\mathcal{B}}    &= 0 & \qquad &\text{Gauss' law},\\[2\jot]
-\bm{\nabla} \cdot \bm{\mathcal{E}}    &= 0 & \qquad &\text{Coulomb's law},
-\end{aligned}
-\end{equation}
-where $\mathcal{B}$ is the magnetic induction, $\mathcal{E}$ is the electric field, $\mu_0$ and $\epsilon_0$ are the magnetic and the electric permittivity of free-space, respectively, $\nabla \times$ is the curl operator and $\nabla \cdot$ is the divergence operator. The vacuum wave equation that governs the spatial and temporal evolution of the electromagnetic field in free space will be derived. Note that $\mathcal{E}=\mathcal{E}(x,y,z,t)$ and $\mathcal{B}=\mathcal{B}(x,y,z,t)$ are functions of four variables. 
-
-With some manipulations one can arrive to the wave equation for the electric field
 \begin{equation}\label{eq: d'Alembert electric field}
-	\Big(\epsilon_0 \mu_0 \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \vec{\mathcal{E}} = \bm{0}.
+	\Big( \frac{1}{c^2} \frac{\partial^2}{\partial t^2}-\nabla^2\Big) \vec{\mathcal{E}} = \bm{0}.
 \end{equation}
-The same equation holds for the magnetic induction (replacing $\mathcal{E} \longleftrightarrow \mathcal{B}$). 
-Note that since the vector Laplacian acts on the individual field components in the same way and keeping them uncoupled, the above vector equations, when projected onto $x$, $y$, or $z$ direction, split into 6 identical uncoupled equations, one for each field component.
-This is known as the scalar wave equation of
+
+
+where $\vec{\mathcal{E}}$ is the electric field vector and $c$ is the velocity of light. A similar vector equation is obtained for the the magnetic induction $\mathcal{B}$. If we consider one propagation direction $z$, the electric field reduces to two components in direction perpendicular to $z$: $\mathcal{E}_\sigma(x,y,z=z_0,t)$ $\mathcal{E}_\pi(x,y,z=z_0,t)$. $\mathcal{E}_\sigma$ and $\mathcal{E}_\pi$ describe the two components of polarized light. 
+
+If we ignore polarization, we can drop the vectorial description and consider $\mathcal{E}(x,y,z=z_0,t)$ as a scalar so the description of the electromagnetic field is now done with a scalar theory, which means that the electromagnetic disturbance is not described by two vectors, the electric field and the magnetic field, but by a single scalar field which is a function of position and time. We can writethe scalar wave equation
 \begin{equation}\label{eq: d'Alembert scalar field}
 \Big(\frac{1}{c^2} \frac{\partial^2}{\partial t^2}-\nabla^2\Big) U(x,y,z,t) = 0,
 \end{equation}
-where the scalar $U(x,y,z,t)$ stands for any of the three component of the vector fields $\vec{\mathcal{E}}$ and $\vec{\mathcal{B}}$ and $c= 1/\sqrt{\mu_0 \epsilon_0}$ is the velocity of light in vacuum. This equations show that the electric and magnetic field that compose light are traveling wave fields. If we consider one propagation direction $z$, the electric field reduces to two components in direction perpendicular to $z$: $\mathcal{E}_\sigma(x,y,z=z_0,t)$ $\mathcal{E}_\pi(x,y,z=z_0,t)$. $\mathcal{E}_\sigma$ and $\mathcal{E}_\pi$ describe the two components of polarized light. If we ignore polarization, we can drop the vectorial description and consider $\mathcal{E}(x,y,z=z_0,t)$ as a scalar so the description of the electromagnetic field is now done with a scalar theory, which means that the electromagnetic disturbance is not described by two vectors, the electric field and the magnetic field, but by a single scalar field which is a function of position and time. Because the field functions are linear, solutions with different frequencies can be added to form wave-packet solutions. For this reason, fields with harmonic time dependence $e^{-i\omega t}$ are those studied in the following chapters. When substituting such field into equation \ref{eq: d'Alembert scalar field}, the result is
+where the scalar $U(x,y,z,t)$ stands for any of the three component of the vector fields $\vec{\mathcal{E}}$ or magnetic field $\vec{\mathcal{B}}$ or for light propagating along the $z$ direction, any of the two electric field components $\mathcal{E}_\sigma$ and $\mathcal{E}_\pi$. 
+
+Consideing now the separability in the scalar wavefield of the time and spatial dependence $U(x,y,z,t)=U(x,y,z,)T(t)$ one gets that the spatial and time part are equal, so necessary equal to a constant (set by convinience to $=k^2$
+\begin{equation}
+\frac{\nabla^2 A}{A}=\frac{1}{c^2 T} \frac{d^2 T}{dT^2} = -k^2
+\end{equation}
+The solutions of the time part have the form $ A e^{i k c t}$ (where $k c = \omega$, the photon frequency), and the spatial part is the Helmholtz equation
 \begin{equation}\label{eq: Helmholtz equation}
-	\big[\nabla^2 + k^2\big]U(x,y,z)=0.
+(\nabla^2 + k^2) U = 0
 \end{equation}
-where $k= (2\pi)/\lambda$ is wavenumber corresponding to a wavelength $\lambda$, $\omega$ is the angular frequency of the radiation and $c=\lambda f$ the velocity of light in vacuum. This is the Helmholtz equation. The time dependence in $U$ can be factorized. In fact, the time solution for such equation is always the same while the spatial solution depends on the initial and boundary conditions. From here on, the time dependency of the field $U$ is not written. We then work with a complex scalar function that obeys the Helmholtz equation.
 
-\subsection{The scalar theory of Diffraction}
-\todo{complete and correct...}
-It is not the scope of this paper to detail the rigorous theory of diffraction arising when solving the scalar Helmholtz equation for general boundary conditions. Its development is not trivial and need sophisticated mathematical tools, like the Green's theorem, with clever use of the boundary conditions. Refs.~\cite{bornwolf}, \cite{nieto} and other texts in Optics present this theory. The procedure is: 
-\begin{itemize}
-  \item Write the solution of Helmholz Equation in the form of the integral theorem of Helmholz and Kirchhoff. 
-  \item Consider the Kirchhoff approximation, that assumes that the boundary values of the solution at the bondaries can be determined by geometrical optics.
-  %\item Obtain the Rayleigh-Sommerfield diffraction integrals, two formulas corresponding to Dirichlet and Neumann boundary conditions, respectively. 
-  \item Obtain the Fresnel-Kirchhoff diffraction formula
-  \item deduce the Fresnel diffraction formula
-\end{itemize}
+Using now $U(x,y,z)=e^{i k z}U(x,y)$, replacing in Eq.~\ref{eq: Helmholtz equation}, and neglecting the second derivative of $U$ with respect to $z$,
+\begin{equation}\label{eq: Helmholtz paraxial equation}
+2 k i \frac{\partial U}{\partial z} + \nabla_{\perp}^2 U = 0
+\end{equation}
+This is the Helmlholtz paraxial equation, where $\nabla^2_{\perp} = \frac{\partial}{\partial x^2} + \frac{\partial}{\partial y^2}$.
+
 % 
-The results of this scenario are the more intuitive approach called the angular spectrum method that is presented in the next section. It has the advantage of being more intuitive and free from some of the subtle difficulties of boundary conditions encountered when solving the Helmholtz equation exploiting the Green's theorem while (cf. Goodman \cite{goodmanfourier}).
-
-
-\subsection{Angular spectrum method}
-
-Consider the case of a source that emits only in the half-space with a positive spatial coordinate $z$ that describes its position in a Cartesian system.
-%The space is supposed to be free of electric charges and a monochromatic wave only is considered to propagate forward with respect to the z coordinate. 
-The angular spectrum formalism permits to construct an operator which applied to the electric field of incident wave permits to calculate the propagated one over any plane parallel to the initial one downstream of the source. Starting with the previous Cartesian coordinate system $(x,y,z)$, where the axis $z$ in the positive direction is considered to be the optical axis, consider two parallel planes, $z=0$ and $z=\Delta z$ where $\Delta z$ is a positive value on the $z$-axis. Consider the space between the two planes to be in vacuum, which means that equation \ref{eq: Helmholtz equation} is here obeyed. The aim is to use such equation to get an explicit form of the operator that once applied to the forward propagating field $U(x,y,0)$ yields to the propagated wave-field $U(x,y,\Delta z)$ at the plane $z=\Delta z$. A simple example of propagation can be achieved with the special case of a plane wave forward propagating along the $z$-axis
-\begin{equation} \label{eq: plane wave}
-U^{(PW)}(x,y,z)=e^{i(k_xx+k_yy+k_zz)}
-\end{equation}
-These waves are solution of the Helmholtz equation provided that $k_x$,$k_y$,$k_z$ are respectively the three components of the wave-vector $\bm{k}$, with
-\begin{equation}\label{eq: k definition}
-k_x^2+k_y^2+k_z^2 =k^2 =\left( \frac{2 \pi}{\lambda} \right)^2.
-\end{equation}
-This vector gives the direction of propagation of the wave. Expressing $k_z$ as a function of $k$, $k_x$ and $k_y$ and taking the positive square root value which, as before, makes it so only propagation in the positive direction of the $z$-axis is considered:
-\begin{equation} \label{eq: kz}
-k_z = \sqrt{k^2 -k_x^2-k_y^2}
-\end{equation}
-By substituting equation \ref{eq: kz} into equation \ref{eq: plane wave}, one obtains
-\begin{equation}\label{eq: plane wave with no kz}
-U^{(PW)}(x,y,z)=e^{i(k_xx+k_yy)}e^{iz\sqrt{k^2 -k_x^2-k_y^2}}
-\end{equation}
-Now the plane wave at position $z=0$ is 
-\begin{equation} \label{eq: plane wave with no kz at z=0}
-U^{(PW)}(x,y,0)=e^{i(k_xx+k_yy)}.
-\end{equation}
-The trivial problem of diffraction for a plane wave has then been solved. In fact, to obtain the propagated wave field it simply a matter of multiplying the unpropagated disturbance by the propagation factor $e^{i z\sqrt{k^2 -k_x^2-k_y^2}}$, that will be called 'free space propagator'. Extending this result from a plane wave forward propagating in vacuum between two parallel planes at position $z=0$ and $z=\Delta z$ to a more general disturbance is a matter of expressing the general unpropagated wave field as a linear combination of plane waves through the use of two dimensional Fourier integral \todo{It would be nice to continue the discussion and arrive to the same results, if possible, without using the Fourier space. The discussion of Fourier-related aspects is in next section}
-\begin{equation}\label{eq: Fourier transform of unpropagated field}
-U(x, y, 0) = \frac {1}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y, 0)e^{i(k_x x + k_y y)} dk_x dk_y
-\end{equation} 
-\todo{we use here a definition of FT different to the one in Appendix A}
-where $\widetilde{U}(k_x, k_y, 0)$ denotes the Fourier transform of $U(x,y,0)$ with respect to $x$ and $y$ while $k_x$ and $k_y$ represent the spatial-frequencies coordinate in the Fourier space. By applying the propagator operator $e^{i z\sqrt{k^2 -k_x^2-k_y^2}}$ to the unpropagated field, as it was show before, it is possible to retrieve the value of the field $U(x,y,\Delta z)$ propagated by a distance $z=\Delta z$. In order to do so, it is necessary to multiply such propagator for every component in which the unpropagated field as been decomposed through the use of equation \ref{eq: Fourier transform of unpropagated field}, thus arriving at
-\begin{equation}\label{eq: angular-spectrum representation}
-U(x, y, \Delta z) = \frac {1}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y, 0)e^{i\Delta z\sqrt{k^2 -k_x^2-k_y^2}}e^{i(k_x x + k_y y)} dk_x dk_y.
-\end{equation} 
-This is the \textbf{angular-spectrum representation} for propagated fields and it provides a rigorous solution to a certain boundary problem of the Helmholtz equation, namely one in which a forward propagation happens in free-space between two parallel planes. 
-
-\subsection{Fresnel approximation}
-
-We are interested to study the propagation of synchrotron radiation, a coherent X-ray beam that propagates making only small angles with respect to the $z$-axis. In this case the wave field is said to be 'paraxial'. In this special case, an approximation of the equation \ref{eq: angular-spectrum representation} leads to a simpler solution to the Helmholtz equation equivalent to the famous Fresnel diffraction integral. Starting from the previous general result, suppose that $U(x,y,0)$ is now a scalar function that describes a paraxial wave field. Since the paraxiality, as mentioned before, imply that all the non-negligible plane-wave components of the forward propagating field have small wavenumber components $k_x$ and $k_y$ such that $k_z << k_x, k_y$, it is possible to expand with Taylor expansion the square-root argument of the exponential of the free-space propagation:
-\begin{equation}\label{eq: binomial approx}
-\sqrt{k^2 -k_x^2-k_y^2}\approx k -\frac{k_x^2+k_y^2}{2k}	
-\end{equation}
-The propagated paraxial field is then described by a approximate form of the free-space propagator, called the \textbf{Fresnel propagator}
-\begin{equation}\label{eq: Fresnel approx of angular spectrum}
-U(x, y, \Delta z) = \frac {e^{i k \Delta z}}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y)  e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}} e^{i(k_x x + k_y y)}dk_x dk_y.
-\end{equation}
-It is also interesting to write the propagated field $U(x,y,\Delta z)$ as a function of the incident field $U$ instead of its Fourier transform $\widetilde{U}$ as done in Eq.~\ref{eq: Fresnel approx of angular spectrum}. We will show in the next section but we anticipate here that this equation is equivalent to: 
-\begin{equation}\label{eq: usualfresnel}
-\boxed{
-U(x,y, \Delta z) = \frac {e^{i k\Delta z }}{ i \lambda \Delta z} \int  \int U(x^\prime, y^\prime, 0) e^{i \frac{k}{2 \Delta z} [(x - x^\prime)^2 + (y - y^\prime)^2]} dx^\prime dy^\prime
-}.
-\end{equation}
-
-This expression can be manipulated to extract some terms not depending on $x^\prime$ and $y^\prime$ outside of the integral
-\begin{multline}\label{eq: fresnel2}
-U(x,y, \Delta z) = \frac {e^{i k\Delta z }}{ i \lambda \Delta z}  e^{ i \frac{k}{2 \Delta z} (x^2 + y^2) } \times \\
-\int \int \left\{ U(x^\prime, y^\prime, 0) e^{i \frac{k}{2 \Delta z} (x^{\prime 2} + y^{\prime 2} )} \right\} e^{-i \frac{k}{\Delta z} [x  x^\prime + y y^\prime]} dx^\prime dy^\prime .
-\end{multline}
-
-Equations~\ref{eq: usualfresnel} and \ref{eq: fresnel2} refer to the Fresnel propagator, and we recall it provides a rigorous solution of the Helmholtz equation for propagation in free space between two parallel planes using paraxial approximation. From the physical point of view, both equations are equivalent for propagation in the near and far field assuming paraxial approximation. However, for reasons that will be discussed in Section~\ref{ch: validity}, the numerical implementation would prefer Eq.~\ref{eq: usualfresnel} for near-field and Eq.~\ref{eq: fresnel2} for far field.
-
-It is possible to demonstrate that the angular spectrum formalism developed here and the Rayleigh-Sommerfeld diffraction integral of the first kind yield identical predictions of diffracted fields. This was done elegantly by Sherman \cite{Sherman:67} and Lalor \cite{Lalor:68}. The text books of \cite{goodmanfourier}, \cite{nieto} and \cite{paganin_book} are examples where it is described the theoretical approach solving integral theorem of Helmholz and Kirchhoff to obtain the Fresnel-Kirchhoff and the Rayleigh-Sommerfeld diffraction formulas, depending on the choice of boundary conditions and Green functions. \todo{make clear the connection of the angular spectrum and other  theoretical formulations}
-
-Synchrotron radiation is always well collimated along the propagation direction, therefore the use of the approximation \ref{eq: binomial approx} is justified in most cases. In the following we will assume this is true. For non-synchrotron applications, the calculation of the propagation of non-paraxial fields is sometimes needed. For that the use of higher orders of Taylor expansion may be needed, or other non-Taylor of expansions may be considered \cite{Mansuripur,Avoort}.
+% 
+% 
+% 
+% ==========================
+% Because the field functions are linear, solutions with different frequencies can be added to form wave-packet solutions. For this reason, fields with harmonic time dependence $e^{-i\omega t}$ are those studied in the following chapters. When substituting such field into equation \ref{eq: d'Alembert scalar field}, the result is
+% \begin{equation}\label{eq: Helmholtz equation}
+% 	\big[\nabla^2 + k^2\big]U(x,y,z)=0.
+% \end{equation}
+% where $k= (2\pi)/\lambda$ is wavenumber corresponding to a wavelength $\lambda$, $\omega$ is the angular frequency of the radiation and $c=\lambda f$ the velocity of light in vacuum. This is the Helmholtz equation. The time dependence in $U$ can be factorized. In fact, the time solution for such equation is always the same while the spatial solution depends on the initial and boundary conditions. From here on, the time dependency of the field $U$ is not written. We then work with a complex scalar function that obeys the Helmholtz equation.
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% We introduce the approximation of scalar theory: the electromagnetic disturbance at a given point in space-time is described by a single complex number rather than by a electric (and/or magnetic) field vector. Once the time-dependent vacuum wave equation for scalar field is obtained, the field is described as a superposition of monochromatic waves, the spectral decomposition. Each monochromatic component of the decomposition of the electromagnetic field obeys the Helmholtz equation, a time-independent form of the free space wave equation. We will focus our attention on the study of diffraction of waves obeying the Helmholtz equation in free-space, and in particular on the case of Fresnel diffraction. All this arguments will be discussed based on a well-established approach \cite{paganin_book} using an angular spectrum formulation, thus representing the electromagnetic field as a superposition of monochromatic plane waves with different spatial frequency and direction of propagation. 
+% 
+% We start from Maxwell wave equations
+% \begin{equation}
+% \label{eq: Maxwell equations}
+% \begin{aligned}
+% \bm{\nabla} \times \bm{\mathcal{B}} &=\epsilon_0 \mu_0 \frac{\partial \bm{\mathcal{E}}}{\partial t}
+% &\qquad &\text{Faraday's law},\\[2\jot]
+% \bm{\nabla} \times \bm{\mathcal{E}} &= -\frac{\partial \bm{\mathcal{B}}}{\partial t}
+% &\qquad &\text{Amp\`{e}re's law},\\[2\jot]
+% \bm{\nabla} \cdot \bm{\mathcal{B}}    &= 0 & \qquad &\text{Gauss' law},\\[2\jot]
+% \bm{\nabla} \cdot \bm{\mathcal{E}}    &= 0 & \qquad &\text{Coulomb's law},
+% \end{aligned}
+% \end{equation}
+% where $\mathcal{B}$ is the magnetic induction, $\mathcal{E}$ is the electric field, $\mu_0$ and $\epsilon_0$ are the magnetic and the electric permittivity of free-space, respectively, $\nabla \times$ is the curl operator and $\nabla \cdot$ is the divergence operator. The vacuum wave equation that governs the spatial and temporal evolution of the electromagnetic field in free space will be derived. Note that $\mathcal{E}=\mathcal{E}(x,y,z,t)$ and $\mathcal{B}=\mathcal{B}(x,y,z,t)$ are functions of four variables. 
+% 
+% With some manipulations one can arrive to the wave equation for the electric field
+% 
+% The same equation holds for the magnetic induction (replacing $\mathcal{E} \longleftrightarrow \mathcal{B}$). 
+% Note that since the vector Laplacian acts on the individual field components in the same way and keeping them uncoupled, the above vector equations, when projected onto $x$, $y$, or $z$ direction, split into 6 identical uncoupled equations, one for each field component.
+% T
+% 
+% 
+% \subsection{The scalar theory of Diffraction}
+% \todo{complete and correct...}
+% It is not the scope of this paper to detail the rigorous theory of diffraction arising when solving the scalar Helmholtz equation for general boundary conditions. Its development is not trivial and need sophisticated mathematical tools, like the Green's theorem, with clever use of the boundary conditions. Refs.~\cite{bornwolf}, \cite{nieto} and other texts in Optics present this theory. The procedure is: 
+% \begin{itemize}
+%   \item Write the solution of Helmholz Equation in the form of the integral theorem of Helmholz and Kirchhoff. 
+%   \item Consider the Kirchhoff approximation, that assumes that the boundary values of the solution at the bondaries can be determined by geometrical optics.
+%   %\item Obtain the Rayleigh-Sommerfield diffraction integrals, two formulas corresponding to Dirichlet and Neumann boundary conditions, respectively. 
+%   \item Obtain the Fresnel-Kirchhoff diffraction formula
+%   \item deduce the Fresnel diffraction formula
+% \end{itemize}
+% % 
+% The results of this scenario are the more intuitive approach called the angular spectrum method that is presented in the next section. It has the advantage of being more intuitive and free from some of the subtle difficulties of boundary conditions encountered when solving the Helmholtz equation exploiting the Green's theorem while (cf. Goodman \cite{goodmanfourier}).
+% 
+% 
+% \subsection{Angular spectrum method}
+% 
+% Consider the case of a source that emits only in the half-space with a positive spatial coordinate $z$ that describes its position in a Cartesian system.
+% %The space is supposed to be free of electric charges and a monochromatic wave only is considered to propagate forward with respect to the z coordinate. 
+% The angular spectrum formalism permits to construct an operator which applied to the electric field of incident wave permits to calculate the propagated one over any plane parallel to the initial one downstream of the source. Starting with the previous Cartesian coordinate system $(x,y,z)$, where the axis $z$ in the positive direction is considered to be the optical axis, consider two parallel planes, $z=0$ and $z=\Delta z$ where $\Delta z$ is a positive value on the $z$-axis. Consider the space between the two planes to be in vacuum, which means that equation \ref{eq: Helmholtz equation} is here obeyed. The aim is to use such equation to get an explicit form of the operator that once applied to the forward propagating field $U(x,y,0)$ yields to the propagated wave-field $U(x,y,\Delta z)$ at the plane $z=\Delta z$. A simple example of propagation can be achieved with the special case of a plane wave forward propagating along the $z$-axis
+% \begin{equation} \label{eq: plane wave}
+% U^{(PW)}(x,y,z)=e^{i(k_xx+k_yy+k_zz)}
+% \end{equation}
+% These waves are solution of the Helmholtz equation provided that $k_x$,$k_y$,$k_z$ are respectively the three components of the wave-vector $\bm{k}$, with
+% \begin{equation}\label{eq: k definition}
+% k_x^2+k_y^2+k_z^2 =k^2 =\left( \frac{2 \pi}{\lambda} \right)^2.
+% \end{equation}
+% This vector gives the direction of propagation of the wave. Expressing $k_z$ as a function of $k$, $k_x$ and $k_y$ and taking the positive square root value which, as before, makes it so only propagation in the positive direction of the $z$-axis is considered:
+% \begin{equation} \label{eq: kz}
+% k_z = \sqrt{k^2 -k_x^2-k_y^2}
+% \end{equation}
+% By substituting equation \ref{eq: kz} into equation \ref{eq: plane wave}, one obtains
+% \begin{equation}\label{eq: plane wave with no kz}
+% U^{(PW)}(x,y,z)=e^{i(k_xx+k_yy)}e^{iz\sqrt{k^2 -k_x^2-k_y^2}}
+% \end{equation}
+% Now the plane wave at position $z=0$ is 
+% \begin{equation} \label{eq: plane wave with no kz at z=0}
+% U^{(PW)}(x,y,0)=e^{i(k_xx+k_yy)}.
+% \end{equation}
+% The trivial problem of diffraction for a plane wave has then been solved. In fact, to obtain the propagated wave field it simply a matter of multiplying the unpropagated disturbance by the propagation factor $e^{i z\sqrt{k^2 -k_x^2-k_y^2}}$, that will be called 'free space propagator'. Extending this result from a plane wave forward propagating in vacuum between two parallel planes at position $z=0$ and $z=\Delta z$ to a more general disturbance is a matter of expressing the general unpropagated wave field as a linear combination of plane waves through the use of two dimensional Fourier integral \todo{It would be nice to continue the discussion and arrive to the same results, if possible, without using the Fourier space. The discussion of Fourier-related aspects is in next section}
+% \begin{equation}\label{eq: Fourier transform of unpropagated field}
+% U(x, y, 0) = \frac {1}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y, 0)e^{i(k_x x + k_y y)} dk_x dk_y
+% \end{equation} 
+% \todo{we use here a definition of FT different to the one in Appendix A}
+% where $\widetilde{U}(k_x, k_y, 0)$ denotes the Fourier transform of $U(x,y,0)$ with respect to $x$ and $y$ while $k_x$ and $k_y$ represent the spatial-frequencies coordinate in the Fourier space. By applying the propagator operator $e^{i z\sqrt{k^2 -k_x^2-k_y^2}}$ to the unpropagated field, as it was show before, it is possible to retrieve the value of the field $U(x,y,\Delta z)$ propagated by a distance $z=\Delta z$. In order to do so, it is necessary to multiply such propagator for every component in which the unpropagated field as been decomposed through the use of equation \ref{eq: Fourier transform of unpropagated field}, thus arriving at
+% \begin{equation}\label{eq: angular-spectrum representation}
+% U(x, y, \Delta z) = \frac {1}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y, 0)e^{i\Delta z\sqrt{k^2 -k_x^2-k_y^2}}e^{i(k_x x + k_y y)} dk_x dk_y.
+% \end{equation} 
+% This is the \textbf{angular-spectrum representation} for propagated fields and it provides a rigorous solution to a certain boundary problem of the Helmholtz equation, namely one in which a forward propagation happens in free-space between two parallel planes. 
+% 
+% \subsection{Fresnel approximation}
+% 
+% We are interested to study the propagation of synchrotron radiation, a coherent X-ray beam that propagates making only small angles with respect to the $z$-axis. In this case the wave field is said to be 'paraxial'. In this special case, an approximation of the equation \ref{eq: angular-spectrum representation} leads to a simpler solution to the Helmholtz equation equivalent to the famous Fresnel diffraction integral. Starting from the previous general result, suppose that $U(x,y,0)$ is now a scalar function that describes a paraxial wave field. Since the paraxiality, as mentioned before, imply that all the non-negligible plane-wave components of the forward propagating field have small wavenumber components $k_x$ and $k_y$ such that $k_z << k_x, k_y$, it is possible to expand with Taylor expansion the square-root argument of the exponential of the free-space propagation:
+% \begin{equation}\label{eq: binomial approx}
+% \sqrt{k^2 -k_x^2-k_y^2}\approx k -\frac{k_x^2+k_y^2}{2k}	
+% \end{equation}
+% The propagated paraxial field is then described by a approximate form of the free-space propagator, called the \textbf{Fresnel propagator}
+% \begin{equation}\label{eq: Fresnel approx of angular spectrum}
+% U(x, y, \Delta z) = \frac {e^{i k \Delta z}}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y)  e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}} e^{i(k_x x + k_y y)}dk_x dk_y.
+% \end{equation}
+% It is also interesting to write the propagated field $U(x,y,\Delta z)$ as a function of the incident field $U$ instead of its Fourier transform $\widetilde{U}$ as done in Eq.~\ref{eq: Fresnel approx of angular spectrum}. We will show in the next section but we anticipate here that this equation is equivalent to: 
+% \begin{equation}\label{eq: usualfresnel}
+% \boxed{
+% U(x,y, \Delta z) = \frac {e^{i k\Delta z }}{ i \lambda \Delta z} \int  \int U(x^\prime, y^\prime, 0) e^{i \frac{k}{2 \Delta z} [(x - x^\prime)^2 + (y - y^\prime)^2]} dx^\prime dy^\prime
+% }.
+% \end{equation}
+% 
+% This expression can be manipulated to extract some terms not depending on $x^\prime$ and $y^\prime$ outside of the integral
+% \begin{multline}\label{eq: fresnel2}
+% U(x,y, \Delta z) = \frac {e^{i k\Delta z }}{ i \lambda \Delta z}  e^{ i \frac{k}{2 \Delta z} (x^2 + y^2) } \times \\
+% \int \int \left\{ U(x^\prime, y^\prime, 0) e^{i \frac{k}{2 \Delta z} (x^{\prime 2} + y^{\prime 2} )} \right\} e^{-i \frac{k}{\Delta z} [x  x^\prime + y y^\prime]} dx^\prime dy^\prime .
+% \end{multline}
+% 
+% Equations~\ref{eq: usualfresnel} and \ref{eq: fresnel2} refer to the Fresnel propagator, and we recall it provides a rigorous solution of the Helmholtz equation for propagation in free space between two parallel planes using paraxial approximation. From the physical point of view, both equations are equivalent for propagation in the near and far field assuming paraxial approximation. However, for reasons that will be discussed in Section~\ref{ch: validity}, the numerical implementation would prefer Eq.~\ref{eq: usualfresnel} for near-field and Eq.~\ref{eq: fresnel2} for far field.
+% 
+% It is possible to demonstrate that the angular spectrum formalism developed here and the Rayleigh-Sommerfeld diffraction integral of the first kind yield identical predictions of diffracted fields. This was done elegantly by Sherman \cite{Sherman:67} and Lalor \cite{Lalor:68}. The text books of \cite{goodmanfourier}, \cite{nieto} and \cite{paganin_book} are examples where it is described the theoretical approach solving integral theorem of Helmholz and Kirchhoff to obtain the Fresnel-Kirchhoff and the Rayleigh-Sommerfeld diffraction formulas, depending on the choice of boundary conditions and Green functions. \todo{make clear the connection of the angular spectrum and other  theoretical formulations}
+% 
+% Synchrotron radiation is always well collimated along the propagation direction, therefore the use of the approximation \ref{eq: binomial approx} is justified in most cases. In the following we will assume this is true. For non-synchrotron applications, the calculation of the propagation of non-paraxial fields is sometimes needed. For that the use of higher orders of Taylor expansion may be needed, or other non-Taylor of expansions may be considered \cite{Mansuripur,Avoort}.
 
 
 %
