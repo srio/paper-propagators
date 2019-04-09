@@ -299,9 +299,10 @@ where
 h(x,y) \coloneqq \frac{e^{i k \Delta z}}{2\pi} \mathcal{F}^{-1}\Big \{e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}}\Big\}
 \end{equation} 
 is the Fresnel propagator in real-space form in the paraxial approximation. 
-Performing the inverse Fourier transform \footnote{Note the application of FT$^{-1}$ different from Appendix A. \ingreen{In Mathematica:  (Exp[I k z]/2/Pi) InverseFourierTransform[
-  Exp[-I z (kx^2 + ky^2)/ (2 k)], {kx, ky}, {x, y}]}
-}
+Performing the inverse Fourier transform 
+%\footnote{Note the application of FT$^{-1}$ different from Appendix A. \ingreen{In Mathematica:  (Exp[I k z]/2/Pi) InverseFourierTransform[
+%  Exp[-I z (kx^2 + ky^2)/ (2 k)], {kx, ky}, {x, y}]}
+%}
 we obtain the explicit form of the real space Fresnel propagator
 \begin{equation}\label{eq: real space Fresnel propagator}
 h(x,y) = -\frac{i k e^{i k\Delta z}}{2\pi \Delta z} e^{\frac{i k(x^2+y^2)}{2\Delta z}}
@@ -318,10 +319,11 @@ In summary, to perform the calculation of propagation one can use the general pr
 \label{eq: Fresnel propagation in convolution form}
 U(x, y, \Delta) = P^G \mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}.
 \end{equation}
-There are three necessary steps: 1) Fourier transform the unpropagated field: $\mathcal{F}\big\{U(x,y,0)\big\}$, 2) Multiply it for the free-space Fresnel propagator\footnote{$\mathcad{F}\{h\}$ like in Appendix A, thus
-\ingreen{FourierTransform[-((I E^((I k (x^2 + y^2))/(2 z) + I k z) k)/(
-  2 \[Pi] z)), {x, y}, {fx, fy}, FourierParameters -> {0, -2*Pi}]}
-  }
+There are three necessary steps: 1) Fourier transform the unpropagated field: $\mathcal{F}\big\{U(x,y,0)\big\}$, 2) Multiply it for the free-space Fresnel propagator
+%\footnote{$\mathcal{F}\{h\}$ like in Appendix A, thus
+%\ingreen{FourierTransform[-((I E^((I k (x^2 + y^2))/(2 z) + I k z) k)/(
+%  2 \[Pi] z)), {x, y}, {fx, fy}, FourierParameters -> {0, -2*Pi}]}
+%  }
 $ K=\exp(-i \Delta z \lambda \pi (f_x^2+f_y^2))$, 3) Inverse-Fourier transform this result with respect to $k_x$ and $k_y$:  $\mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}$, and 4) apply a global phase $P^G = {e^{ik\Delta z}}$ to the result.
 
 %The result is:
@@ -515,9 +517,10 @@ The system simulated in Fig.~\ref{fig: aperture_1D} refers to  the Fresnel diffr
 
 If we consider a wavefront sampled in $N \times N$ pixels (being $N > 10^3$), when calculating the 2D integrals to propagate the wavefront to another plane with the same resolution, we need approximately $N^2\cdot N^2 \approx 10^{12}$ operations. This implicate the necessity of a great amount of storage and calculations not feasible for normal computers. When performing the same calculations taking advantage of the theory of Fourier optics, one $FFT$ requires $\approx N^2 \log_2 N \approx 10^7$ operations \cite{Marshall:1992:CVM:129191}. This is the reason why we seek for a form that let us exploit such powerful tool. 
 
-The expression of the Fresnel propagator in Eq.~\ref{eq: Fresnel propagation in convolution form} is suitable to be calculated numerically with the use of Fast Fourier Transform algorithm ($FFT$) simply swapping the Fourier transform operator $\mathcal{F}\big\{\big\}$ with the discrete Fourier transform one $FFT$, taking into account the sampling conditions that are discussed later. That is, one arrives at \todo{explain the kernel is changed to account for different definition of the fourier transform}
+The expression of the Fresnel propagator in Eq.~\ref{eq: Fresnel propagation in convolution form} is suitable to be calculated numerically with the use of Fast Fourier Transform algorithm ($FFT$) simply swapping the Fourier transform operator $\mathcal{F}\big\{\big\}$ with the discrete Fourier transform one $FFT$, taking into account the sampling conditions that are discussed later. That is, one arrives at \todo{explain the kernel is changed to account for different definition of the fourier transform} \todo{Add equation}
 \begin{equation}\label{eq: standard propagator}
-U(x, y, \Delta z)= \frac{e^{ik\Delta z}}{2\pi} FFT^{-1}\Big\{ FTT\big\{U(x, y, 0)\big\} \times e^{-i \pi \lambda \Delta z (f_x^2 + f_y^2) \Big\}
+U(x, y, \Delta z)= \frac{e^{ik\Delta z}}{2\pi} FFT^{-1} 
+%\left\{ FTT \big \left\{ U(x, y, 0) \right\} \times e^{-i \pi \lambda \Delta z (f_x^2 + f_y^2) \right\} 
 \end{equation} 
 This is the standard implementation of the Fresnel propagator using two FFT implemented in most computer codes for synchrotron radiation. The use of FFT is not restricted to this propagator. Indeed, Eq.~\ref{eq: before fraunhoffer} represents the Fresnel propagator as Fourier transform of the distrurbance $U$ multiplied by a quadratic term. This allows to compute the Fresnel propagator using a single FFT \todo{explain why this is not so popular and is not used in synchrotron radiation (as far as I know...)}. The in the Fraunhofer regime, this quadratic phase is approximated by one so the propagated disturbance is just the Fourier transform of the unpropagated one, a phenomenon that is very well known in many fields of Physics. 
 
@@ -633,7 +636,7 @@ The case of diffraction of a collapsing spherical wave clipped a square slit can
 \begin{equation}
     |U(x,y,z=\Delta z)|^2 = \left( \frac{2 k D^2}{\pi \Delta z}\right)^2 sinc^2\frac{k x D}{2 \Delta z} sinc^2\frac{k y D}{2 \Delta z}
 \end{equation}
-with $sinx(x)=\sin(x}/x$. Note that this pattern is the same (except for the scaling factor) as the pattern produced by a plane wave at $\Dz=\infty$ (in the far field using the Fraunhofer approximation). Fig.~\ref{fig: slit 2D converging} shows the results of some numerical calculations using WOFRY(zoom), SRW(quadratic), \inred{add more...} compared with the analytical result. The agreement is very good in general, thus the data are presented in log scale to better appreciate small differences.  
+with $sinc x(x)=\sin(x)/x$. Note that this pattern is the same (except for the scaling factor) as the pattern produced by a plane wave at $Dz=\infty$ (in the far field using the Fraunhofer approximation). Fig.~\ref{fig: slit 2D converging} shows the results of some numerical calculations using WOFRY(zoom), SRW(quadratic), \inred{add more...} compared with the analytical result. The agreement is very good in general, thus the data are presented in log scale to better appreciate small differences.  
 
 \todo{Discuss the phase. May be illustrate the Gouy phase?}
 
@@ -796,7 +799,7 @@ Propagate a first approximation to an undulator beam, consisting in a spherical 
 
 \subsection{Running times.}
 \todo{Compare execution times of different libraries for a given example. Discuss implementations and tools.}
-Figure~\ref{fig: running times 1D} compares the running times of different implementations of 1D propagators. Some conclusions can be extracted. The integral implementation with a double loop in python \{tt xwp-exact\_prop} is very slow and unmanageable, even for small arrays (we used 2048 points). When vectorizing one loop, either directly in python in {\tt wofry-integral} or using some paralelization libraries like NUMBA in {\tt xwp-exact\_prop\_numba} the calculation times are very reasonable (for 1D) and can be used systematically. The propagators using FFT are much faster (\~ 3 orders of magnitude). Their differences come from a heavier interface (in wofry, than becomes slower than xwp when accumulating 10 or more runs). Note also that {\tt fft\_conv} that uses {\tt numpy.conv} for convolution is slower than the direct implementation of two FFTs in {\tt fft}.   
+Figure~\ref{fig: running times 1D} compares the running times of different implementations of 1D propagators. Some conclusions can be extracted. The integral implementation with a double loop in python {tt xwp-exact\_prop} is very slow and unmanageable, even for small arrays (we used 2048 points). When vectorizing one loop, either directly in python in {\tt wofry-integral} or using some paralelization libraries like NUMBA in {\tt xwp-exact\_prop\_numba} the calculation times are very reasonable (for 1D) and can be used systematically. The propagators using FFT are much faster (\~ 3 orders of magnitude). Their differences come from a heavier interface (in wofry, than becomes slower than xwp when accumulating 10 or more runs). Note also that {\tt fft\_conv} that uses {\tt numpy.conv} for convolution is slower than the direct implementation of two FFTs in {\tt fft}.   
 
 \begin{figure}
 \label{fig: running times 1D}
@@ -1092,9 +1095,9 @@ R(z'; \Delta z) = \int_0^{N_F} \eta e^{i \pi \eta^2} J_0(2 \pi \eta r') d\eta
 \end{equation}
 where $r'$ is a normalized radial coordinate $r' = \sqrt{(x^2 + y^2)/(\lambda \Delta z)}$, and $J_0$ the first-kind Bessel function of zeroth order. This integral has no analytical form but can be easily integrated numerically. 
 
-In the case of Fraunhofer approximation, the integral $\madcad{I}_x(x)$ of \cite{goodmanfourier} can be integrated analytically and one obtains for the square aperture: 
+In the case of Fraunhofer approximation, the integral $\mathcal{I}_x(x)$ of \cite{goodmanfourier} can be integrated analytically and one obtains for the square aperture: 
 \begin{equation}
-\mathcad{I}(x) = \frac{2 x_{max}}{\sqrt{\lambda \Delta z}} e^{i \frac{\pi}{\lambda \Delta z} x^2 } sinc\left( \frac{x_{max}  \pi}{\lambda \Delta z} x \right) 
+\mathcal{I}(x) = \frac{2 x_{max}}{\sqrt{\lambda \Delta z}} e^{i \frac{\pi}{\lambda \Delta z} x^2 } sinc\left( \frac{x_{max}  \pi}{\lambda \Delta z} x \right) 
 \end{equation}
 
 \todo{Airy disk (circular+Fraunhofer)}
