@@ -176,14 +176,14 @@ Using now $U(x,y,z)=e^{i k z}U(x,y)$, replacing in Eq.~\ref{eq: Helmholtz equati
 %2 k i \frac{\partial U}{\partial z} + \nabla_{\perp}^2 U = 0,
 \end{equation}
 this is the Helmlholtz paraxial equation. Consider now the 2D Fourier transform of $U$,
-\begin{equation}
+\begin{equation}\label{eq: ft of U}
 \tilde{U}(u,v,z) = \int\int e^{-i 2 \pi (u x + v y) } U(x,y,z) dx dy,
 \end{equation}
 which inserted in Eq.~\ref{eq: Helmholtz paraxial equation} 
 \begin{equation}
-2 k i \frac{d \tilde{U}}{d z} - 4 \pi^2 (u^2 + v^2) = 0.
+2 k i \frac{d \tilde{U}}{d z} - 4 \pi^2 (u^2 + v^2) \tilde{U}= 0.
 \end{equation}
-The solution of this differential equation is
+The solution of this simple ordinary differential equation is
 \begin{equation}\label{eq: propagator reciprocal space}
 \tilde{U}(u,v,z) = \tilde{U}(u,v,0)  e^{- \pi i \lambda z (u^2 + v^2) }
 \end{equation}
@@ -200,11 +200,9 @@ U(x,y,z) = \int\int e^{i 2 \pi (u x + v y) } \tilde{U}(u,v,0)  e^{- \pi i \lambd
 which represents the Fresnel propagator (in reciprocal space). 
 One can observe that this is a convolution $U(x,y,z) = U(x,y,0) \otimes G(x,y) $, or explicitely
 \begin{equation}\label{eq: Fresnel near field}
-\boxed{
 U(x,y,z) =  \frac{\inred{e^{i k z}}}{i \lambda z} \int\int U(x',y',0) e^{ \frac{i k}{2 z} ( (x-x')^2 + (y - y')^2) }  dx' dy',
-}
 \end{equation}
-or expression of the Fresnel propagator (in real space). An equivalent form of the Fresnel propagator is obtained expanding the exponent in the ingtegrand, then factorizing and taking out of the integral the term that does not depend on the variables of integration
+or expression of the Fresnel propagator (in real space). An equivalent form of the Fresnel propagator is obtained expanding the exponent in the integrand, then factorizing and taking out of the integral the term that does not depend on the variables of integration
 \begin{multline}\label{eq: Fresnel far field}
 U(x,y,z) =  \frac{\inred{e^{i k z}}}{i \lambda z} e^{\frac{i k}{2 z} (x^2 + y^2) } \times \\
 \int\int U(x',y',0) e^{ \frac{i k}{2 z} (x'^2 + y'^2) } 
@@ -216,140 +214,43 @@ When the propagation distance verify $z >>k (x^{\prime 2}_{max} + y^{\prime 2}_{
 \begin{equation}\label{eq: fraunhoffer}
 U(x,y,z) = \frac{\inred{e^{i k z}}}{i \lambda z}
 \int\int U(x',y',0) e^{ \frac{i k}{2 z} (x'^2 + y'^2) } 
-e^{ \frac{-i 2 \pi}{z \lambda} (x x' + y y') } dx' dy'.
+e^{ \frac{-i 2 \pi}{z \lambda} (x x' + y y') } dx' dy',
 \end{equation}
+which is the Fraunhoffer diffraction formula that states that the propagated disturbance (amplitude) of an electrical field to a distance $z$ is just the 2D Fourier Transform of the field at $z$=0. 
 
 \subsection{Beyond the Fresnel approximation}
 
-In the rigorous theory of diffraction the scalar Helmholtz equation is solved for general boundary conditions. Its development is not trivial and need particular mathematical tools, like the Green's theorem, with clever use of the boundary conditions. Refs.~\cite{bornwolf}, \cite{nieto} and other texts in Optics present this theory. The gerenal procedure is: i) write the solution of Helmholz Equation in the form of the integral theorem of Helmholz and Kirchhoff (pag 377, Eq.~7 in \cite{bornwolf}), ii) consider the Kirchhoff approximation, that assumes that the boundary values of the solution at the boundaries can be determined by geometrical optics to obtain the Fresnel-Kirchhoff diffraction formula (pag. 380, Eq.~17), and iii) then  deduce the Fresnel diffraction formula. 
+In the rigorous theory of diffraction, the scalar Helmholtz equation is solved for general boundary conditions. Its development is not trivial and need particular mathematical tools, like the Green's theorem, with clever use of the boundary conditions. Refs.~\cite{bornwolf}, \cite{nieto}, \cite{goodmanfourier} and other texts in Optics present these theories. The gerenal procedure is: i) write the solution of Helmholz Equation in the form of the integral theorem of Helmholz and Kirchhoff (ch 8.3, Eq.~7 in \cite{bornwolf}, Eq.~6.2 in \cite{nieto}, Eq.~3-23 in \cite{goodmanfourier} ), ii) consider the Kirchhoff approximation, that assumes that the boundary values of the solution at the boundaries can be determined by geometrical optics to obtain the Fresnel-Kirchhoff diffraction formula (Eq.~17 in \cite{bornwolf}, eq 3-27 in \cite{goodmanfourier}), or alternatively iii) use different Green functions to deduce Rayleigh-Sommerfeld diffraction formulas (Eqs, 6.20 and 6.21 in \cite{nieto}, Eqs 3-39,3-40 in \cite{goodmanfourier}). It can be shown  that these three solutions differ only by an inclination factor (3-51,3-52 in \cite{goodmanfourier}), and they are all identical when only small angles are involved, arriving to (Eq 22-23 in \cite{bornwolf}, Eq 6.45,6.46 in \cite{nieto} and Eq. 3-54 in \cite{goodmanfourier})
+
+\begin{equation}\label{eq: Huygens}
+ U(x,y,z) = \frac{1}{i \lambda} \int \int U(x,y,0) \frac{e^{i k r_{01}}}{r_{01}} \cos \theta ds
+\end{equation}
+with s is ... and $r_{01}$ is ...
 % 
 
-The same results results are obtained in the more intuitive approach called the angular spectrum method. Following Ref.~\cite{paganin}, we constate that a plane wave is a solution of the Helmholtz equation, and can be written as: 
+The same results results are obtained in the more intuitive approach called the angular spectrum method. Following Ref.~\cite{paganin_book}, we constate that a plane wave is a solution of the Helmholtz equation, and can be written as: 
 
 \begin{equation}
  U^{(PW)}(x,y,z)=e^{i(k_xx+k_yy+k_zz)} = U^{(PW)}(x,y,0) e^{i k_z z}
 \end{equation}
 where $\vec{k}=(k_x,k_y,k_z)$ is the wavevector and $|\vec{k}| = 2 \pi / \lambda$. 
-The problem of propagation for a plane wave becomes trivial. In fact, to obtain the propagated wave field it simply a matter of multiplying the unpropagated disturbance by the propagation factor $e^{i k_z z} e^{i z\sqrt{k^2 -k_x^2-k_y^2}}$. Extending this result from a plane wave forward propagating in vacuum between two parallel planes at position $z=0$ and $z$ to a more general disturbance is a matter of expressing the general unpropagated wave field as a linear combination of plane waves through the use of two dimensional Fourier integral.
-
-\begin{equation}\label{eq: Fourier transform of unpropagated field}
-U(x, y, 0) = \frac {1}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y, 0)e^{i(k_x x + k_y y)} dk_x dk_y
-\end{equation} 
-where $\widetilde{U}(k_x, k_y, 0)$ denotes the Fourier transform of $U(x,y,0)$ with respect to $x$ and $y$ while $k_x$ and $k_y$ represent the spatial-frequencies coordinate in the Fourier space. By applying the propagator operator $e^{i z\sqrt{k^2 -k_x^2-k_y^2}}$ to the unpropagated field, as it was show before, it is possible to retrieve the value of the propagated field $U(x,y,z)$. In order to do so, it is necessary to multiply such propagator for every component in which the unpropagated field as been decomposed through the use of equation \ref{eq: Fourier transform of unpropagated field}, thus arriving at
+The problem of propagation for a plane wave becomes trivial. In fact, to obtain the propagated wave field it simply a matter of multiplying the unpropagated disturbance by the propagation factor $e^{i k_z z} = e^{i z\sqrt{k^2 -k_x^2-k_y^2}}$. Extending this result from a plane wave forward propagating in vacuum between two parallel planes at position $z=0$ and $z$ to a more general disturbance is a matter of expressing the general unpropagated wave field as a linear combination of plane waves through the use of 2D Fourier integral (Eq.~\ref{eq: ft of U}).
+By applying the propagator operator $e^{i z\sqrt{k^2 -k_x^2-k_y^2}}$ to the unpropagated field it is possible to retrieve the value of the propagated field $U(x,y,z)$. 
+%In order to do so, it is necessary to multiply such propagator for every component in which the unpropagated field as been decomposed through the use of equation \ref{eq: Fourier transform of unpropagated field}, thus arriving at
 \begin{equation}\label{eq: angular-spectrum representation}
-U(x, y, \Delta z) = \frac {1}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y, 0)e^{i\Delta z\sqrt{k^2 -k_x^2-k_y^2}}e^{i(k_x x + k_y y)} dk_x dk_y.
+U(x, y, z) = \int \int \widetilde{U}(u,v; z=0) e^{i z\sqrt{k^2 -k_x^2-k_y^2}} e^{i(u x + v y)} du dv.
 \end{equation} 
 This is the \textbf{angular-spectrum representation} for propagated fields and it provides a rigorous solution to a certain boundary problem of the Helmholtz equation, namely one in which a forward propagation happens in free-space between two parallel planes. 
 
+It can be shown that the Fresnel propagator in Eq.~\ref{eq: Fresnel in real space} can be obtained from the Huygens propagator (Eq.~\ref{eq: Huygens}) by approximating
+\begin{equation}
+ \frac{e^{i k r}}{r} = \frac{e^{i k \sqrt{z^2 + x^2 + y^2} }} { \sqrt{z^2 + x^2 + y^2} } \approx e^{i k z} \frac{ 
+ e^{\frac{i k}{2 z} (x^2 + y^2)} 
+ }{z},  
+\end{equation}
+The same in reciprocal space, Eq.~\ref{eq: angular-spectrum representation} derives in Eq.~\ref{eq: Fresnel in reciprocal space} within this approximation. 
 
-% It has the advantage of being more intuitive and free from some of the subtle difficulties of boundary conditions encountered when solving the Helmholtz equation exploiting the Green's theorem while (cf. Goodman \cite{goodmanfourier}).
-% Consider the case of a source that emits only in the half-space with a positive spatial coordinate $z$ that describes its position in a Cartesian system.
-% %The space is supposed to be free of electric charges and a monochromatic wave only is considered to propagate forward with respect to the z coordinate. 
-% The angular spectrum formalism permits to construct an operator which applied to the electric field of incident wave permits to calculate the propagated one over any plane parallel to the initial one downstream of the source. Starting with the previous Cartesian coordinate system $(x,y,z)$, where the axis $z$ in the positive direction is considered to be the optical axis, consider two parallel planes, $z=0$ and $z=\Delta z$ where $\Delta z$ is a positive value on the $z$-axis. Consider the space between the two planes to be in vacuum, which means that equation \ref{eq: Helmholtz equation} is here obeyed. The aim is to use such equation to get an explicit form of the operator that once applied to the forward propagating field $U(x,y,0)$ yields to the propagated wave-field $U(x,y,\Delta z)$ at the plane $z=\Delta z$. A simple example of propagation can be achieved with the special case of a plane wave forward propagating along the $z$-axis
-% \begin{equation} \label{eq: plane wave}
-% U^{(PW)}(x,y,z)=e^{i(k_xx+k_yy+k_zz)}
-% \end{equation}
-% These waves are solution of the Helmholtz equation provided that $k_x$,$k_y$,$k_z$ are respectively the three components of the wave-vector $\bm{k}$, with
-% \begin{equation}\label{eq: k definition}
-% k_x^2+k_y^2+k_z^2 =k^2 =\left( \frac{2 \pi}{\lambda} \right)^2.
-% \end{equation}
-% This vector gives the direction of propagation of the wave. Expressing $k_z$ as a function of $k$, $k_x$ and $k_y$ and taking the positive square root value which, as before, makes it so only propagation in the positive direction of the $z$-axis is considered:
-% \begin{equation} \label{eq: kz}
-% k_z = \sqrt{k^2 -k_x^2-k_y^2}
-% \end{equation}
-% By substituting equation \ref{eq: kz} into equation \ref{eq: plane wave}, one obtains
-% \begin{equation}\label{eq: plane wave with no kz}
-% U^{(PW)}(x,y,z)=e^{i(k_xx+k_yy)}e^{iz\sqrt{k^2 -k_x^2-k_y^2}}
-% \end{equation}
-% Now the plane wave at position $z=0$ is 
-% \begin{equation} \label{eq: plane wave with no kz at z=0}
-% U^{(PW)}(x,y,0)=e^{i(k_xx+k_yy)}.
-% \end{equation}
-%The discussion of Fourier-related aspects is in next section}
-% \begin{equation}\label{eq: Fourier transform of unpropagated field}
-% U(x, y, 0) = \frac {1}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y, 0)e^{i(k_x x + k_y y)} dk_x dk_y
-% \end{equation} 
-% \todo{we use here a definition of FT different to the one in Appendix A}
-% where $\widetilde{U}(k_x, k_y, 0)$ denotes the Fourier transform of $U(x,y,0)$ with respect to $x$ and $y$ while $k_x$ and $k_y$ represent the spatial-frequencies coordinate in the Fourier space. By applying the propagator operator $e^{i z\sqrt{k^2 -k_x^2-k_y^2}}$ to the unpropagated field, as it was show before, it is possible to retrieve the value of the field $U(x,y,\Delta z)$ propagated by a distance $z=\Delta z$. In order to do so, it is necessary to multiply such propagator for every component in which the unpropagated field as been decomposed through the use of equation \ref{eq: Fourier transform of unpropagated field}, thus arriving at
-% \begin{equation}\label{eq: angular-spectrum representation}
-% U(x, y, \Delta z) = \frac {1}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y, 0)e^{i\Delta z\sqrt{k^2 -k_x^2-k_y^2}}e^{i(k_x x + k_y y)} dk_x dk_y.
-% \end{equation} 
-% This is the \textbf{angular-spectrum representation} for propagated fields and it provides a rigorous solution to a certain boundary problem of the Helmholtz equation, namely one in which a forward propagation happens in free-space between two parallel planes. 
-
-
-
-
-% 
-% 
-% 
-% 
-% ==========================
-% Because the field functions are linear, solutions with different frequencies can be added to form wave-packet solutions. For this reason, fields with harmonic time dependence $e^{-i\omega t}$ are those studied in the following chapters. When substituting such field into equation \ref{eq: d'Alembert scalar field}, the result is
-% \begin{equation}\label{eq: Helmholtz equation}
-% 	\big[\nabla^2 + k^2\big]U(x,y,z)=0.
-% \end{equation}
-% where $k= (2\pi)/\lambda$ is wavenumber corresponding to a wavelength $\lambda$, $\omega$ is the angular frequency of the radiation and $c=\lambda f$ the velocity of light in vacuum. This is the Helmholtz equation. The time dependence in $U$ can be factorized. In fact, the time solution for such equation is always the same while the spatial solution depends on the initial and boundary conditions. From here on, the time dependency of the field $U$ is not written. We then work with a complex scalar function that obeys the Helmholtz equation.
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% We introduce the approximation of scalar theory: the electromagnetic disturbance at a given point in space-time is described by a single complex number rather than by a electric (and/or magnetic) field vector. Once the time-dependent vacuum wave equation for scalar field is obtained, the field is described as a superposition of monochromatic waves, the spectral decomposition. Each monochromatic component of the decomposition of the electromagnetic field obeys the Helmholtz equation, a time-independent form of the free space wave equation. We will focus our attention on the study of diffraction of waves obeying the Helmholtz equation in free-space, and in particular on the case of Fresnel diffraction. All this arguments will be discussed based on a well-established approach \cite{paganin_book} using an angular spectrum formulation, thus representing the electromagnetic field as a superposition of monochromatic plane waves with different spatial frequency and direction of propagation. 
-% 
-% We start from Maxwell wave equations
-% \begin{equation}
-% \label{eq: Maxwell equations}
-% \begin{aligned}
-% \bm{\nabla} \times \bm{\mathcal{B}} &=\epsilon_0 \mu_0 \frac{\partial \bm{\mathcal{E}}}{\partial t}
-% &\qquad &\text{Faraday's law},\\[2\jot]
-% \bm{\nabla} \times \bm{\mathcal{E}} &= -\frac{\partial \bm{\mathcal{B}}}{\partial t}
-% &\qquad &\text{Amp\`{e}re's law},\\[2\jot]
-% \bm{\nabla} \cdot \bm{\mathcal{B}}    &= 0 & \qquad &\text{Gauss' law},\\[2\jot]
-% \bm{\nabla} \cdot \bm{\mathcal{E}}    &= 0 & \qquad &\text{Coulomb's law},
-% \end{aligned}
-% \end{equation}
-% where $\mathcal{B}$ is the magnetic induction, $\mathcal{E}$ is the electric field, $\mu_0$ and $\epsilon_0$ are the magnetic and the electric permittivity of free-space, respectively, $\nabla \times$ is the curl operator and $\nabla \cdot$ is the divergence operator. The vacuum wave equation that governs the spatial and temporal evolution of the electromagnetic field in free space will be derived. Note that $\mathcal{E}=\mathcal{E}(x,y,z,t)$ and $\mathcal{B}=\mathcal{B}(x,y,z,t)$ are functions of four variables. 
-% 
-% With some manipulations one can arrive to the wave equation for the electric field
-% 
-% The same equation holds for the magnetic induction (replacing $\mathcal{E} \longleftrightarrow \mathcal{B}$). 
-% Note that since the vector Laplacian acts on the individual field components in the same way and keeping them uncoupled, the above vector equations, when projected onto $x$, $y$, or $z$ direction, split into 6 identical uncoupled equations, one for each field component.
-% T
-% 
-% 
-
-% 
-% \subsection{Fresnel approximation}
-% 
-% We are interested to study the propagation of synchrotron radiation, a coherent X-ray beam that propagates making only small angles with respect to the $z$-axis. In this case the wave field is said to be 'paraxial'. In this special case, an approximation of the equation \ref{eq: angular-spectrum representation} leads to a simpler solution to the Helmholtz equation equivalent to the famous Fresnel diffraction integral. Starting from the previous general result, suppose that $U(x,y,0)$ is now a scalar function that describes a paraxial wave field. Since the paraxiality, as mentioned before, imply that all the non-negligible plane-wave components of the forward propagating field have small wavenumber components $k_x$ and $k_y$ such that $k_z << k_x, k_y$, it is possible to expand with Taylor expansion the square-root argument of the exponential of the free-space propagation:
-% \begin{equation}\label{eq: binomial approx}
-% \sqrt{k^2 -k_x^2-k_y^2}\approx k -\frac{k_x^2+k_y^2}{2k}	
-% \end{equation}
-% The propagated paraxial field is then described by a approximate form of the free-space propagator, called the \textbf{Fresnel propagator}
-% \begin{equation}\label{eq: Fresnel approx of angular spectrum}
-% U(x, y, \Delta z) = \frac {e^{i k \Delta z}}{ 2 \pi}\int \int \widetilde{U}(k_x, k_y)  e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}} e^{i(k_x x + k_y y)}dk_x dk_y.
-% \end{equation}
-% It is also interesting to write the propagated field $U(x,y,\Delta z)$ as a function of the incident field $U$ instead of its Fourier transform $\widetilde{U}$ as done in Eq.~\ref{eq: Fresnel approx of angular spectrum}. We will show in the next section but we anticipate here that this equation is equivalent to: 
-% \begin{equation}\label{eq: usualfresnel}
-% \boxed{
-% U(x,y, \Delta z) = \frac {e^{i k\Delta z }}{ i \lambda \Delta z} \int  \int U(x^\prime, y^\prime, 0) e^{i \frac{k}{2 \Delta z} [(x - x^\prime)^2 + (y - y^\prime)^2]} dx^\prime dy^\prime
-% }.
-% \end{equation}
-% 
-% This expression can be manipulated to extract some terms not depending on $x^\prime$ and $y^\prime$ outside of the integral
-% \begin{multline}\label{eq: fresnel2}
-% U(x,y, \Delta z) = \frac {e^{i k\Delta z }}{ i \lambda \Delta z}  e^{ i \frac{k}{2 \Delta z} (x^2 + y^2) } \times \\
-% \int \int \left\{ U(x^\prime, y^\prime, 0) e^{i \frac{k}{2 \Delta z} (x^{\prime 2} + y^{\prime 2} )} \right\} e^{-i \frac{k}{\Delta z} [x  x^\prime + y y^\prime]} dx^\prime dy^\prime .
-% \end{multline}
-% 
-% Equations~\ref{eq: usualfresnel} and \ref{eq: fresnel2} refer to the Fresnel propagator, and we recall it provides a rigorous solution of the Helmholtz equation for propagation in free space between two parallel planes using paraxial approximation. From the physical point of view, both equations are equivalent for propagation in the near and far field assuming paraxial approximation. However, for reasons that will be discussed in Section~\ref{ch: validity}, the numerical implementation would prefer Eq.~\ref{eq: usualfresnel} for near-field and Eq.~\ref{eq: fresnel2} for far field.
-% 
-% It is possible to demonstrate that the angular spectrum formalism developed here and the Rayleigh-Sommerfeld diffraction integral of the first kind yield identical predictions of diffracted fields. This was done elegantly by Sherman \cite{Sherman:67} and Lalor \cite{Lalor:68}. The text books of \cite{goodmanfourier}, \cite{nieto} and \cite{paganin_book} are examples where it is described the theoretical approach solving integral theorem of Helmholz and Kirchhoff to obtain the Fresnel-Kirchhoff and the Rayleigh-Sommerfeld diffraction formulas, depending on the choice of boundary conditions and Green functions. \todo{make clear the connection of the angular spectrum and other  theoretical formulations}
-% 
-% Synchrotron radiation is always well collimated along the propagation direction, therefore the use of the approximation \ref{eq: binomial approx} is justified in most cases. In the following we will assume this is true. For non-synchrotron applications, the calculation of the propagation of non-paraxial fields is sometimes needed. For that the use of higher orders of Taylor expansion may be needed, or other non-Taylor of expansions may be considered \cite{Mansuripur,Avoort}.
+Synchrotron radiation is always well collimated along the propagation direction, therefore the use of the approximation \ref{eq: binomial approx} is justified in most cases. In the following we will assume this is true. For non-synchrotron applications, the calculation of the propagation of non-paraxial fields is sometimes needed. For that the use of higher orders of Taylor expansion may be needed, or other non-Taylor of expansions may be considered \cite{Mansuripur,Avoort}.
 
 
 %
@@ -362,59 +263,38 @@ This is the \textbf{angular-spectrum representation} for propagated fields and i
 
 The Fast Fourier Transform (FFT) algorithm (see, e.g., Ref.~\cite{10.2307/2003354}) is a clever implementation of the discrete Fourier transform in which the number of operations is greately reduced, from $\propto N^2$ that one obtain from the simple integral discretization to $\propto N \log_2 N$, where $N$ is the number of points of the array to be Fourier transform. The availability of performing libraries to compute FFT has revolutionized the numerical methods since its discovery in mid 60's. The importance is such that it helped to develop the ``Fourier Optics''. This has immediate application for calculating the propagator integral transforms. In this section we express the propagators obtained before in form of Fourier transforms. 
 
-We recall that the convolution between two functions in 2D $f(x,y)$ and $g(x,y)$ is
+Representing by $mathcal{F}$ the Fourier transform operator ($\tilde{F}(u,v)=\mathcal{F}\left\{ f(x,y) \right\}$, see Appendix A), the the convolution between two functions in 2D $f(x,y)$ and $g(x,y)$ is
 \begin{equation}\label{eq: definition of convolution}
-	f(x,y) * g(x,y) \coloneqq \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f(x^{\prime},y^{\prime})g(x-x^{\prime},y-y^{\prime})dx^{\prime}dy^{\prime}
+f(x,y) \otimes g(x,y) = \mathcal{F}^{-1}\big\{{\mathcal{F}\{f(x,y)\} \times \mathcal{F}\{g(x,y)\}} \big\},
 \end{equation}
-Using of the two-dimensional form of the convolution theorem (see, e.g., \cite{goodmanfourier}) of
-\begin{equation}\label{eq: convolution theorem}
-f(x,y) * g(x,y) = \mathcal{F}^{-1}\big\{{\mathcal{F}\{f(x,y)\} \times \mathcal{F}\{g(x,y)\}} \big\},
-\end{equation}
-one can write Equation \ref{eq: Fresnel approx of angular spectrum}  in a form that resemble a convolution in two dimensions:
-\begin{align}\label{eq: convolution form of angular spectrum}
-U(x, y, \Delta z) &= \mathcal{F}^{-1}\Big\{ \mathcal{F}\{U(x, y, 0)\} \times \frac{e^{i k \Delta z}}{2\pi} e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}} \Big\} \nonumber\\ 
-&= \mathcal{F}^{-1}\Big\{ \mathcal{F}\{U(x, y, 0)\} \times \mathcal{F}\mathcal{F}^{-1}\Big\{  \frac{e^{i k \Delta z}}{2\pi} e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}} \Big \}\Big\}
-\end{align} 
-This equation represents now a convolution:
-\begin{equation}\label{eq: short convolution form of propagation}
-U(x, y, \Delta z) =U(x, y, 0) * h(x,y)
-\end{equation} 
-where 
-\begin{equation}\label{eq: definition of Fresnel propagator}
+a propriety already used in Eq.~\ref{eq: Fresnel near field}. One can write Equation \ref{eq: Fresnel near field}  in convolution form, involving two Fourier transforms:
+\begin{equation}\label{eq: ft near field}
+U(x, y, \Delta z) = \mathcal{F}^{-1}\Big\{ \mathcal{F}\{U(x, y, 0)\} \times \frac{e^{i k \Delta z}}{2\pi} e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}} \Big\} \end{equation} 
+This equation represents now a convolution $U(x, y, \Delta z) =U(x, y, 0) \otimes h(x,y)$ with a kernel
+\begin{equation}\label{eq: fresnel kernel}
 h(x,y) \coloneqq \frac{e^{i k \Delta z}}{2\pi} \mathcal{F}^{-1}\Big \{e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}}\Big\}
 \end{equation} 
-is the Fresnel propagator in real-space form in the paraxial approximation. 
-Performing the inverse Fourier transform 
-%\footnote{Note the application of FT$^{-1}$ different from Appendix A. \ingreen{In Mathematica:  (Exp[I k z]/2/Pi) InverseFourierTransform[
-%  Exp[-I z (kx^2 + ky^2)/ (2 k)], {kx, ky}, {x, y}]}
-%}
-we obtain the explicit form of the real space Fresnel propagator
-\begin{equation}\label{eq: real space Fresnel propagator}
-h(x,y) = -\frac{i k e^{i k\Delta z}}{2\pi \Delta z} e^{\frac{i k(x^2+y^2)}{2\Delta z}}
-\end{equation}
-Getting back to equation \ref{eq: short convolution form of propagation} and substituting the real form of Fresnel propagator and writing explicitly the convolution operation, we obtain
-\begin{align}\label{eq: explicit form of convolution integral for propagation}
-U(x,y, \Delta z) &= -\frac{i k e^{ik\Delta z}}{2\pi \Delta z} \Big\{U(x,y, 0)* e^{i \frac{k}{2\Delta z}(x^2+y^2)}\Big\} \nonumber \\
-&= \frac {e^{i k\Delta z }}{ i \lambda \Delta z} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty}U(x^\prime, y^\prime, 0) e^{i \frac{k}{2 \Delta z} [(x - x^\prime)^2 + (y - y^\prime)^2]} dx^\prime dy^\prime.
-\end{align}
-This is the integral expression of the Fresnel propagation in real form, anticipated in Eq.~\ref{eq: usualfresnel}. 
 
-In summary, to perform the calculation of propagation one can use the general procedure
+On a similar way the second form of the Fresnel propagator (Eq.~\ref{eq: Fresnel far field} can be written as 1-Fourier transform transformation
+\begin{equation}
+ U(x,y,z) = \mathcal{F} \left\{ 
+ U(x,y,0) \frac{ \inred{ e^{i k z} } }{i \lambda z} e^{ \frac{i k}{2 z} (x^2 + y^2) } } \right\}
+\end{equation}
+and for the Fraunhofer approximation $U(x,y,z) = e^{i k z} / (i \lambda z) \mathcal{F} \{ U(x,y,0) \}$. 
+
+
+In summary, to apply a propagator using two Fourier transforms one can use the general procedure
 \begin{equation}
 \label{eq: Fresnel propagation in convolution form}
 U(x, y, \Delta) = P^G \mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}.
 \end{equation}
-There are three necessary steps: 1) Fourier transform the unpropagated field: $\mathcal{F}\big\{U(x,y,0)\big\}$, 2) Multiply it for the free-space Fresnel propagator
+with three steps for the Fresnel propagator in Eq.~\ref{eq: Fresnel near field}: 1) Fourier transform the unpropagated field: $\mathcal{F}\big\{U(x,y,0)\big\}$, 2) Multiply it for the free-space Fresnel propagator in reciprocal space
 %\footnote{$\mathcal{F}\{h\}$ like in Appendix A, thus
 %\ingreen{FourierTransform[-((I E^((I k (x^2 + y^2))/(2 z) + I k z) k)/(
 %  2 \[Pi] z)), {x, y}, {fx, fy}, FourierParameters -> {0, -2*Pi}]}
 %  }
-$ K=\exp(-i \Delta z \lambda \pi (f_x^2+f_y^2))$, 3) Inverse-Fourier transform this result with respect to $k_x$ and $k_y$:  $\mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}$, and 4) apply a global phase $P^G = {e^{ik\Delta z}}$ to the result.
+$ K=\exp(-i z \lambda \pi (u^2+v^2))$, 3) Inverse-Fourier transform this result $\mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}$, and 4) apply a global phase $P^G = {e^{i k z}}$ to the result.
 
-%The result is:
-%\begin{equation}\label{eq: schematic form of angular spectrum Fresnel}
-%U(x,y,\Delta z) = \mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U(x,y,0)\big\}e^{i k \Delta z} e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}}\Big\}
-%\end{equation}
 
 
 
