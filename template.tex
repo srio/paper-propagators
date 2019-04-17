@@ -202,7 +202,7 @@ One can observe that this is a convolution $U(x,y,z) = U(x,y,0) \otimes G(x,y) $
 \begin{equation}\label{eq: Fresnel near field}
 U(x,y,z) =  \frac{\inred{e^{i k z}}}{i \lambda z} \int\int U(x',y',0) e^{ \frac{i k}{2 z} ( (x-x')^2 + (y - y')^2) }  dx' dy',
 \end{equation}
-or expression of the Fresnel propagator (in real space). An equivalent form of the Fresnel propagator is obtained expanding the exponent in the integrand, then factorizing and taking out of the integral the term that does not depend on the variables of integration
+which is the expression of the Fresnel propagator (in real space). An equivalent form of the Fresnel propagator is obtained expanding the exponent in the integrand, then factorizing and taking out of the integral the term that does not depend on the variables of integration
 \begin{multline}\label{eq: Fresnel far field}
 U(x,y,z) =  \frac{\inred{e^{i k z}}}{i \lambda z} e^{\frac{i k}{2 z} (x^2 + y^2) } \times \\
 \int\int U(x',y',0) e^{ \frac{i k}{2 z} (x'^2 + y'^2) } 
@@ -220,12 +220,20 @@ which is the Fraunhoffer diffraction formula that states that the propagated dis
 
 \subsection{Beyond the Fresnel approximation}
 
-In the rigorous theory of diffraction, the scalar Helmholtz equation is solved for general boundary conditions. Its development is not trivial and need particular mathematical tools, like the Green's theorem, with clever use of the boundary conditions. Refs.~\cite{bornwolf}, \cite{nieto}, \cite{goodmanfourier} and other texts in Optics present these theories. The gerenal procedure is: i) write the solution of Helmholz Equation in the form of the integral theorem of Helmholz and Kirchhoff (ch 8.3, Eq.~7 in \cite{bornwolf}, Eq.~6.2 in \cite{nieto}, Eq.~3-23 in \cite{goodmanfourier} ), ii) consider the Kirchhoff approximation, that assumes that the boundary values of the solution at the boundaries can be determined by geometrical optics to obtain the Fresnel-Kirchhoff diffraction formula (Eq.~17 in \cite{bornwolf}, eq 3-27 in \cite{goodmanfourier}), or alternatively iii) use different Green functions to deduce Rayleigh-Sommerfeld diffraction formulas (Eqs, 6.20 and 6.21 in \cite{nieto}, Eqs 3-39,3-40 in \cite{goodmanfourier}). It can be shown  that these three solutions differ only by an inclination factor (3-51,3-52 in \cite{goodmanfourier}), and they are all identical when only small angles are involved, arriving to (Eq 22-23 in \cite{bornwolf}, Eq 6.45,6.46 in \cite{nieto} and Eq. 3-54 in \cite{goodmanfourier})
-
+In the rigorous theory of diffraction, the scalar Helmholtz equation is solved for general boundary conditions. Its development is not trivial and need particular mathematical tools, like the Green's theorem, with clever use of the boundary conditions. Refs.~\cite{bornwolf}, \cite{nieto}, \cite{goodmanfourier} and other texts in Optics present these theories. The gerenal procedure is: i) write the solution of Helmholz Equation in the form of the integral theorem of Helmholz and Kirchhoff 
+\inblue{(ch 8.3, Eq.~7 in \cite{bornwolf}, Eq.~6.2 in \cite{nieto}, Eq.~3-23 in \cite{goodmanfourier} )},
+ii) consider the Kirchhoff approximation, that assumes that the boundary values of the solution at the boundaries can be determined by geometrical optics to obtain the Fresnel-Kirchhoff diffraction formula 
+\inblue{(Eq.~17 in \cite{bornwolf}, eq 3-27 in \cite{goodmanfourier})},
+or alternatively iii) use different Green functions to deduce Rayleigh-Sommerfeld diffraction formulas
+\inblue{(Eqs, 6.20 and 6.21 in \cite{nieto}, Eqs 3-39,3-40 in \cite{goodmanfourier})}. 
+It can be shown  that these three solutions differ only by an inclination factor 
+\inblue{(3-51,3-52 in \cite{goodmanfourier})},
+and they are all identical when only small angles are involved, arriving to 
+\inblue{(Eq 22-23 in \cite{bornwolf}, Eq 6.45,6.46 in \cite{nieto} and Eq. 3-54 in \cite{goodmanfourier})}
 \begin{equation}\label{eq: Huygens}
- U(x,y,z) = \frac{1}{i \lambda} \int \int U(x,y,0) \frac{e^{i k r_{01}}}{r_{01}} \cos \theta ds
+ U(x_1,y_1,z) = \frac{1}{i \lambda} \int \int U(x_0,y_0,0) \frac{e^{i k r_{01}}}{r_{01}} \cos \theta ds
 \end{equation}
-with s is ... and $r_{01}$ is ...
+whete $s$ extends over the surface domain where the source is defined, and $r_{01}=\sqrt{(x_1-x_0)^2+(y_1-y_0)^2+z^2}$ is the distance between the image point $(x_1,y_1,z)$ and the source points $(x_0,y_0,0)$, and $\theta$ is the angle between $\vec{r}_01$ and $\vec{n}=(0,0,-1)$, the normal to the observation plane. This equation is an expression of the Hygens-Fresnel principle, manifesting that the observer field at a given observation point is the result of superposing spherical waves $e^{i k r_{01}}/r_{01}$ originated at every point in the source plane. 
 % 
 
 The same results results are obtained in the more intuitive approach called the angular spectrum method. Following Ref.~\cite{paganin_book}, we constate that a plane wave is a solution of the Helmholtz equation, and can be written as: 
@@ -240,47 +248,37 @@ By applying the propagator operator $e^{i z\sqrt{k^2 -k_x^2-k_y^2}}$ to the unpr
 \begin{equation}\label{eq: angular-spectrum representation}
 U(x, y, z) = \int \int \widetilde{U}(u,v; z=0) e^{i z\sqrt{k^2 -k_x^2-k_y^2}} e^{i(u x + v y)} du dv.
 \end{equation} 
-This is the \textbf{angular-spectrum representation} for propagated fields and it provides a rigorous solution to a certain boundary problem of the Helmholtz equation, namely one in which a forward propagation happens in free-space between two parallel planes. 
-
-It can be shown that the Fresnel propagator in Eq.~\ref{eq: Fresnel in real space} can be obtained from the Huygens propagator (Eq.~\ref{eq: Huygens}) by approximating
-\begin{equation}
+This is the angular-spectrum representation for propagated fields and it provides a rigorous solution to a certain boundary problem of the Helmholtz equation, namely one in which a forward propagation happens in free-space between two parallel planes. 
+It can be shown that the Fresnel propagator in Eq.~\ref{eq: Fresnel near field} can be obtained from the Huygens-Fresnel propagator (Eq.~\ref{eq: Huygens}) by approximating
+\begin{equation}\label{eq: approximation for Fresnel}
  \frac{e^{i k r}}{r} = \frac{e^{i k \sqrt{z^2 + x^2 + y^2} }} { \sqrt{z^2 + x^2 + y^2} } \approx e^{i k z} \frac{ 
  e^{\frac{i k}{2 z} (x^2 + y^2)} 
  }{z},  
 \end{equation}
 The same in reciprocal space, Eq.~\ref{eq: angular-spectrum representation} derives in Eq.~\ref{eq: Fresnel in reciprocal space} within this approximation. 
 
-Synchrotron radiation is always well collimated along the propagation direction, therefore the use of the approximation \ref{eq: binomial approx} is justified in most cases. In the following we will assume this is true. For non-synchrotron applications, the calculation of the propagation of non-paraxial fields is sometimes needed. For that the use of higher orders of Taylor expansion may be needed, or other non-Taylor of expansions may be considered \cite{Mansuripur,Avoort}.
-
-
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-
+Synchrotron radiation is always well collimated along the propagation direction, therefore the use of the approximation \ref{eq: approximation for Fresnel} is justified in most cases. In the following we will assume this is true. For non-synchrotron applications, the calculation of the propagation of non-paraxial fields is sometimes needed. For that the use of higher orders of Taylor expansion may be needed, or other non-Taylor of expansions may be considered \cite{Mansuripur,Avoort}.
 
 
 \subsection{Fourier Optics}
 
 The Fast Fourier Transform (FFT) algorithm (see, e.g., Ref.~\cite{10.2307/2003354}) is a clever implementation of the discrete Fourier transform in which the number of operations is greately reduced, from $\propto N^2$ that one obtain from the simple integral discretization to $\propto N \log_2 N$, where $N$ is the number of points of the array to be Fourier transform. The availability of performing libraries to compute FFT has revolutionized the numerical methods since its discovery in mid 60's. The importance is such that it helped to develop the ``Fourier Optics''. This has immediate application for calculating the propagator integral transforms. In this section we express the propagators obtained before in form of Fourier transforms. 
 
-Representing by $mathcal{F}$ the Fourier transform operator ($\tilde{F}(u,v)=\mathcal{F}\left\{ f(x,y) \right\}$, see Appendix A), the the convolution between two functions in 2D $f(x,y)$ and $g(x,y)$ is
+Representing by $\mathcal{F}$ the Fourier transform operator ($\tilde{f}(u,v)=\mathcal{F}\left\{ f(x,y) \right\}$, see Appendix A), the the convolution between two functions in 2D $f(x,y)$ and $g(x,y)$ is
 \begin{equation}\label{eq: definition of convolution}
 f(x,y) \otimes g(x,y) = \mathcal{F}^{-1}\big\{{\mathcal{F}\{f(x,y)\} \times \mathcal{F}\{g(x,y)\}} \big\},
 \end{equation}
-a propriety already used in Eq.~\ref{eq: Fresnel near field}. One can write Equation \ref{eq: Fresnel near field}  in convolution form, involving two Fourier transforms:
+a propriety already used in Eq.~\ref{eq: Fresnel near field}. One can write Equation \ref{eq: Fresnel in reciprocal space}  in convolution form, involving two Fourier transforms:
 \begin{equation}\label{eq: ft near field}
-U(x, y, \Delta z) = \mathcal{F}^{-1}\Big\{ \mathcal{F}\{U(x, y, 0)\} \times \frac{e^{i k \Delta z}}{2\pi} e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}} \Big\} \end{equation} 
-This equation represents now a convolution $U(x, y, \Delta z) =U(x, y, 0) \otimes h(x,y)$ with a kernel
-\begin{equation}\label{eq: fresnel kernel}
-h(x,y) \coloneqq \frac{e^{i k \Delta z}}{2\pi} \mathcal{F}^{-1}\Big \{e^{\frac{-i \Delta z (k_x^2 + k_y^2) }{2k}}\Big\}
-\end{equation} 
+U(x, y, z) = \mathcal{F}^{-1}\Big\{ \mathcal{F}\{U(x, y, 0)\} \times e^{-i \pi \lambda z (u^2 + v^2)} \Big\} \end{equation} 
 
 On a similar way the second form of the Fresnel propagator (Eq.~\ref{eq: Fresnel far field} can be written as 1-Fourier transform transformation
 \begin{equation}
  U(x,y,z) = \mathcal{F} \left\{ 
- U(x,y,0) \frac{ \inred{ e^{i k z} } }{i \lambda z} e^{ \frac{i k}{2 z} (x^2 + y^2) } } \right\}
+ U(x,y,0) \frac{ \inred{ e^{i k z} } }{i \lambda z} e^{ \frac{i k}{2 z} (x^2 + y^2) } 
+ \right\}
 \end{equation}
-and for the Fraunhofer approximation $U(x,y,z) = e^{i k z} / (i \lambda z) \mathcal{F} \{ U(x,y,0) \}$. 
+and for the Fraunhofer approximation $U(x,y,z) = \mathcal{F} \{ U(x,y,0) \} \times e^{i k z} / (i \lambda z) $. 
 
 
 In summary, to apply a propagator using two Fourier transforms one can use the general procedure
@@ -293,45 +291,14 @@ with three steps for the Fresnel propagator in Eq.~\ref{eq: Fresnel near field}:
 %\ingreen{FourierTransform[-((I E^((I k (x^2 + y^2))/(2 z) + I k z) k)/(
 %  2 \[Pi] z)), {x, y}, {fx, fy}, FourierParameters -> {0, -2*Pi}]}
 %  }
-$ K=\exp(-i z \lambda \pi (u^2+v^2))$, 3) Inverse-Fourier transform this result $\mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}$, and 4) apply a global phase $P^G = {e^{i k z}}$ to the result.
+$ K=\exp(-i \pi \lambda z (u^2+v^2))$, 3) Inverse-Fourier transform this result $\mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}$, and 4) apply a global constant $P^G = {e^{i k z}}/(i \lambda z)$ to the result. 
 
 
-
-
-\subsection{Linear Canonical Transforms, Fractional Fourier Transform and its application to Optics}
-\todo{SAJID: FrFT/LCT section : In progress. Add a better FrFT picture. Add more references?}
-The application of Fourier transform on a signal in real space converts it to a signal in frequency space. This is essentially a change of basis upon which the signal is represented. On the space-frequency plane, the space basis and frequency basis are just two bases among many bases on which the signal can be represented.
-
-\begin{figure}
-\label{fig: FrFT graphic}
-\caption{Graphical representation of FrFT in the space-frequency space, taken from Optica Vol. 4, Issue 8, pp. 907-910 (2017) }
-\includegraphics[width=1\textwidth]{FrFT_optica.jpg}
-\end{figure}
-Fractional Fourier Transform (FrFT) is a parameterized generalization of the FT. The FrFT transforms the signal from one basis to another basis between real and frequency space depending on the parameter a. The Fractional Fourier Transform of order a of a signal f is defined as:
-\begin{equation}
-f_{a}(x) = \int_{-\infty}^{\infty}K_{a}(x,x^{'})f(x^{'})dx^{'}
-\end{equation}
-where the convolution kernel is given by:
-
-\begin{multline*}
-	K_{a}(x,x^{'}) = \sqrt{\frac{1-icot(\alpha)}{2\pi}}*\\exp(i0.5(x^{2}cot(\alpha)-2xx^{'}csc(\alpha)+x^{'}cot(\alpha)))
-\end{multline*}
-where $\alpha = \frac{\pi a}{2}$\\ 
-When a is an odd/even multiple of $\pi$, the convolution kernel reduces to:
-\begin{equation}
-	K_{a}(x,x^{'}) = \delta(x\pm x^{'})
-\end{equation}
-which just means that a rotation by odd multiple of $\pi$ is a parity operation and a rotation by an even multiple of $\pi$ is an identity operation. When $\alpha$ is $\frac{\pi}{2}$, the FrFT reduces to the familiar Fourer Transform. 
-
-While we won't derive it here, Fresnel propagator is an integral transform that can be interpreted as a Fractional Fourier transform followed by a phase factor correction\cite{Hanna2011}. 
-
-The FrFT itself can be seen as a specific case of a class of three parameter integral transforms known as Linear Canonical Transforms\cite{Hennelly05}. The LCT for the parameters $\alpha, \beta, \gamma$ is defined by 
-
+We observed that Fraunhofer propagator is just a Fourier transform, and Fresnel propagator can be seen as a Fourier transform of a ``modified'' field (Eq.~\ref{eq: Fresnel far field}), and in other cases one calculate the propagated field applying some combination of field modifications and Fourier transforms. These transforms can be expressed in an elegant way using some ``extensions'' of the Fourier transform, like the Linear Canonical Transform (LCT),
 \begin{multline*}
     	u_{\alpha, \beta, \gamma} = L_{\alpha, \beta, \gamma}{u(x)}(x^{'}) = \\ exp(\frac{-j\pi}{4})\sqrt{\beta}\int_{-\infty}^{\infty}u(x)exp[j\pi(\alpha x^{2} - 2\beta xx^{'} + \gamma x^{'2})]dx 
 \end{multline*}
 The LCT can be described by an abcd matrix which transform the Wigner Distribution as $W(x,k) \rightarrow W(ax+bk,cx+dk)$ with relations between a,b,c,d that limiting them to three degrees of freedom \cite{Hennelly05}. 
-
 Thus, the LCT is a rotation in phase space from unprimed to primed co-ordinates given by \cite{Hennelly05} :
  \begin{equation}
 	\begin{bmatrix}
@@ -347,7 +314,7 @@ Thus, the LCT is a rotation in phase space from unprimed to primed co-ordinates 
 	k
 	\end{bmatrix}
 \end{equation}
-The Fresnel transform is now described by the matrix \cite{Hennelly05} : 
+The Fresnel propagator is now described by the matrix \cite{Hennelly05} : 
 \begin{equation}
     	\begin{bmatrix}
 		a & b \\
@@ -359,15 +326,81 @@ The Fresnel transform is now described by the matrix \cite{Hennelly05} :
 	0 & 1
 	\end{bmatrix}	
 \end{equation}
-The Discrete Linear Canonical Transform (DLCT) can be implemented by "decomposition" into a set of LCT's as two LCT's can be cascaded together\cite{Healy2016}.  
 
-\begin{figure}
-\label{fig: DLCT_graphic}
-\caption{Phase-Space representation of two algorithms for computation of the DLCT in terms of efficient operations (viz. Fourier Transform and Chirp Transform)\cite{Healy2016}} 
-\includegraphics[width=1\textwidth]{DLCT_implementation.png}
-\end{figure}
-The task of finding efficient numerical algorithms for the evaluation of both the general and specialized cases of (Discrete) FrFT and (Discrete)LCT is an active field \cite{BULTHEEL2004182,Koç2016} and we hope that the X-ray wave propagation community can benefit from the latest research there. \\
-\todo{VINCENT/DAVID: Review it!}
+The Fractional Fourier Transform (FrFT) can be seen as a specific case of a class of three parameter integral transforms known as Linear Canonical Transforms\cite{Hennelly05}. The task of finding efficient numerical algorithms for the evaluation of both the general and specialized cases of (Discrete) FrFT and (Discrete)LCT is an active field \cite{BULTHEEL2004182,Koç2016} and we hope that the X-ray wave propagation community can benefit from the latest research there.
+
+
+% 
+% \subsection{Linear Canonical Transforms, Fractional Fourier Transform and its application to Optics}
+% \todo{SAJID: FrFT/LCT section : In progress. Add a better FrFT picture. Add more references?}
+% The application of Fourier transform on a signal in real space converts it to a signal in frequency space. This is essentially a change of basis upon which the signal is represented. On the space-frequency plane, the space basis and frequency basis are just two bases among many bases on which the signal can be represented.
+% 
+% \begin{figure}
+% \label{fig: FrFT graphic}
+% \caption{Graphical representation of FrFT in the space-frequency space, taken from Optica Vol. 4, Issue 8, pp. 907-910 (2017) }
+% \includegraphics[width=1\textwidth]{FrFT_optica.jpg}
+% \end{figure}
+% Fractional Fourier Transform (FrFT) is a parameterized generalization of the FT. The FrFT transforms the signal from one basis to another basis between real and frequency space depending on the parameter a. The Fractional Fourier Transform of order a of a signal f is defined as:
+% \begin{equation}
+% f_{a}(x) = \int_{-\infty}^{\infty}K_{a}(x,x^{'})f(x^{'})dx^{'}
+% \end{equation}
+% where the convolution kernel is given by:
+% 
+% \begin{multline*}
+% 	K_{a}(x,x^{'}) = \sqrt{\frac{1-icot(\alpha)}{2\pi}}*\\exp(i0.5(x^{2}cot(\alpha)-2xx^{'}csc(\alpha)+x^{'}cot(\alpha)))
+% \end{multline*}
+% where $\alpha = \frac{\pi a}{2}$\\ 
+% When a is an odd/even multiple of $\pi$, the convolution kernel reduces to:
+% \begin{equation}
+% 	K_{a}(x,x^{'}) = \delta(x\pm x^{'})
+% \end{equation}
+% which just means that a rotation by odd multiple of $\pi$ is a parity operation and a rotation by an even multiple of $\pi$ is an identity operation. When $\alpha$ is $\frac{\pi}{2}$, the FrFT reduces to the familiar Fourer Transform. 
+% 
+% While we won't derive it here, Fresnel propagator is an integral transform that can be interpreted as a Fractional Fourier transform followed by a phase factor correction\cite{Hanna2011}. 
+% 
+% The FrFT itself can be seen as a specific case of a class of three parameter integral transforms known as Linear Canonical Transforms\cite{Hennelly05}. The LCT for the parameters $\alpha, \beta, \gamma$ is defined by 
+% 
+% \begin{multline*}
+%     	u_{\alpha, \beta, \gamma} = L_{\alpha, \beta, \gamma}{u(x)}(x^{'}) = \\ exp(\frac{-j\pi}{4})\sqrt{\beta}\int_{-\infty}^{\infty}u(x)exp[j\pi(\alpha x^{2} - 2\beta xx^{'} + \gamma x^{'2})]dx 
+% \end{multline*}
+% The LCT can be described by an abcd matrix which transform the Wigner Distribution as $W(x,k) \rightarrow W(ax+bk,cx+dk)$ with relations between a,b,c,d that limiting them to three degrees of freedom \cite{Hennelly05}. 
+% 
+% Thus, the LCT is a rotation in phase space from unprimed to primed co-ordinates given by \cite{Hennelly05} :
+%  \begin{equation}
+% 	\begin{bmatrix}
+% 	x^{'}\\
+% 	k^{'}
+% 	\end{bmatrix} = 
+% 	\begin{bmatrix}
+% 	a & b \\
+% 	c & d
+% 	\end{bmatrix}
+% 	\begin{bmatrix}
+% 	x\\
+% 	k
+% 	\end{bmatrix}
+% \end{equation}
+% The Fresnel transform is now described by the matrix \cite{Hennelly05} : 
+% \begin{equation}
+%     	\begin{bmatrix}
+% 		a & b \\
+% 		c & d
+% 	\end{bmatrix}
+% 	=
+% 	\begin{bmatrix}
+% 	1 & \lambda z \\
+% 	0 & 1
+% 	\end{bmatrix}	
+% \end{equation}
+% The Discrete Linear Canonical Transform (DLCT) can be implemented by "decomposition" into a set of LCT's as two LCT's can be cascaded together\cite{Healy2016}.  
+% 
+% \begin{figure}
+% \label{fig: DLCT_graphic}
+% \caption{Phase-Space representation of two algorithms for computation of the DLCT in terms of efficient operations (viz. Fourier Transform and Chirp Transform)\cite{Healy2016}} 
+% \includegraphics[width=1\textwidth]{DLCT_implementation.png}
+% \end{figure}
+% The task of finding efficient numerical algorithms for the evaluation of both the general and specialized cases of (Discrete) FrFT and (Discrete)LCT is an active field \cite{BULTHEEL2004182,Koç2016} and we hope that the X-ray wave propagation community can benefit from the latest research there. \\
+% \todo{VINCENT/DAVID: Review it!}
 
 
 \section{Software packages}
@@ -375,16 +408,21 @@ The task of finding efficient numerical algorithms for the evaluation of both th
 
 We summarize here the software tools that implement the free-space wavefron propagators discussed in this paper. 
 
-PyNX \todo{complete and check: VINCENT} \cite{Favre-Nicolin:hx5119} (Python tools for Nano-structures Xtallography) can be used for coherent X-ray imaging simulation and analysis: i) coherent diffraction imaging (CDI), Ptychography, Wavefront propagation, near field and far field techniques; and ii) Fast scattering calculations from large number of atoms and reciprocal space positions. PyNX is fully optimised to use Graphical Processing Units (GPUs), using either CUDA or OpenCL, to provide fast calculations with 1 to 3 orders of magnitude speedup compared to standard processor calculations. The propagators available in pyNX are: 
+PyNX \cite{Favre-Nicolin:hx5119} (Python tools for Nano-structures Xtallography) can be used for coherent X-ray imaging simulation and analysis: i) coherent diffraction imaging (CDI), Ptychography, Wavefront propagation, near field and far field techniques; and ii) Fast scattering calculations from large number of atoms and reciprocal space positions. PyNX is fully optimised to use Graphical Processing Units (GPUs), using either CUDA or OpenCL, to provide fast calculations with 1 to 3 orders of magnitude speedup compared to standard processor calculations. 
+
+\todo{move to discussion 
+The propagators available in pyNX are: 
 \begin{itemize}
     \item Near field propagation, based on Eq.~\ref{eq: Fresnel propagation in convolution form}
     \item Near field propagation with magnification, based on Section~\ref{subch: zoom}
     \item Far field propagator
     \item \inred{...}
 \end{itemize}
+}
 
-
-SRW \todo{complete and check: OLEG} \cite{Chubar1998} (Synchrotron Radiation Workshop)is a software package to make a wide range of simulations of synchrotron radiation of arbitrary configurations as well as standard bending magnets, wigglers and undulators, and propagates it along a beamline composed by different kind of elements (slits, mirrors, gratings, real and ideal lenses, etc.). It can perform simulations on partially coherent synchrotron beams using a ``multi-electron'' method that allows to create, propagate and score radiation created from single electrons with initial conditions sampled by Monte Carlo from the statistical distribution of the electrons in the storage ring (Twiss parameters). The propagators available in SRW are: 
+SRW \cite{Chubar1998} (Synchrotron Radiation Workshop) is a software package to make a wide range of simulations of synchrotron radiation of arbitrary configurations as well as standard bending magnets, wigglers and undulators, and propagates it along a beamline composed by different kind of elements (slits, mirrors, gratings, real and ideal lenses, etc.). It can perform simulations on partially coherent synchrotron beams using a ``multi-electron'' method that allows to create, propagate and score radiation created from single electrons with initial conditions sampled by Monte Carlo from the statistical distribution of the electrons in the storage ring (Twiss parameters). 
+\todo{move to discussion 
+The propagators available in SRW are: 
 \begin{itemize}
     \item Standard, based in Eq.~\ref{eq: Fresnel propagation in convolution form}
     \item Quadratic Term, based in Sec.~\ref{subch: semianalytical}
@@ -392,8 +430,10 @@ SRW \todo{complete and check: OLEG} \cite{Chubar1998} (Synchrotron Radiation Wor
     \item From Waist, based in Eq.~XX
     \item To Waist, based in Eq.~XX
 \end{itemize}
+}
 
-WOFRY \todo{complete and check: LUCA} \cite{Wofrygit} (Wave Optics FRamework in pYthon) is a python library that implements a framework for waveoptics calculations. It contains a threefold functionality: i) it provides a generalization (or abstraction) of a software tool for wave optics, combining the component definitions with the abstract declaration of wavefronts and propagators, ii) it defines a mechanism for interfacing a wave optics code (e.g., SRW, WISE etc.) in it, a first step for creating high level user interfaces in OASYS \cite{oasys}, and iii) it provides native implementations of simple wavefronts (e.g., plane waves, spherical waves, Gaussian sources) and propagators for prototyping optical systems.
+WOFRY \cite{Wofrygit} (Wave Optics FRamework in pYthon) is a python library that implements a framework for waveoptics calculations. It contains a threefold functionality: i) it provides a generalization (or abstraction) of a software tool for wave optics, combining the component definitions with the abstract declaration of wavefronts and propagators, ii) it defines a mechanism for interfacing a wave optics code (e.g., SRW, WISE etc.) in it, a first step for creating high level user interfaces in OASYS \cite{oasys}, and iii) it provides native implementations of simple wavefronts (e.g., plane waves, spherical waves, Gaussian sources) and propagators for prototyping optical systems.
+\todo{move to discussion 
 The propagators available in WOFRY are: 
 \begin{itemize}
     \item Fresnel, based in Eq.~\ref{eq: Fresnel propagation in convolution form}
@@ -402,14 +442,16 @@ The propagators available in WOFRY are:
     \item Integral, non-fourier calculation of integral, based in Eq.~\ref{eq: discretefresnel} (2D) or Eq.~\ref{eq: discretefresnel1D} (1D)
     \item Fresnel Zoom XY, based on Sect.~\ref{subch: zoom}
 \end{itemize}
+}
 
-\todo{SAJID: Define your library...}
+XWP (X-ray Wave Propagators) is a python library that implements several propagators used for simulating x-ray beam propagation and focusing using Frasnel-Zone planes. \todo{SAJID: Extend, define your library...
 The propagators available in XWP are: 
 \begin{itemize}
-    \item \inred{...}
+    \item ...
 \end{itemize}
+}
 
-This paper concerns only the methods, algorithms and implementation of free-space propagators in these codes. Certainly the functionality of each code goes beyond of the simple propagation in vacuum and we refer to the references and documentation of each code for further details. Moreover, similar methodologies can be found in several other software tools (e.g., WISE \cite{wise}, RAY \inred{REF}, McXtrace \cite{mcxtrace}, ...) and also in the calculations presented in several publications \inred{Osterhoff, ...}.
+This paper discusses the general methods, algorithms and implementation of free-space propagators in these codes. The functionality of each code goes beyond of the simple propagation in vacuum and we refer to the references and documentation of each code for further details. Moreover, similar methodologies can be found in other software tools (e.g., WISE \cite{wise}, RAY \cite{RAY}, McXtrace \cite{mcxtrace}, ...) and also in the calculations presented in several publications.
 
 
 \section{Non-Fourier Fresnel propagator implementation}
@@ -487,7 +529,7 @@ The expression of the Fresnel propagator in Eq.~\ref{eq: Fresnel propagation in 
 U(x, y, \Delta z)= \frac{e^{ik\Delta z}}{2\pi} FFT^{-1} 
 %\left\{ FTT \big \left\{ U(x, y, 0) \right\} \times e^{-i \pi \lambda \Delta z (f_x^2 + f_y^2) \right\} 
 \end{equation} 
-This is the standard implementation of the Fresnel propagator using two FFT implemented in most computer codes for synchrotron radiation. The use of FFT is not restricted to this propagator. Indeed, Eq.~\ref{eq: before fraunhoffer} represents the Fresnel propagator as Fourier transform of the distrurbance $U$ multiplied by a quadratic term. This allows to compute the Fresnel propagator using a single FFT \todo{explain why this is not so popular and is not used in synchrotron radiation (as far as I know...)}. The in the Fraunhofer regime, this quadratic phase is approximated by one so the propagated disturbance is just the Fourier transform of the unpropagated one, a phenomenon that is very well known in many fields of Physics. 
+This is the standard implementation of the Fresnel propagator using two FFT implemented in most computer codes for synchrotron radiation. The use of FFT is not restricted to this propagator. Indeed, Eq.~\ref{eq: before fraunhoffer} represents the Fresnel propagator as Fourier transform of the distrurbance $U$ multiplied by a quadratic term. This allows to compute the Fresnel propagator using a single FFT \todo{explain why this is not so popular and is not used in synchrotron radiation (as far as I know...)}. The in the Fraunhofer regime, this quadratic phase is approximated by one so the propagated disturbance is proportional to the Fourier transform of the unpropagated one, a phenomenon that is very well known in many fields of Physics. 
 
 
 \subsection{Example of 2D rectangular and circular apertures. Comparison with analytical results.}
