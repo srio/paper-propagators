@@ -300,7 +300,7 @@ h(x,y) \coloneqq \frac{e^{i k \Delta z}}{2\pi} \mathcal{F}^{-1}\Big \{e^{\frac{-
 \end{equation} 
 is the Fresnel propagator in real-space form in the paraxial approximation. 
 Performing the inverse Fourier transform \footnote{Note the application of FT$^{-1}$ different from Appendix A. \ingreen{In Mathematica:  (Exp[I k z]/2/Pi) InverseFourierTransform[
-  Exp[-I z (kx^2 + ky^2)/ (2 k)], {kx, ky}, {x, y}]}
+  Exp[-I z (kx$^$2 + ky$^$2)/ (2 k)], {kx, ky}, {x, y}]}
 }
 we obtain the explicit form of the real space Fresnel propagator
 \begin{equation}\label{eq: real space Fresnel propagator}
@@ -319,7 +319,7 @@ In summary, to perform the calculation of propagation one can use the general pr
 U(x, y, \Delta) = P^G \mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}.
 \end{equation}
 There are three necessary steps: 1) Fourier transform the unpropagated field: $\mathcal{F}\big\{U(x,y,0)\big\}$, 2) Multiply it for the free-space Fresnel propagator\footnote{$\mathcad{F}\{h\}$ like in Appendix A, thus
-\ingreen{FourierTransform[-((I E^((I k (x^2 + y^2))/(2 z) + I k z) k)/(
+\ingreen{FourierTransform[-((I E$^((I k (x^2 + y^2))/(2 z) + I k z) k)$/(
   2 \[Pi] z)), {x, y}, {fx, fy}, FourierParameters -> {0, -2*Pi}]}
   }
 $ K=\exp(-i \Delta z \lambda \pi (f_x^2+f_y^2))$, 3) Inverse-Fourier transform this result with respect to $k_x$ and $k_y$:  $\mathcal{F}^{-1}\Big\{\mathcal{F}\big\{U \big\} K \Big\}$, and 4) apply a global phase $P^G = {e^{ik\Delta z}}$ to the result.
