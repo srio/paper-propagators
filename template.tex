@@ -1,4 +1,4 @@
-%------------------------------------------------------------------------------
+ %------------------------------------------------------------------------------
 % Template file for the submission of papers to IUCr journals in LaTeX2e
 % using the iucr document class
 % Copyright 1999-2013 International Union of Crystallography
@@ -71,8 +71,8 @@
      % affiliations; if there is only one affiliation address, remove the [a].
 
 \cauthor[a]{Manuel}{Sanchez del Rio}{srio@esrf.eu}{address if different from \aff}
-\author[b]{Sajid}{ Ali}
 \author[a]{Rafael}{Celestre}
+\author[b]{Sajid}{ Ali}
 \author[c]{Oleg}{Chubar}
 \author[a]{Vincent}{Favre-Nicolin}
 \author[a]{Jean-Pierre}{Guigay}
@@ -80,6 +80,7 @@
 \author[e]{David M.}{Paganin}
 \author[a]{Giovanni}{Pirro}
 \author[d]{Luca}{Rebuffi}
+\author[d]{Xianbo}{Shi}
 
 
 
@@ -579,7 +580,7 @@ In Appendix \ref{appendix: scaling} a full derivation of the Fresnel scattering 
 \subsection{Semianalytical treatment of spherical phase}
 \label{subch: semianalytical}
 
-\todo{RAPHAEL to write this section, OLEG to review it.}
+\todo{RAPHAEL to write this section, OLEG to review it. Use \cite{ChubarCelestre}}
 
 We introduce here one of the the methodology used in SRW. The incident disturbance $U(x,y,0)$ can be decomposed as a product of a ``precursor'' field $U^P(x,y,0)$ times a ``toroidal phase'' $U^T(x,y,0)$ in such a way that the precursor field is treated numerically and does not present a converging/diverging behavior (highly oscillating phase), and the toroidal field is treated analytically as additional phase terms. The toroidal phase makes possible to include different curvatures $R_x$ and $R_y$ in the meridional and sagittal planes. One can write: 
 \begin{equation}
@@ -602,7 +603,7 @@ where \todo{copy here $P^G$, $P$ and $K$ to be deduced in Appendix \ref{appendix
 
 \todo{GIOVANNI, LUCA, please extend and review}
 
-This section presents the formalism used for a propagator that makes possible to calculate thye propagated field in a ``zoomed'' window, thus permitting optimizing the wavefront sampling in cases for propagating highly convergent or divergent wavefronts. We follow the derivation in J.D. Schmidt \cite{schmidt} extended for including different zoom factors in horizontal and vertical. 
+This section presents the formalism used for a propagator that makes possible to calculate the propagated field in a ``zoomed'' window, thus permitting optimizing the wavefront sampling in cases for propagating highly convergent or divergent wavefronts. We follow the derivation in J.D. Schmidt \cite{schmidt} extended for including different zoom factors in horizontal and vertical. 
 
 In appendix \ref{appendix: zoom} it can be shown that the problem reduces to a convolution problem of the unpropagated field field $U(x_1,y_1,0)$ affected by a phase $P$ with a kernel $K$, and the result affected by a global phase $P^G$: 
 \begin{equation}
@@ -758,7 +759,7 @@ Parameters map comparing the theoretical condition of propagation (lines) that d
 \includegraphics[width=0.45\textwidth]{npixel2048-prop_dist23-R28-Finf.png}
 \end{figure}
 
-\subsection{The zoom propagator}
+\subsection{The semianalytical propagator}
 \todo{RAFAEL, please...}
 
 \section{Discussion and examples}
